@@ -1,6 +1,8 @@
 #ifndef _ENGINE_WORLD_H_INCLUDED
 #define _ENGINE_WORLD_H_INCLUDED
 
+#define CHUNK_SIZE 16
+
 namespace vox {
     namespace engine {
         class World {
