@@ -1,5 +1,6 @@
 #include "RenderChunk.hpp"
 #include <vector>
+#include <GL/glew.h>
 
 using namespace vox::ren;
 using namespace vox::engine;
@@ -21,10 +22,12 @@ RenderChunk::RenderChunk(int X, int Y, int Z, World& For) {
             for (int z = 0; z < CHUNK_SIZE; ++z) {
                 //Global Z
                 int gz = z + Z * CHUNK_SIZE;
-
+                int id = For(gx, gy, gz);
             }
         }
     }
+
+    _mesh = new Mesh(&in[0], in.size(), &verts[0], verts.size(), GL_QUADS);
 }
 
 RenderChunk::~RenderChunk() {
