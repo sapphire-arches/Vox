@@ -5,6 +5,7 @@
 #include <boost/static_assert.hpp>
 #include <glm/glm.hpp>
 #include "Mesh.hpp"
+#include "RenderChunk.hpp"
 
 namespace vox {
     namespace engine {
@@ -25,6 +26,7 @@ namespace vox {
                 vox::engine::World& _for;
                 vox::ren::gl::ShaderProgram& _basic;
                 std::stack<glm::mat4> _mvStack;
+                vox::ren::RenderChunk* _chunk;
         };
     }
 }

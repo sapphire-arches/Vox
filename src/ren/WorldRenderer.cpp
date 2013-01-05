@@ -18,9 +18,11 @@ using namespace vox::engine;
 WorldRenderer::WorldRenderer(World& For) : 
     _for(For),
     _basic(*(new ShaderProgram())) {
+    _chunk = new RenderChunk(0, 0, 0, For);
 }
 
 WorldRenderer::~WorldRenderer() {
+    delete _chunk;
 }
 
 void WorldRenderer::Render() {
@@ -32,7 +34,7 @@ void WorldRenderer::Render() {
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
    
-    //TODO:RenderChunk stuff here
+    _chunk->Render();
 
     glEnableClientState(GL_COLOR_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);

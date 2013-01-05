@@ -4,6 +4,11 @@
 
 using namespace vox::ren;
 
+/************************************************\
+**************************************************
+**                 MESH MEMBERS                 **
+**************************************************
+\************************************************/
 Mesh::Mesh (int *Indicies, int IndLen, Vertex* Verts, int VertLen, int DrawMode) {
     _vcount = IndLen;
     _drawMode = DrawMode;
@@ -40,4 +45,19 @@ void Mesh::Render() {
 
     glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
+}
+
+/************************************************\
+**************************************************
+**               VERTEX MEMBERS                 **
+**************************************************
+\************************************************/
+
+Vertex::Vertex(float X, float Y, float Z) {
+    x = X;
+    y = Y;
+    z = Z;
+}
+
+Vertex::Vertex() {
 }

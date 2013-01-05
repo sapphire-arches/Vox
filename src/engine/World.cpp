@@ -1,11 +1,19 @@
 #include "World.hpp"
+#include <cstdlib>
 
-#define SIZE 10
+#define SIZE 2 * CHUNK_SIZE
 
 using namespace vox::engine;
 
 World::World() {
     _data = new int[SIZE * SIZE * SIZE];
+    for (int x = 0; x < SIZE; ++x) {
+        for (int y = 0; y < SIZE; ++y) {
+            for (int z = 0; z < SIZE; ++z) {
+                (*this)(x, y, z) = (rand() % 4 == 1) ? 1 : 0;
+            }
+        }
+    }
 }
 
 World::~World() {

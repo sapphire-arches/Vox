@@ -7,6 +7,9 @@ namespace vox {
             float x, y, z;
             float r, g, b;
             float nx, ny, nz;
+
+            Vertex(float X, float Y, float Z);
+            Vertex();
         };
 
         class Mesh {
