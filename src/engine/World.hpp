@@ -9,7 +9,7 @@ namespace vox {
             public:
                 World();
                 ~World();
-
+                
                 int& operator() (int x, int y, int z);
                 int operator() (int x, int y, int z) const;
             private:

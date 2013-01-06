@@ -26,7 +26,7 @@ void TestingState::Leave(App& TheApp) {
 }
 
 void TestingState::Render(App& TheApp) {
-    _renderer->Render();
+    _renderer->Render(TheApp);
 }
 
 void TestingState::Tick(App& TheApp) {

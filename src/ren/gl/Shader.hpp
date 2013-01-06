@@ -42,6 +42,7 @@ namespace vox {
                     void AttachVertexShader(VertexShader& VertShader);
                     void AttachFragmentShader(FragmentShader& FragShader);
                     void Use();
+                    int GetUniformLoc(std::string& Name);
 
                     void PrintInfoLog();
 

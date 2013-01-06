@@ -1,6 +1,9 @@
 #include "RenderChunk.hpp"
 #include <vector>
 #include <GL/glew.h>
+#include <iostream>
+#include <boost/static_assert.hpp>
+#include <glm/glm.hpp>
 
 using namespace vox::ren;
 using namespace vox::engine;
@@ -30,22 +33,22 @@ void AddSquare(float X, float Y, float Z, Side S, std::vector<Vertex>& Verts, st
             v[3].x = X + 1; v[3].y = Y + 1; v[3].z = Z + 0;
             break;
         case POSZ:
-            v[0].x = X + 0; v[0].y = Y + 0; v[0].z = Z + 1;
-            v[1].x = X + 0; v[1].y = Y + 1; v[1].z = Z + 1;
-            v[2].x = X + 1; v[2].y = Y + 1; v[2].z = Z + 1;
-            v[3].x = X + 1; v[3].y = Y + 0; v[3].z = Z + 1;
-            break;
-        case NEGX:
-            v[0].x = X + 0; v[0].y = Y + 0; v[0].z = Z + 0;
-            v[1].x = X + 0; v[1].y = Y + 1; v[1].z = Z + 0;
+            v[0].x = X + 1; v[0].y = Y + 0; v[0].z = Z + 1;
+            v[1].x = X + 1; v[1].y = Y + 1; v[1].z = Z + 1;
             v[2].x = X + 0; v[2].y = Y + 1; v[2].z = Z + 1;
             v[3].x = X + 0; v[3].y = Y + 0; v[3].z = Z + 1;
             break;
+        case NEGX:
+            v[0].x = X + 0; v[0].y = Y + 0; v[0].z = Z + 1;
+            v[1].x = X + 0; v[1].y = Y + 1; v[1].z = Z + 1;
+            v[2].x = X + 0; v[2].y = Y + 1; v[2].z = Z + 0;
+            v[3].x = X + 0; v[3].y = Y + 0; v[3].z = Z + 0;
+            break;
         case NEGY:
-            v[0].x = X + 0; v[0].y = Y + 0; v[0].z = Z + 0;
-            v[1].x = X + 0; v[1].y = Y + 0; v[1].z = Z + 1;
-            v[2].x = X + 1; v[2].y = Y + 0; v[2].z = Z + 1;
-            v[3].x = X + 1; v[3].y = Y + 0; v[3].z = Z + 0;
+            v[0].x = X + 1; v[0].y = Y + 0; v[0].z = Z + 0;
+            v[1].x = X + 1; v[1].y = Y + 0; v[1].z = Z + 1;
+            v[2].x = X + 0; v[2].y = Y + 0; v[2].z = Z + 1;
+            v[3].x = X + 0; v[3].y = Y + 0; v[3].z = Z + 0;
             break;
         case NEGZ:
             v[0].x = X + 0; v[0].y = Y + 0; v[0].z = Z + 0;
@@ -54,40 +57,44 @@ void AddSquare(float X, float Y, float Z, Side S, std::vector<Vertex>& Verts, st
             v[3].x = X + 1; v[3].y = Y + 0; v[3].z = Z + 0;
             break;
     }
-    v[0].r = 1; v[0].g = 0; v[0].b = 0;
-    v[1].r = 0; v[1].g = 1; v[1].b = 0;
-    v[2].r = 0; v[2].g = 0; v[2].b = 1;
-    v[3].r = 1; v[3].g = 0; v[3].b = 1;
+    v[0].r = v[0].x / 16.0f; v[0].g = v[0].y / 16.0f; v[0].b = v[0].z / 16.0f;
+    v[1].r = v[1].x / 16.1f; v[1].g = v[1].y / 16.1f; v[1].b = v[1].z / 16.1f;
+    v[2].r = v[2].x / 16.2f; v[2].g = v[2].y / 16.2f; v[2].b = v[2].z / 16.2f;
+    v[3].r = v[3].x / 16.3f; v[3].g = v[3].y / 16.3f; v[3].b = v[3].z / 16.3f;
+
+    //Calc normals.
+    glm::vec3 a(v[0].x , v[0].y, v[0].z);
+    glm::vec3 b(v[1].x , v[1].y, v[1].z);
+    glm::vec3 c(v[2].x , v[2].y, v[2].z);
+
+    glm::vec3 norm = glm::cross(b - a, c - a);
+
     int basei = Verts.size();
     for (int i = 0; i < 4; ++i) {
+        v[i].nx = norm.x;
+        v[i].ny = norm.y;
+        v[i].nz = norm.z;
         Verts.insert(Verts.end(), v[i]);
         Ind.insert(Ind.end(), basei + i);
     }
 }
 
-void BuildVox(int X, int Y, int Z, World& In, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
-    int baseInd = Verts.size();
-    if (In(X + 1, Y + 0, Z + 0) != 0) {
+void BuildVox(int X, int Y, int Z, const World& In, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
+    if (In(X + 1, Y, Z) == 0)
         AddSquare(X, Y, Z,  POSX, Verts, Ind);
-    }
-    if (In(X - 1, Y + 0, Z + 0) != 0) {
+    if (In(X - 1, Y, Z) == 0)
         AddSquare(X, Y, Z,  NEGX, Verts, Ind);
-    }
-    if (In(X + 0, Y + 1, Z + 0) != 0) {
+    if (In(X, Y + 1, Z) == 0)
         AddSquare(X, Y, Z,  POSY, Verts, Ind);
-    }
-    if (In(X + 0, Y - 1, Z + 0) != 0) {
+    if (In(X, Y - 1, Z) == 0)
         AddSquare(X, Y, Z,  NEGY, Verts, Ind);
-    }
-    if (In(X + 0, Y + 0, Z + 1) != 0) {
+    if (In(X, Y, Z + 1) == 0)
         AddSquare(X, Y, Z,  POSZ, Verts, Ind);
-    }
-    if (In(X + 0, Y + 0, Z - 1) != 0) {
+    if (In(X, Y, Z - 1) == 0)
         AddSquare(X, Y, Z,  NEGZ, Verts, Ind);
-    }
 }
 
-RenderChunk::RenderChunk(int X, int Y, int Z, World& For) {
+RenderChunk::RenderChunk(int X, int Y, int Z, const World& For) {
     _x = X;
     _y = Y;
     _z = Z;
@@ -95,16 +102,20 @@ RenderChunk::RenderChunk(int X, int Y, int Z, World& For) {
     std::vector<Vertex> verts;
     std::vector<int>    ind;
 
+    int bx = X * CHUNK_SIZE;
+    int by = Y * CHUNK_SIZE;
+    int bz = Z * CHUNK_SIZE;
     for (int x = 0; x < CHUNK_SIZE; ++x) {
         //Global x
-        int gx = x + X * CHUNK_SIZE;
+        int gx = x + bx;
         for (int y = 0; y < CHUNK_SIZE; ++y) {
             //Global y
-            int gy = y + Y * CHUNK_SIZE;
+            int gy = y + by;
             for (int z = 0; z < CHUNK_SIZE; ++z) {
                 //Global Z
-                int gz = z + Z * CHUNK_SIZE;
-                BuildVox(gx, gy, gz, For, verts, ind);
+                int gz = z + bz;
+                if (For(gx, gy, gz) != 0)
+                    BuildVox(gx, gy, gz, For, verts, ind);
             }
         }
     }
@@ -114,20 +125,4 @@ RenderChunk::RenderChunk(int X, int Y, int Z, World& For) {
 
 RenderChunk::~RenderChunk() {
     delete _mesh;
-}
-
-void RenderChunk::Render() {
-    _mesh->Render();
-}
-
-int RenderChunk::GetX() {
-    return _x;
-}
-
-int RenderChunk::GetY() {
-    return _y;
-}
-
-int RenderChunk::GetZ() {
-    return _z;
 }

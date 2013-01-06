@@ -1,11 +1,11 @@
 #include <iostream>
 #include "App.hpp"
-#include "state/TestingState.hpp"
+#include "state/GameState.hpp"
 
 using namespace std;
 
 int main (int argc, const char** argv) {
-    vox::state::TestingState* s = new vox::state::TestingState();
+    vox::state::Gamestate* s = new vox::state::Gamestate();
     vox::App* app = new vox::App();
 
     int status = app->OnExecute(s);

@@ -3,4 +3,4 @@ add_library(ren
     RenderChunk
     Mesh)
 add_subdirectory(gl)
-target_link_libraries(ren engine graphics GL)
+target_link_libraries(ren engine graphics state GL)

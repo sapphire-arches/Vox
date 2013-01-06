@@ -7,6 +7,9 @@ using namespace std;
 using namespace vox;
 using namespace vox::state;
 
+#define WIDTH 800
+#define HEIGHT 600
+
 App::App() : _running(true), _curr(NULL) {
 }
 
@@ -15,7 +18,7 @@ bool App::OnInit(State* First) {
         return false;
     }
 
-    if ((_surface = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_OPENGL | SDL_GL_DOUBLEBUFFER)) == NULL) {
+    if ((_surface = SDL_SetVideoMode(WIDTH, HEIGHT, 32, SDL_HWSURFACE | SDL_OPENGL | SDL_GL_DOUBLEBUFFER)) == NULL) {
         return false;
     }
 
@@ -25,6 +28,7 @@ bool App::OnInit(State* First) {
     }
     
     if (true &&
+            GLEW_ARB_shader_objects &&
             GLEW_ARB_vertex_shader &&
             GLEW_ARB_fragment_shader &&
             GLEW_ARB_vertex_buffer_object) {
@@ -38,7 +42,7 @@ bool App::OnInit(State* First) {
 
     glClearColor(0, 0, 0, 0);
     glClearDepth(1.0f);
-    glViewport(0, 0, 640, 480);
+    glViewport(0, 0, WIDTH, HEIGHT);
 
     _curr = First;
 
@@ -52,7 +56,8 @@ void App::OnEvent(SDL_Event* Event) {
         _running = false;
     } else if (Event->type == SDL_KEYDOWN) {
         cout << Event->key.keysym.sym << endl;
-//        _running = false;
+        if (Event->key.keysym.sym == SDLK_ESCAPE)
+            _running = false;
     }
 }
 

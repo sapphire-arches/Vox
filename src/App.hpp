@@ -18,6 +18,7 @@ namespace vox {
             void OnLoop();
             void OnRender();
             void OnCleanup();
+
         private:
             bool _running;
             SDL_Surface* _surface;

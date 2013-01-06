@@ -1,5 +1,5 @@
 add_library(state
     State
-    TestingState
+    GameState
     )
 target_link_libraries(state engine ren)

@@ -124,6 +124,19 @@ void ShaderProgram::Use() {
     PrintGLError("Shader Use");
 }
 
+int ShaderProgram::GetUniformLoc(string& Name) {
+    UniformMap::iterator i = _uniforms.find(Name);
+    if (i != _uniforms.end()) {
+        return i->second;
+    } else {
+        EnsureLink();
+        int loc = glGetUniformLocationARB(_programID, Name.c_str());
+        PrintGLError("Location Get");
+        _uniforms[Name] = loc;
+        return loc;
+    }
+}
+
 void ShaderProgram::PrintInfoLog() {
    PrintObjectInfoLog(_programID);
 } 
