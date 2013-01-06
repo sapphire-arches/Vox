@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cassert>
 #include <cstring>
+#include <cstdlib>
 
 using namespace vox::engine;
 
@@ -11,13 +12,14 @@ Chunk::Chunk(int X, int Y, int Z) {
     _y = Y;
     _z = Z;
     _data = new int [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
+    memset(_data, 0, sizeof(int) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
+//    memset(_data, 1, sizeof(int) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE / 2);
     for (int x = 0; x < CHUNK_SIZE; ++x) {
+        int gx = x + X * CHUNK_SIZE;
         for (int y = 0; y < CHUNK_SIZE; ++y) {
+            int gy = y + Y * CHUNK_SIZE;
             for (int z = 0; z < CHUNK_SIZE; ++z) {
-                if (y + Y * CHUNK_SIZE < 8)
-                    this->GetBlock(x, y, z) = 1;
-                else
-                    this->GetBlock(x, y, z) = 0;
+                this->GetBlock(x, y, z) = (rand() % 4 == 1) ? 1 : 0;
             }
         }
     }
@@ -25,7 +27,7 @@ Chunk::Chunk(int X, int Y, int Z) {
 
 Chunk::Chunk(const Chunk& Other) {
     this->_data = new int [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
-    memcpy(this->_data, Other._data, CHUNK_SIZE* CHUNK_SIZE * CHUNK_SIZE);
+    memcpy(this->_data, Other._data, sizeof(int) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
     this->_x = Other._x;
     this->_y = Other._y;
     this->_z = Other._z;
@@ -35,7 +37,7 @@ Chunk::~Chunk() {
     delete[] _data;
 }
 
-inline int GetID(int X, int Y, int Z) {
+inline int GetInd(int X, int Y, int Z) {
     int ind = X + Y * CHUNK_SIZE + Z * CHUNK_SIZE * CHUNK_SIZE;
     assert(ind < (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE));
     return ind;
@@ -48,7 +50,8 @@ int Chunk::GetBlock(int X, int Y, int Z) const {
         Y += CHUNK_SIZE;
     if (Z < 0)
         Z += CHUNK_SIZE;
-    return _data[GetID(X, Y, Z)];
+    std::cout << _data [GetInd(X, Y, Z)] << std::endl;
+    return _data[GetInd(X, Y, Z)];
 }
 
 int& Chunk::GetBlock(int X, int Y, int Z) {
@@ -58,5 +61,5 @@ int& Chunk::GetBlock(int X, int Y, int Z) {
         Y += CHUNK_SIZE;
     if (Z < 0)
         Z += CHUNK_SIZE;
-    return _data[GetID(X, Y, Z)];
+    return _data[GetInd(X, Y, Z)];
 }

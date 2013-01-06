@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+#define NUM_CHUNKS 4
+
 using namespace std;
 using namespace vox::ren;
 using namespace vox::ren::gl;
@@ -16,7 +18,13 @@ using namespace vox::engine;
 WorldRenderer::WorldRenderer(World& For) : 
     _for(For),
     _basic(*(new ShaderProgram())) {
-    _chunk = new RenderChunk(0, 0, 0, For);
+    _chunks = new RenderChunk*[NUM_CHUNKS];
+
+    _chunks[0] = new RenderChunk(0, 0, 0, For);
+    _chunks[1] = new RenderChunk(0, 0, 1, For);
+    _chunks[2] = new RenderChunk(1, 0, 0, For);
+    _chunks[3] = new RenderChunk(1, 0, 1, For);
+
     string m("MView");
     string p("MProj");
     _mloc = _basic.GetUniformLoc(m);
@@ -26,7 +34,10 @@ WorldRenderer::WorldRenderer(World& For) :
 }
 
 WorldRenderer::~WorldRenderer() {
-    delete _chunk;
+    for (int i = 0; i < NUM_CHUNKS; ++i) {
+        delete _chunks[i];
+    }
+    delete[] _chunks;
 }
 
 void WorldRenderer::Render(vox::state::Gamestate& GS) {
@@ -56,7 +67,7 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
             glm::vec3(0.f, 1.f, 0.f));
     view = glm::translate(
             view,
-            glm::vec3(-8.f, -8.f, -8.f)
+            glm::vec3(-16.f, -8.f, -16.f)
             );
     
 
@@ -76,7 +87,9 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
    
-    _chunk->Render();
+    for (int i = 0; i < NUM_CHUNKS; ++i) {
+        _chunks[i]->Render();
+    }
 
     glEnableClientState(GL_COLOR_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);

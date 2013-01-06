@@ -30,7 +30,7 @@ namespace vox {
                 std::stack<glm::mat4> _pStack;
                 int _mloc;
                 int _ploc;
-                vox::ren::RenderChunk* _chunk;
+                vox::ren::RenderChunk** _chunks;
         };
     }
 }
