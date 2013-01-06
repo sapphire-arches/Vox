@@ -1,4 +1,4 @@
 Vox
 ===
 
-C++ Voxel Renderr. Probably won't get finished.
+C++ Voxel Renderer, maybe game. Probably won't get finished.
