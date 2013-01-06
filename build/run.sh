@@ -7,11 +7,8 @@ if [ ! -d "./lib" ]
 then
     mkdir lib
 fi
-if [ ! -e "Makefile" ]
-then
-    cmake ../src/
-fi
 
+cmake ../src/ -DCMAKE_BUILD_TYPE=Debug
 make install
 if [ $? -eq 0 ]
 then

@@ -1,20 +1,20 @@
 #ifndef _ENGINE_WORLD_H_INCLUDED
 #define _ENGINE_WORLD_H_INCLUDED
 
-#define CHUNK_SIZE 16
+#include "ChunkCache.hpp"
 
 namespace vox {
     namespace engine {
+
         class World {
             public:
                 World();
                 ~World();
                 
-                int& operator() (int x, int y, int z);
-                int operator() (int x, int y, int z) const;
+                int& operator() (int X, int Y, int Z);
+                int operator() (int X, int Y, int Z) const;
             private:
-                //TODO: implement infinte stuff
-                int* _data;
+                ChunkCache _cache;
         };
     }
 }
