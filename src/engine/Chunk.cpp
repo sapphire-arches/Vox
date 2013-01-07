@@ -3,8 +3,15 @@
 #include <cassert>
 #include <cstring>
 #include <cstdlib>
+#include <cmath>
 
 using namespace vox::engine;
+
+inline int GetInd(int X, int Y, int Z) {
+    int ind = X + (Y * CHUNK_SIZE) + (Z * CHUNK_SIZE * CHUNK_SIZE);
+    assert(ind < (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE));
+    return ind;
+}
 
 Chunk::Chunk(int X, int Y, int Z) {
     std::cout << "Building chunk ("<<X<<","<<Y<<","<<Z<<")"<<std::endl;
@@ -13,16 +20,15 @@ Chunk::Chunk(int X, int Y, int Z) {
     _z = Z;
     _data = new int [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
     memset(_data, 0, sizeof(int) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
-//    memset(_data, 1, sizeof(int) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE / 2);
+    
     for (int x = 0; x < CHUNK_SIZE; ++x) {
-        int gx = x + X * CHUNK_SIZE;
         for (int y = 0; y < CHUNK_SIZE; ++y) {
-            int gy = y + Y * CHUNK_SIZE;
             for (int z = 0; z < CHUNK_SIZE; ++z) {
-                this->GetBlock(x, y, z) = (rand() % 4 == 1) ? 1 : 0;
+                if (y + Y * CHUNK_SIZE < x + X * CHUNK_SIZE)
+                    _data[GetInd(x, y, z)] = 1;
             }
         }
-    }
+    } 
 }
 
 Chunk::Chunk(const Chunk& Other) {
@@ -35,12 +41,6 @@ Chunk::Chunk(const Chunk& Other) {
 
 Chunk::~Chunk() {
     delete[] _data;
-}
-
-inline int GetInd(int X, int Y, int Z) {
-    int ind = X + Y * CHUNK_SIZE + Z * CHUNK_SIZE * CHUNK_SIZE;
-    assert(ind < (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE));
-    return ind;
 }
 
 int Chunk::GetBlock(int X, int Y, int Z) const {
@@ -61,5 +61,6 @@ int& Chunk::GetBlock(int X, int Y, int Z) {
         Y += CHUNK_SIZE;
     if (Z < 0)
         Z += CHUNK_SIZE;
+    assert(X <= CHUNK_SIZE && Y <= CHUNK_SIZE && Z <= CHUNK_SIZE);
     return _data[GetInd(X, Y, Z)];
 }

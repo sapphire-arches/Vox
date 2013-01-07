@@ -8,22 +8,29 @@
 
 #include <iostream>
 
-#define NUM_CHUNKS 4
+#define VIEWDIST 4
 
 using namespace std;
 using namespace vox::ren;
 using namespace vox::ren::gl;
 using namespace vox::engine;
 
+inline int GetInd(int X, int Y, int Z) {
+    return X + Y * VIEWDIST + Z * VIEWDIST * VIEWDIST;
+}
+
 WorldRenderer::WorldRenderer(World& For) : 
     _for(For),
     _basic(*(new ShaderProgram())) {
-    _chunks = new RenderChunk*[NUM_CHUNKS];
+    _chunks = new RenderChunk*[VIEWDIST * VIEWDIST * VIEWDIST];
 
-    _chunks[0] = new RenderChunk(0, 0, 0, For);
-    _chunks[1] = new RenderChunk(0, 0, 1, For);
-    _chunks[2] = new RenderChunk(1, 0, 0, For);
-    _chunks[3] = new RenderChunk(1, 0, 1, For);
+    for (int x = 0; x < VIEWDIST; ++x) {
+        for (int y = 0; y < VIEWDIST; ++y) {
+            for (int z = 0; z < VIEWDIST; ++z) {
+                _chunks[GetInd(x, y, z)] = new RenderChunk(x, y, z, For);
+            }
+        }
+    }
 
     string m("MView");
     string p("MProj");
@@ -34,7 +41,7 @@ WorldRenderer::WorldRenderer(World& For) :
 }
 
 WorldRenderer::~WorldRenderer() {
-    for (int i = 0; i < NUM_CHUNKS; ++i) {
+    for (int i = 0; i < VIEWDIST * VIEWDIST * VIEWDIST; ++i) {
         delete _chunks[i];
     }
     delete[] _chunks;
@@ -54,7 +61,7 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
     glm::mat4 view(1.0f);
     view = glm::translate(
             view, 
-            glm::vec3(-0.f, -0.f, -32.f)
+            glm::vec3(-0.f, -0.f, -64.f)
             );
     view = glm::rotate(
             view,
@@ -67,7 +74,7 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
             glm::vec3(0.f, 1.f, 0.f));
     view = glm::translate(
             view,
-            glm::vec3(-16.f, -8.f, -16.f)
+            glm::vec3(-32.f, -8.f, -32.f)
             );
     
 
@@ -87,7 +94,7 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
    
-    for (int i = 0; i < NUM_CHUNKS; ++i) {
+    for (int i = 0; i < VIEWDIST * VIEWDIST * VIEWDIST; ++i) {
         _chunks[i]->Render();
     }
 
