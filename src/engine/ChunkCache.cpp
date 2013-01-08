@@ -17,7 +17,7 @@ ChunkCache::~ChunkCache() {
     delete[] _chunks;
 }
 
-inline int Ind(int CX, int CY, int CZ) {
+static inline int Ind(int CX, int CY, int CZ) {
     return CX + CY * CHUNK_CACHE_SIZE + CZ * CHUNK_CACHE_SIZE * CHUNK_CACHE_SIZE;
 }
 

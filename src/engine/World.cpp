@@ -23,11 +23,11 @@ int& World::operator() (int X, int Y, int Z) {
     int ly = Y % CHUNK_SIZE;
     int lz = Z % CHUNK_SIZE;
 
-    if (cx < 0 && lx != 0)
+    if (X < 0 && lx != 0)
         --cx;
-    if (cy < 0 && ly != 0)
+    if (Y < 0 && ly != 0)
         --cy;
-    if (cz < 0 && lz != 0)
+    if (Z < 0 && lz != 0)
         --cz;
     
     return _cache.Get(cx, cy, cz).GetBlock(lx, ly, lz);
@@ -41,11 +41,11 @@ int World::operator() (int X, int Y, int Z) const {
     int ly = Y % CHUNK_SIZE;
     int lz = Z % CHUNK_SIZE;
 
-    if (cx < 0 && lx != 0)
+    if (X < 0 && lx != 0)
         --cx;
-    if (cy < 0 && ly != 0)
+    if (Y < 0 && ly != 0)
         --cy;
-    if (cz < 0 && lz != 0)
+    if (Z < 0 && lz != 0)
         --cz;
     
     return _cache.Get(cx, cy, cz).GetBlock(lx, ly, lz);

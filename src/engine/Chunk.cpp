@@ -7,7 +7,7 @@
 
 using namespace vox::engine;
 
-inline int GetInd(int X, int Y, int Z) {
+static inline int GetInd(int X, int Y, int Z) {
     int ind = X + (Y * CHUNK_SIZE) + (Z * CHUNK_SIZE * CHUNK_SIZE);
     assert(ind < (CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE));
     return ind;
@@ -21,14 +21,20 @@ Chunk::Chunk(int X, int Y, int Z) {
     _data = new int [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
     memset(_data, 0, sizeof(int) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
     
+    int bx = X * CHUNK_SIZE;
+    int by = Y * CHUNK_SIZE;
+    int bz = Z * CHUNK_SIZE;
     for (int x = 0; x < CHUNK_SIZE; ++x) {
+        int gx = x + bx;
         for (int y = 0; y < CHUNK_SIZE; ++y) {
+            int gy = y + by;
             for (int z = 0; z < CHUNK_SIZE; ++z) {
-                if (y + Y * CHUNK_SIZE < x + X * CHUNK_SIZE)
+                int gz = z + bz;
+                if (gy < gx)
                     _data[GetInd(x, y, z)] = 1;
             }
         }
-    } 
+    }
 }
 
 Chunk::Chunk(const Chunk& Other) {

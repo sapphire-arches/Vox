@@ -15,7 +15,7 @@ using namespace vox::ren;
 using namespace vox::ren::gl;
 using namespace vox::engine;
 
-inline int GetInd(int X, int Y, int Z) {
+static inline int GetInd(int X, int Y, int Z) {
     return X + Y * VIEWDIST + Z * VIEWDIST * VIEWDIST;
 }
 
@@ -27,7 +27,7 @@ WorldRenderer::WorldRenderer(World& For) :
     for (int x = 0; x < VIEWDIST; ++x) {
         for (int y = 0; y < VIEWDIST; ++y) {
             for (int z = 0; z < VIEWDIST; ++z) {
-                _chunks[GetInd(x, y, z)] = new RenderChunk(x, y, z, For);
+                _chunks[GetInd(x, y, z)] = new RenderChunk(x - 2, y - 2, z - 2, For);
             }
         }
     }
@@ -61,7 +61,7 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
     glm::mat4 view(1.0f);
     view = glm::translate(
             view, 
-            glm::vec3(-0.f, -0.f, -64.f)
+            glm::vec3(-0.f, -0.f, -20.f)
             );
     view = glm::rotate(
             view,
@@ -74,7 +74,7 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
             glm::vec3(0.f, 1.f, 0.f));
     view = glm::translate(
             view,
-            glm::vec3(-32.f, -8.f, -32.f)
+            glm::vec3(-0.f, -8.f, -0.f)
             );
     
 
