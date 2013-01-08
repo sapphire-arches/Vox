@@ -8,7 +8,8 @@
 
 #include <iostream>
 
-#define VIEWDIST 4
+#define VIEWDIST 10
+#define HALFDIST (VIEWDIST / 2)
 
 using namespace std;
 using namespace vox::ren;
@@ -27,7 +28,7 @@ WorldRenderer::WorldRenderer(World& For) :
     for (int x = 0; x < VIEWDIST; ++x) {
         for (int y = 0; y < VIEWDIST; ++y) {
             for (int z = 0; z < VIEWDIST; ++z) {
-                _chunks[GetInd(x, y, z)] = new RenderChunk(x - 2, y - 2, z - 2, For);
+                _chunks[GetInd(x, y, z)] = new RenderChunk(x - HALFDIST, y - HALFDIST, z - HALFDIST, For);
             }
         }
     }
@@ -54,7 +55,7 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
     while (!_pStack.empty()) {
         _pStack.pop();
     }
-    glm::mat4 proj = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+    glm::mat4 proj = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 200.0f);
 
     float angle = GS.GetFrame() * 0.25f; //glm::sin(GS.GetFrame() * 0.01f) * 90 + 90;
 //    std::cout << angle << std::endl;
@@ -65,7 +66,7 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
             );
     view = glm::rotate(
             view,
-            0.f,
+            25.f,
             glm::vec3(1.f, 0.f, 0.f));
     
     view = glm::rotate(
@@ -74,7 +75,7 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
             glm::vec3(0.f, 1.f, 0.f));
     view = glm::translate(
             view,
-            glm::vec3(-0.f, -8.f, -0.f)
+            glm::vec3(-0.f, -16.f, -0.f)
             );
     
 

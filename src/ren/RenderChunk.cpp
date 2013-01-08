@@ -57,11 +57,6 @@ void AddSquare(float X, float Y, float Z, Side S, std::vector<Vertex>& Verts, st
             v[3].x = X + 1; v[3].y = Y + 0; v[3].z = Z + 0;
             break;
     }
-    v[0].r = v[0].x / 16.0f; v[0].g = v[0].y / 16.0f; v[0].b = v[0].z / 16.0f;
-    v[1].r = v[1].x / 16.1f; v[1].g = v[1].y / 16.1f; v[1].b = v[1].z / 16.1f;
-    v[2].r = v[2].x / 16.2f; v[2].g = v[2].y / 16.2f; v[2].b = v[2].z / 16.2f;
-    v[3].r = v[3].x / 16.3f; v[3].g = v[3].y / 16.3f; v[3].b = v[3].z / 16.3f;
-
     //Calc normals.
     glm::vec3 a(v[0].x , v[0].y, v[0].z);
     glm::vec3 b(v[1].x , v[1].y, v[1].z);
@@ -71,6 +66,9 @@ void AddSquare(float X, float Y, float Z, Side S, std::vector<Vertex>& Verts, st
 
     int basei = Verts.size();
     for (int i = 0; i < 4; ++i) {
+        v[i].r = 1.f;//fabs(v[i].x / 16.0f);
+        v[i].g = 1.f;//fabs(v[i].y / 16.0f);
+        v[i].b = 1.f;//fabs(v[i].z / 16.0f);
         v[i].nx = norm.x;
         v[i].ny = norm.y;
         v[i].nz = norm.z;
@@ -120,7 +118,10 @@ RenderChunk::RenderChunk(int X, int Y, int Z, const World& For) {
         }
     }
 
-    _mesh = new Mesh(&ind[0], ind.size(), &verts[0], verts.size(), GL_QUADS);
+    if (ind.size() > 0)
+        _mesh = new Mesh(&ind[0], ind.size(), &verts[0], verts.size(), GL_QUADS);
+    else
+        _mesh = NULL;
 }
 
 RenderChunk::~RenderChunk() {

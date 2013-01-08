@@ -10,8 +10,8 @@ bool inrange(float f) {
 
 void main(void) {
     vec4 c = vec4(0.1, 0.1, 0.1, 0.);
-    if (!gl_FrontFacing)
-        c = vec4(0.9, 0.9, 0.9, 0.);
+//    if (!gl_FrontFacing)
+//        c = vec4(0.9, 0.9, 0.9, 0.);
     vec3 v= pos - floor(pos);
     bool x = inrange(v.x);
     bool y = inrange(v.y);

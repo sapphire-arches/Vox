@@ -15,7 +15,8 @@ namespace vox {
                 ~RenderChunk();
 
                 inline void Render() {
-                    _mesh->Render();
+                    if (_mesh)
+                        _mesh->Render();
                 }
 
                 inline int GetX() {

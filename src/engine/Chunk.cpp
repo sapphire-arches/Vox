@@ -14,7 +14,7 @@ static inline int GetInd(int X, int Y, int Z) {
 }
 
 Chunk::Chunk(int X, int Y, int Z) {
-    std::cout << "Building chunk ("<<X<<","<<Y<<","<<Z<<")"<<std::endl;
+    //std::cout << "Building chunk ("<<X<<","<<Y<<","<<Z<<")"<<std::endl;
     _x = X;
     _y = Y;
     _z = Z;
@@ -30,7 +30,8 @@ Chunk::Chunk(int X, int Y, int Z) {
             int gy = y + by;
             for (int z = 0; z < CHUNK_SIZE; ++z) {
                 int gz = z + bz;
-                if (gy < gx)
+                int my = (int)(4 * sin(gx * 0.25) + 4 * sin(gz * 0.25));
+                if (gy < my)
                     _data[GetInd(x, y, z)] = 1;
             }
         }
