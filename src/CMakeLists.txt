@@ -4,9 +4,16 @@ if (${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
     message(FATAL_ERROR, "In-source build")
 endif()
 
+option(PROFILE "Profile the app." FALSE)
+
 project(vox)
 
-set (COMPILE_FLAGS -g -Wall)
+add_definitions(${CMAKE_CXX_FLAGS_DEBUG} "-g")
+add_definitions(${CMAKE_CXX_FLAGS_DEBUG} "-Wall")
+if (PROFILE)
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+    set (CMAKE_EXE_FLAGS "${CMAKE_EXE_FLAGS} -pg")
+endif()
 set (EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set (LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 

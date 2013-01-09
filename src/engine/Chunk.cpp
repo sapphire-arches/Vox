@@ -13,7 +13,7 @@ static inline int GetInd(int X, int Y, int Z) {
     return ind;
 }
 
-Chunk::Chunk(int X, int Y, int Z) {
+Chunk::Chunk(int X, int Y, int Z, WorldGenerator* Gen) {
     //std::cout << "Building chunk ("<<X<<","<<Y<<","<<Z<<")"<<std::endl;
     _x = X;
     _y = Y;
@@ -30,14 +30,13 @@ Chunk::Chunk(int X, int Y, int Z) {
             int gy = y + by;
             for (int z = 0; z < CHUNK_SIZE; ++z) {
                 int gz = z + bz;
-                int my = (int)(4 * sin(gx * 0.25) + 4 * sin(gz * 0.25));
-                if (gy < my)
-                    _data[GetInd(x, y, z)] = 1;
+                _data[GetInd(x, y, z)] = Gen->GetBlock(gx, gy, gz); 
             }
         }
     }
 }
 
+//Warning: slow as shit.
 Chunk::Chunk(const Chunk& Other) {
     this->_data = new int [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
     memcpy(this->_data, Other._data, sizeof(int) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);

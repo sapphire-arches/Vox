@@ -66,9 +66,9 @@ void AddSquare(float X, float Y, float Z, Side S, std::vector<Vertex>& Verts, st
 
     int basei = Verts.size();
     for (int i = 0; i < 4; ++i) {
-        v[i].r = 1.f;//fabs(v[i].x / 16.0f);
+        v[i].r = fabs(v[i].y / 16.0f);
         v[i].g = 1.f;//fabs(v[i].y / 16.0f);
-        v[i].b = 1.f;//fabs(v[i].z / 16.0f);
+        v[i].b = fabs(v[i].y / 16.0f);
         v[i].nx = norm.x;
         v[i].ny = norm.y;
         v[i].nz = norm.z;
@@ -77,7 +77,7 @@ void AddSquare(float X, float Y, float Z, Side S, std::vector<Vertex>& Verts, st
     }
 }
 
-void BuildVox(int X, int Y, int Z, const World& In, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
+void BuildVox(int X, int Y, int Z, World& In, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
     if (In(X + 1, Y, Z) == 0)
         AddSquare(X, Y, Z,  POSX, Verts, Ind);
     if (In(X - 1, Y, Z) == 0)
@@ -92,7 +92,7 @@ void BuildVox(int X, int Y, int Z, const World& In, std::vector<Vertex>& Verts, 
         AddSquare(X, Y, Z,  NEGZ, Verts, Ind);
 }
 
-RenderChunk::RenderChunk(int X, int Y, int Z, const World& For) {
+RenderChunk::RenderChunk(int X, int Y, int Z, World& For) {
     _x = X;
     _y = Y;
     _z = Z;

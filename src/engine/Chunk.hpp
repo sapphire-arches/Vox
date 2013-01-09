@@ -1,6 +1,8 @@
 #ifndef _ENGINE_CHUNK_H_
 #define _ENGINE_CHUNK_H_
 
+#include "WorldGenerator.hpp"
+
 #define CHUNK_SIZE 16
 
 namespace vox {
@@ -10,7 +12,7 @@ namespace vox {
                 int _x, _y, _z;
                 int* _data;
             public:
-                Chunk(int X, int Y, int Z);
+                Chunk(int X, int Y, int Z, WorldGenerator* Gen);
                 Chunk(const Chunk& Other);
                 ~Chunk();
 

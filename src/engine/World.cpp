@@ -1,5 +1,7 @@
 #include "World.hpp"
+#include "WorldGenerator.hpp"
 #include "Chunk.hpp"
+
 #include <cstdlib>
 #include <iostream>
 

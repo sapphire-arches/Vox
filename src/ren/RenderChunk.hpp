@@ -11,7 +11,7 @@ namespace vox {
                 int _x, _y, _z;
                 vox::ren::Mesh* _mesh;
             public:
-                RenderChunk(int X, int Y, int Z, const vox::engine::World& For);
+                RenderChunk(int X, int Y, int Z, vox::engine::World& For);
                 ~RenderChunk();
 
                 inline void Render() {

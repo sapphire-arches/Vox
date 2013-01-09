@@ -62,7 +62,7 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
     glm::mat4 view(1.0f);
     view = glm::translate(
             view, 
-            glm::vec3(-0.f, -0.f, -20.f)
+            glm::vec3(-0.f, -0.f, -64.f)
             );
     view = glm::rotate(
             view,
