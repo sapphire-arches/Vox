@@ -14,12 +14,13 @@ static inline int GetInd(int X, int Y, int Z) {
 }
 
 Chunk::Chunk(int X, int Y, int Z, WorldGenerator* Gen) {
-    //std::cout << "Building chunk ("<<X<<","<<Y<<","<<Z<<")"<<std::endl;
+    std::cout << "Building chunk ("<<X<<","<<Y<<","<<Z<<")"<<std::endl;
     _x = X;
     _y = Y;
     _z = Z;
     _data = new int [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
-    memset(_data, 0, sizeof(int) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
+    //We shouldn't need this because of the next loop.
+    //memset(_data, 0, sizeof(int) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
     
     int bx = X * CHUNK_SIZE;
     int by = Y * CHUNK_SIZE;

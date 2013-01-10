@@ -4,7 +4,7 @@
 #include "Chunk.hpp"
 #include "WorldGenerator.hpp"
 
-#define CHUNK_CACHE_SIZE 8
+#define CHUNK_CACHE_SIZE 16
 #define CHUNK_CACHE_SIZE_CUBED CHUNK_CACHE_SIZE * CHUNK_CACHE_SIZE * CHUNK_CACHE_SIZE
 
 namespace vox {
