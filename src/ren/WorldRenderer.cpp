@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/core/func_trigonometric.hpp>
-#include "../engine/World.hpp"
+#include "engine/World.hpp"
 #include "./gl/Shader.hpp"
 #include "./gl/Util.hpp"
 
@@ -39,6 +39,7 @@ WorldRenderer::WorldRenderer(World& For) :
     _ploc = _basic.GetUniformLoc(p);
 
     glPointSize(5.0f);
+    glEnable(GL_DEPTH_TEST);
 }
 
 WorldRenderer::~WorldRenderer() {
@@ -87,7 +88,6 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
     _basic.Use();
     PrintGLError("WorldRenderer::Render");
 
-    glEnable(GL_DEPTH_TEST);
 
     glUniformMatrix4fvARB(_ploc, 1, GL_FALSE, &_pStack.top()[0][0]);
     glUniformMatrix4fvARB(_mloc, 1, GL_FALSE, &_mStack.top()[0][0]);
@@ -102,7 +102,6 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
     glEnableClientState(GL_COLOR_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 
-    glDisable(GL_DEPTH_TEST);
     PrintGLError("Postrender");
     glFlush();
 }

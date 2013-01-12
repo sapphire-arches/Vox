@@ -10,15 +10,10 @@ namespace vox {
         class World;
     }
 
-    namespace ren {
-        class WorldRenderer;
-    }
-
     namespace state {
         class Gamestate : public State {
             private:
                 vox::engine::World* _world;
-                vox::ren::WorldRenderer* _renderer;
                 int _frame;
             public:
                 Gamestate();

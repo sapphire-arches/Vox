@@ -66,9 +66,9 @@ void AddSquare(float X, float Y, float Z, Side S, std::vector<Vertex>& Verts, st
 
     int basei = Verts.size();
     for (int i = 0; i < 4; ++i) {
-        v[i].r = fabs(v[i].y / 16.0f);
+        v[i].r = 0.5f;//fabs(v[i].y / 16.0f);
         v[i].g = 1.f;//fabs(v[i].y / 16.0f);
-        v[i].b = fabs(v[i].y / 16.0f);
+        v[i].b = 0.5f;//fabs(v[i].y / 16.0f);
         v[i].nx = norm.x;
         v[i].ny = norm.y;
         v[i].nz = norm.z;
