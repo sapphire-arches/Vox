@@ -1,7 +1,5 @@
 #include "WorldRenderer.hpp"
 #include <GL/glew.h>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/core/func_trigonometric.hpp>
 #include "engine/World.hpp"
 #include "./gl/Shader.hpp"
 #include "./gl/Util.hpp"
@@ -22,7 +20,8 @@ static inline int GetInd(int X, int Y, int Z) {
 
 WorldRenderer::WorldRenderer(World& For) : 
     _for(For),
-    _basic(*(new ShaderProgram())) {
+    _basic(*(new ShaderProgram())),
+    _man(75.f, 4.f/3.f) {
     _chunks = new RenderChunk*[VIEWDIST * VIEWDIST * VIEWDIST];
 
     for (int x = 0; x < VIEWDIST; ++x) {
@@ -38,6 +37,8 @@ WorldRenderer::WorldRenderer(World& For) :
     _mloc = _basic.GetUniformLoc(m);
     _ploc = _basic.GetUniformLoc(p);
 
+    _man.SetLocations(_mloc, _ploc);
+
     glPointSize(5.0f);
     glEnable(GL_DEPTH_TEST);
 }
@@ -50,47 +51,21 @@ WorldRenderer::~WorldRenderer() {
 }
 
 void WorldRenderer::Render(vox::state::Gamestate& GS) {
-    while (!_mStack.empty()) {
-        _mStack.pop();
-    }
-    while (!_pStack.empty()) {
-        _pStack.pop();
-    }
-    glm::mat4 proj = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 200.0f);
 
-    float angle = GS.GetFrame() * 0.25f; //glm::sin(GS.GetFrame() * 0.01f) * 90 + 90;
+    float angle = GS.GetFrame() * 0.25;//glm::sin(GS.GetFrame() * 0.01f) * 90 + 90;
 //    std::cout << angle << std::endl;
-    glm::mat4 view(1.0f);
-    view = glm::translate(
-            view, 
-            glm::vec3(-0.f, -0.f, -64.f)
-            );
-    view = glm::rotate(
-            view,
-            25.f,
-            glm::vec3(1.f, 0.f, 0.f));
     
-    view = glm::rotate(
-            view,
-            angle,
-            glm::vec3(0.f, 1.f, 0.f));
-    view = glm::translate(
-            view,
-            glm::vec3(-0.f, -16.f, -0.f)
-            );
-    
-
-    _mStack.push(view);
-    _pStack.push(proj);
+    _man.Translate(0., 0., -0.f);
+    _man.Rotate(0.f, angle, 0.);
+    _man.Translate(-0., -8., 0.);
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     PrintGLError("Prerender");
     _basic.Use();
     PrintGLError("WorldRenderer::Render");
 
-
-    glUniformMatrix4fvARB(_ploc, 1, GL_FALSE, &_pStack.top()[0][0]);
-    glUniformMatrix4fvARB(_mloc, 1, GL_FALSE, &_mStack.top()[0][0]);
+    _man.SetLocations(_mloc, _ploc);
+    _man.ToGPU();
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
@@ -101,7 +76,11 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
 
     glEnableClientState(GL_COLOR_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
-
+    
     PrintGLError("Postrender");
     glFlush();
+}
+
+TransformationManager* WorldRenderer::GetTranslationManager() {
+    return &_man;
 }

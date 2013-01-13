@@ -2,6 +2,8 @@
 #define _ENGINE_ENTITY_ENTITY_H_
 
 #include "ren/Mesh.hpp"
+#include "ren/TransformationManager.hpp"
+#include "engine/phys/PhysicsObject.hpp"
 #include <glm/glm.hpp>
 
 namespace vox {
@@ -9,11 +11,8 @@ namespace vox {
         class World;
 
         namespace entity {
-            class Entity {
+            class Entity : public vox::engine::physics::PhysicsObject {
                 private:
-                    glm::vec3 _pos;
-                    glm::vec3 _vel;
-                    glm::vec3 _acc;
                     vox::ren::Mesh* _mesh;
 
                     //Don't want to copy dem entities.
@@ -24,8 +23,7 @@ namespace vox {
                     ~Entity();
 
                     virtual void Tick(const World& In);
-                    void ApplyForce(const glm::vec3& Force);
-                    virtual void Render();
+                    virtual void Render(vox::ren::TransformationManager* Manager);
             };
         }
     }

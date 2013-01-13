@@ -1,12 +1,13 @@
 #include "Entity.hpp"
-#include "ren/WorldRenderer.hpp"
+#include "ren/TransformationManager.hpp"
 #include <GL/glew.h>
+#include <iostream>
 
 using namespace vox::engine;
 using namespace vox::engine::entity;
 using namespace vox::ren;
 
-Entity::Entity(const glm::vec3& Pos) : _pos(Pos), _vel(0.f), _acc(0.f) {
+Entity::Entity(const glm::vec3& Pos) : PhysicsObject(Pos, glm::vec3(1, 2, 1), 2) {
     Vertex verts[8];
     int ind[24];
 
@@ -23,7 +24,7 @@ Entity::Entity(const glm::vec3& Pos) : _pos(Pos), _vel(0.f), _acc(0.f) {
         verts[i].r = 1.f;
         verts[i].g = 0.5f;
         verts[i].b = 0.5f;
-        verts[i].x *= 10.f; verts[i].y *= 10.f; verts[i].z *= 10.f;
+        verts[i].x *= 1.f; verts[i].y *= 2.f; verts[i].z *= 1.f;
     }
 
     ind[ 0] = 0; ind[ 1] = 1; ind[ 2] = 3; ind[ 3] = 2;
@@ -41,17 +42,12 @@ Entity::~Entity() {
 }
 
 void Entity::Tick(const World& In) {
-    _pos += _vel;
-    _vel += _acc;
-    _acc.x  = _acc.y = _acc.z = 0;
-
+    DoPhysics(In);
     //Nothing else to do here...
 }
 
-void Entity::ApplyForce(const glm::vec3& Force) {
-    _acc += Force;
-}
-
-void Entity::Render(WorldRenderer& Renderer) {
+void Entity::Render(TransformationManager* Manager) {
+    Manager->Translate(_aabb.X, _aabb.Y, _aabb.Z);
+    Manager->ToGPU();
     _mesh->Render();
 }

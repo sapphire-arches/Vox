@@ -27,5 +27,6 @@ void Gamestate::Render(App& TheApp) {
 }
 
 void Gamestate::Tick(App& TheApp) {
+    _world->Tick();
     ++_frame;
 }

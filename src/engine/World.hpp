@@ -14,6 +14,7 @@ namespace vox {
     namespace engine {
         
         typedef std::list<vox::engine::entity::Entity*> EntityList;
+        typedef EntityList::iterator EntityListIterator;
 
         class World {
             private:
