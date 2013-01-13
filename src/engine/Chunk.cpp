@@ -14,7 +14,7 @@ static inline int GetInd(int X, int Y, int Z) {
 }
 
 Chunk::Chunk(int X, int Y, int Z, WorldGenerator* Gen) {
-    std::cout << "Building chunk ("<<X<<","<<Y<<","<<Z<<")"<<std::endl;
+//    std::cout << "Building chunk ("<<X<<","<<Y<<","<<Z<<")"<<std::endl;
     _x = X;
     _y = Y;
     _z = Z;

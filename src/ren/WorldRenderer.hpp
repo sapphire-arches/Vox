@@ -22,11 +22,6 @@ namespace vox {
         }
 
         class WorldRenderer {
-            public:
-                WorldRenderer(vox::engine::World& For);
-                ~WorldRenderer();
-                void Render(vox::state::Gamestate& GS);
-                vox::ren::TransformationManager* GetTranslationManager();
             private:
                 vox::engine::World& _for;
                 vox::ren::gl::ShaderProgram& _basic;
@@ -34,6 +29,15 @@ namespace vox {
                 int _mloc;
                 int _ploc;
                 vox::ren::RenderChunk** _chunks;
+                glm::vec2 _cameraPos;
+            public:
+                WorldRenderer(vox::engine::World& For);
+                ~WorldRenderer();
+
+                void Render(vox::state::Gamestate& GS);
+
+                void SetCameraPosition(float X, float Y);
+                vox::ren::TransformationManager* GetTranslationManager();
         };
     }
 }
