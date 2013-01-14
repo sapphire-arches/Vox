@@ -17,44 +17,44 @@ enum Side {
     NEGZ
 };
 
-void AddSquare(float X, float Y, float Z, Side S, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
+static void AddSquare(float X, float Y, float Z, int Size, Side S, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
     Vertex v[4];
     switch (S) {
         case POSX:
-            v[0].x = X + 1; v[0].y = Y + 0; v[0].z = Z + 0;
-            v[1].x = X + 1; v[1].y = Y + 1; v[1].z = Z + 0;
-            v[2].x = X + 1; v[2].y = Y + 1; v[2].z = Z + 1;
-            v[3].x = X + 1; v[3].y = Y + 0; v[3].z = Z + 1;
+            v[0].x = X + Size; v[0].y = Y + 0   ; v[0].z = Z + 0;
+            v[1].x = X + Size; v[1].y = Y + Size; v[1].z = Z + 0;
+            v[2].x = X + Size; v[2].y = Y + Size; v[2].z = Z + Size;
+            v[3].x = X + Size; v[3].y = Y + 0   ; v[3].z = Z + Size;
             break;
         case POSY:
-            v[0].x = X + 0; v[0].y = Y + 1; v[0].z = Z + 0;
-            v[1].x = X + 0; v[1].y = Y + 1; v[1].z = Z + 1;
-            v[2].x = X + 1; v[2].y = Y + 1; v[2].z = Z + 1;
-            v[3].x = X + 1; v[3].y = Y + 1; v[3].z = Z + 0;
+            v[0].x = X + 0   ; v[0].y = Y + Size; v[0].z = Z + 0;
+            v[1].x = X + 0   ; v[1].y = Y + Size; v[1].z = Z + Size;
+            v[2].x = X + Size; v[2].y = Y + Size; v[2].z = Z + Size;
+            v[3].x = X + Size; v[3].y = Y + Size; v[3].z = Z + 0;
             break;
         case POSZ:
-            v[0].x = X + 1; v[0].y = Y + 0; v[0].z = Z + 1;
-            v[1].x = X + 1; v[1].y = Y + 1; v[1].z = Z + 1;
-            v[2].x = X + 0; v[2].y = Y + 1; v[2].z = Z + 1;
-            v[3].x = X + 0; v[3].y = Y + 0; v[3].z = Z + 1;
+            v[0].x = X + Size; v[0].y = Y + 0   ; v[0].z = Z + Size;
+            v[1].x = X + Size; v[1].y = Y + Size; v[1].z = Z + Size;
+            v[2].x = X + 0   ; v[2].y = Y + Size; v[2].z = Z + Size;
+            v[3].x = X + 0   ; v[3].y = Y + 0   ; v[3].z = Z + Size;
             break;
         case NEGX:
-            v[0].x = X + 0; v[0].y = Y + 0; v[0].z = Z + 1;
-            v[1].x = X + 0; v[1].y = Y + 1; v[1].z = Z + 1;
-            v[2].x = X + 0; v[2].y = Y + 1; v[2].z = Z + 0;
-            v[3].x = X + 0; v[3].y = Y + 0; v[3].z = Z + 0;
+            v[0].x = X + 0   ; v[0].y = Y + 0   ; v[0].z = Z + Size;
+            v[1].x = X + 0   ; v[1].y = Y + Size; v[1].z = Z + Size;
+            v[2].x = X + 0   ; v[2].y = Y + Size; v[2].z = Z + 0;
+            v[3].x = X + 0   ; v[3].y = Y + 0   ; v[3].z = Z + 0;
             break;
         case NEGY:
-            v[0].x = X + 1; v[0].y = Y + 0; v[0].z = Z + 0;
-            v[1].x = X + 1; v[1].y = Y + 0; v[1].z = Z + 1;
-            v[2].x = X + 0; v[2].y = Y + 0; v[2].z = Z + 1;
-            v[3].x = X + 0; v[3].y = Y + 0; v[3].z = Z + 0;
+            v[0].x = X + Size; v[0].y = Y + 0   ; v[0].z = Z + 0;
+            v[1].x = X + Size; v[1].y = Y + 0   ; v[1].z = Z + Size;
+            v[2].x = X + 0   ; v[2].y = Y + 0   ; v[2].z = Z + Size;
+            v[3].x = X + 0   ; v[3].y = Y + 0   ; v[3].z = Z + 0;
             break;
         case NEGZ:
-            v[0].x = X + 0; v[0].y = Y + 0; v[0].z = Z + 0;
-            v[1].x = X + 0; v[1].y = Y + 1; v[1].z = Z + 0;
-            v[2].x = X + 1; v[2].y = Y + 1; v[2].z = Z + 0;
-            v[3].x = X + 1; v[3].y = Y + 0; v[3].z = Z + 0;
+            v[0].x = X + 0   ; v[0].y = Y + 0   ; v[0].z = Z + 0;
+            v[1].x = X + 0   ; v[1].y = Y + Size; v[1].z = Z + 0;
+            v[2].x = X + Size; v[2].y = Y + Size; v[2].z = Z + 0;
+            v[3].x = X + Size; v[3].y = Y + 0   ; v[3].z = Z + 0;
             break;
     }
     //Calc normals.
@@ -77,25 +77,26 @@ void AddSquare(float X, float Y, float Z, Side S, std::vector<Vertex>& Verts, st
     }
 }
 
-void BuildVox(int X, int Y, int Z, World& In, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
+static void BuildVox(int X, int Y, int Z, int Size, World& In, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
     if (In(X + 1, Y, Z) == 0)
-        AddSquare(X, Y, Z,  POSX, Verts, Ind);
+        AddSquare(X, Y, Z, Size, POSX, Verts, Ind);
     if (In(X - 1, Y, Z) == 0)
-        AddSquare(X, Y, Z,  NEGX, Verts, Ind);
+        AddSquare(X, Y, Z, Size, NEGX, Verts, Ind);
     if (In(X, Y + 1, Z) == 0)
-        AddSquare(X, Y, Z,  POSY, Verts, Ind);
+        AddSquare(X, Y, Z, Size, POSY, Verts, Ind);
     if (In(X, Y - 1, Z) == 0)
-        AddSquare(X, Y, Z,  NEGY, Verts, Ind);
+        AddSquare(X, Y, Z, Size, NEGY, Verts, Ind);
     if (In(X, Y, Z + 1) == 0)
-        AddSquare(X, Y, Z,  POSZ, Verts, Ind);
+        AddSquare(X, Y, Z, Size, POSZ, Verts, Ind);
     if (In(X, Y, Z - 1) == 0)
-        AddSquare(X, Y, Z,  NEGZ, Verts, Ind);
+        AddSquare(X, Y, Z, Size, NEGZ, Verts, Ind);
 }
 
-RenderChunk::RenderChunk(int X, int Y, int Z, World& For) {
+RenderChunk::RenderChunk(int X, int Y, int Z, int LOD, World& For) {
     _x = X;
     _y = Y;
     _z = Z;
+    _lod = LOD;
 
     std::vector<Vertex> verts;
     std::vector<int>    ind;
@@ -103,17 +104,18 @@ RenderChunk::RenderChunk(int X, int Y, int Z, World& For) {
     int bx = X * CHUNK_SIZE;
     int by = Y * CHUNK_SIZE;
     int bz = Z * CHUNK_SIZE;
-    for (int x = 0; x < CHUNK_SIZE; ++x) {
+    int itr = CHUNK_SIZE / _lod;
+    for (int x = 0; x < CHUNK_SIZE; x += itr) {
         //Global x
         int gx = x + bx;
-        for (int y = 0; y < CHUNK_SIZE; ++y) {
+        for (int y = 0; y < CHUNK_SIZE; y += itr) {
             //Global y
             int gy = y + by;
-            for (int z = 0; z < CHUNK_SIZE; ++z) {
+            for (int z = 0; z < CHUNK_SIZE; z += itr) {
                 //Global Z
                 int gz = z + bz;
                 if (For(gx, gy, gz) != 0)
-                    BuildVox(gx, gy, gz, For, verts, ind);
+                    BuildVox(gx, gy, gz, itr, For, verts, ind);
             }
         }
     }

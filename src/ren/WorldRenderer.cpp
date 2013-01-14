@@ -5,6 +5,7 @@
 #include "./gl/Shader.hpp"
 #include "./gl/Util.hpp"
 #include <cstring>
+#include <list>
 
 #include <iostream>
 
@@ -56,8 +57,20 @@ WorldRenderer::~WorldRenderer() {
     delete[] _chunks;
 }
 
-void WorldRenderer::Render(vox::state::Gamestate& GS) {
+static inline int ManhatanDistance(int x1, int y1, int z1, int x2, int y2, int z2) {
+    return
+        abs(x1 - x2) +
+        abs(y1 - y2) +
+        abs(z1 - z2);
+}
 
+static int Floor (float F) {
+    if (F < 0)
+        return (int)F -1;
+    return (int)F;
+}
+
+void WorldRenderer::Render(vox::state::Gamestate& GS) {
     float angle = GS.GetFrame() * 0.25;//glm::sin(GS.GetFrame() * 0.01f) * 90 + 90;
 //    std::cout << angle << std::endl;
    
@@ -84,16 +97,39 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
                 int cx = x + int(_cameraPos.x / CHUNK_SIZE) - HALFDIST;
                 int cy = y - HALFDIST;
                 int cz = z + int(_cameraPos.y / CHUNK_SIZE) - HALFDIST;
+                int magic = ManhatanDistance(x, y, z, HALFDIST, HALFDIST, HALFDIST) - 5;
+                if (magic < 0)
+                    magic = 0;
+                int lod = CHUNK_SIZE >> magic;
+                if (lod == 0)
+                    lod = 1;
                 int ind = GetInd(cx, cy, cz);
                 RenderChunk* curr = _chunks[ind];
                 if (curr == NULL) {
-                    curr = new RenderChunk(cx, cy, cz, _for);
-                    _chunks[ind] = curr;
-                }
-                if ((curr->GetX() != cx || curr->GetY() != cy || curr->GetZ() != cz)) {
+                    ToBuildChunk temp;
+                    temp.X = cx;
+                    temp.Y = cy;
+                    temp.Z = cz;
+                    temp.LOD = lod;
+                    temp.Ind = ind;
+                    temp.Parent = this;
+                    _toBuild.insert(temp);
+                    curr = NULL;
+                } else if (
+                        curr->GetLOD() != lod ||
+                        curr->GetX() != cx ||
+                        curr->GetY() != cy ||
+                        curr->GetZ() != cz) {
+                    ToBuildChunk temp;
+                    temp.X = cx;
+                    temp.Y = cy;
+                    temp.Z = cz;
+                    temp.LOD = lod;
+                    temp.Ind = ind;
+                    temp.Parent = this;
+                    _toBuild.insert(temp);
                     delete curr;
-                    curr = new RenderChunk(cx, cy, cz, _for);
-                    _chunks[ind] = curr;
+                    _chunks[ind] = curr = NULL;
                 }
                 if (curr != NULL)
                     curr->Render();
@@ -105,8 +141,19 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
             }
         }
     }
-    _cameraPos.x += 0.1;
 bail:
+    _cameraPos.x += 0.1;
+    //XXX: Replace weird findmin with a call to sort.
+    if (!_toBuild.empty()) {
+        ToBuildSet::iterator it = _toBuild.begin();
+        while (elapsed < 8000 && it != _toBuild.end()) {
+            ToBuildChunk c = *it;
+            _toBuild.erase(it);
+            ++it;
+            _chunks[c.Ind] = new RenderChunk(c.X, c.Y, c.Z, c.LOD, _for);
+            elapsed = vox::platform::CurrentTime() - stime;
+        }
+    }
 
     glEnableClientState(GL_COLOR_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -117,4 +164,18 @@ bail:
 
 TransformationManager* WorldRenderer::GetTranslationManager() {
     return &_man;
+}
+
+//----------------------------------
+//      ToBuildChunk Members.
+//----------------------------------
+
+bool ToBuildChunk::operator< (const ToBuildChunk& Other) const {
+    //Positions must be in chunk coords.
+    float camx = Parent->_cameraPos.x / CHUNK_SIZE;
+    float camy = 1;
+    float camz = Parent->_cameraPos.y / CHUNK_SIZE;
+
+    return ManhatanDistance(X, Y, Z, camx, camy, camz) <
+        ManhatanDistance(Other.X, Other.Y, Other.Z, camx, camy, camz);
 }

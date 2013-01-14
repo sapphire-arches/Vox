@@ -2,6 +2,7 @@
 #define _REN_WORLD_RENDERER_H_INCLUDED_
 
 #include <stack>
+#include <set>
 #include <boost/static_assert.hpp>
 #include <glm/glm.hpp>
 
@@ -21,6 +22,24 @@ namespace vox {
             class ShaderProgram;
         }
 
+        struct ToBuildChunk {
+            int X, Y, Z, LOD, Ind;
+            WorldRenderer* Parent;
+
+            bool operator= (const ToBuildChunk& Other) const{
+                return 
+                    X == Other.X &&
+                    Y == Other.Y &&
+                    Z == Other.Z &&
+                    LOD == Other.LOD &&
+                    Ind == Other.Ind;
+            }
+
+            bool operator< (const ToBuildChunk& Other) const;
+        };
+
+        typedef std::set<ToBuildChunk> ToBuildSet;
+
         class WorldRenderer {
             private:
                 vox::engine::World& _for;
@@ -30,6 +49,8 @@ namespace vox {
                 int _ploc;
                 vox::ren::RenderChunk** _chunks;
                 glm::vec2 _cameraPos;
+                ToBuildSet _toBuild;
+                friend ToBuildChunk;
             public:
                 WorldRenderer(vox::engine::World& For);
                 ~WorldRenderer();
