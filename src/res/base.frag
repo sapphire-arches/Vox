@@ -5,8 +5,8 @@ varying vec3 pos;
 #define MAX (1. - MIN)
 #
 #define FOG_START 10.
-#define FOG_END 100.
-
+#define FOG_END 75.
+#
 bool inrange(float f) {
     return f < MIN || f > MAX;
 }
