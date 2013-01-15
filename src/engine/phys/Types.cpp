@@ -24,9 +24,9 @@ bool AABB::IntersectsWorld(const vox::engine::World& W) const {
     int ymax = Floor(Y + Height);
     int zmax = Floor(Z + Depth);
 
-    for (int x = xmin; x < xmax; ++x) {
-        for (int y = ymin; y < ymax; ++y) {
-            for (int z = zmin; z < zmax; ++z) {
+    for (int x = xmin; x <= xmax; ++x) {
+        for (int y = ymin; y <= ymax; ++y) {
+            for (int z = zmin; z <= zmax; ++z) {
                 if (W(x, y, z) != 0)
                     return true;
             }
