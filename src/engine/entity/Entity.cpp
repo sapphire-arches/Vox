@@ -48,8 +48,9 @@ void Entity::Tick(const World& In) {
     //Nothing else to do here...
 }
 
-void Entity::Render(TransformationManager* Manager) {
+void Entity::Render(TransformationManager* Manager) const {
     Manager->Translate(_aabb.X, _aabb.Y, _aabb.Z);
+    Manager->Rotate(0, _yaw, 0);
     Manager->ToGPU();
     _mesh->Render();
 }

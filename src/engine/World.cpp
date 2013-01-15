@@ -100,6 +100,8 @@ void World::Tick() {
         ++it;
     }
 
+    _cam.Tick(*this);
+
     for (EntityListIterator en1 = _ents.begin();
             en1 != _ents.end();
             ++en1) {
@@ -119,19 +121,38 @@ void World::Tick() {
     Entity& player = _cam.GetEnt();
 
     const float MoveSpeed = 0.01;
+
+    float camYaw = _cam.GetDirection().x;
+    camYaw = glm::radians(camYaw);
+
+    float xDir = 0;
+    float yDir = 0;
+    float zDir = 0;
     if (keys[SDLK_w]) {
-        player.ApplyForce(vec3(MoveSpeed, 0, 0));
+        xDir -= glm::sin(camYaw);
+        zDir -= glm::cos(camYaw);
     }
     if (keys[SDLK_s]) {
-        player.ApplyForce(vec3(-MoveSpeed, 0, 0));
+        xDir += glm::sin(camYaw);
+        zDir += glm::cos(camYaw);
     }
     if (keys[SDLK_d]) {
-        player.ApplyForce(vec3(0, 0, MoveSpeed));
+        xDir += glm::sin(camYaw + glm::radians(90.f));
+        zDir += glm::cos(camYaw + glm::radians(90.f));
     }
     if (keys[SDLK_a]) {
-        player.ApplyForce(vec3(0, 0, -MoveSpeed));
+        xDir -= glm::sin(camYaw + glm::radians(90.f));
+        zDir -= glm::cos(camYaw + glm::radians(90.f));
     }
     if (keys[SDLK_SPACE] && player.IsOnGround()) {
         player.ApplyForce(vec3(0, 0.1, 0));
     }
+    if (xDir * xDir + zDir * zDir > MoveSpeed * MoveSpeed) {
+        float len = glm::sqrt(xDir * xDir + zDir * zDir);
+        float fac = 1 / len * MoveSpeed;
+        xDir *= fac;
+        zDir *= fac;
+    }
+    player.ApplyForce(glm::vec3(xDir, yDir, zDir));
+    player._yaw = glm::degrees(camYaw);
 }

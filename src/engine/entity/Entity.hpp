@@ -23,7 +23,9 @@ namespace vox {
                     ~Entity();
 
                     virtual void Tick(const World& In);
-                    virtual void Render(vox::ren::TransformationManager* Manager);
+                    virtual void Render(vox::ren::TransformationManager* Manager) const;
+
+                    float _yaw;
             };
         }
     }
