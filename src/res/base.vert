@@ -11,4 +11,5 @@ void main(void) {
     barycentric = gl_Vertex.xyz - floor(gl_Vertex.xyz);
     pos = gl_Vertex.xyz;
     gl_FrontColor = gl_Color;
+    gl_FogFragCoord = gl_Position.z;
 }

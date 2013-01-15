@@ -9,13 +9,15 @@ namespace vox {
         class RenderChunk {
             private:
                 int _x, _y, _z;
+                int _lod;
                 vox::ren::Mesh* _mesh;
             public:
-                RenderChunk(int X, int Y, int Z, const vox::engine::World& For);
+                RenderChunk(int X, int Y, int Z, int LOD, vox::engine::World& For);
                 ~RenderChunk();
 
                 inline void Render() {
-                    _mesh->Render();
+                    if (_mesh)
+                        _mesh->Render();
                 }
 
                 inline int GetX() {
@@ -28,6 +30,10 @@ namespace vox {
 
                 inline int GetZ() {
                     return _z;
+                }
+                
+                inline int GetLOD() {
+                    return _lod;
                 }
         };
     }

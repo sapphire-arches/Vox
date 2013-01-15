@@ -19,8 +19,11 @@ namespace vox {
 
                 void Render();
             private:
-                int _iboID;
-                int _vboID;
+                //Do not allow copying.
+                Mesh (const Mesh& Other);
+                Mesh& operator= (const Mesh& Other);
+                unsigned int _iboID;
+                unsigned int _vboID;
                 int _vcount;
                 int _drawMode;
         };

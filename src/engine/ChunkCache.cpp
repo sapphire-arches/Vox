@@ -3,7 +3,7 @@
 
 using namespace vox::engine;
 
-ChunkCache::ChunkCache() {
+ChunkCache::ChunkCache() : _gen(new WorldGenerator(100)) {
     _chunks = new Chunk*[CHUNK_CACHE_SIZE_CUBED];
     for (int i = 0; i < CHUNK_CACHE_SIZE_CUBED; ++i)
         _chunks[i] = NULL;
@@ -15,6 +15,7 @@ ChunkCache::~ChunkCache() {
             delete _chunks[i];
     }
     delete[] _chunks;
+    delete _gen;
 }
 
 static inline int Ind(int CX, int CY, int CZ) {
@@ -39,7 +40,7 @@ Chunk& ChunkCache::Get(int CX, int CY, int CZ) {
             || tr->GetZ() != CZ) {
         if (tr != NULL)
             delete tr;
-        tr = new Chunk(CX, CY, CZ);
+        tr = new Chunk(CX, CY, CZ, _gen);
         _chunks[ind] = tr;
     }
     return *tr;
@@ -63,7 +64,7 @@ Chunk ChunkCache::Get(int CX, int CY, int CZ) const {
             || tr->GetZ() != CZ) {
         if (tr != NULL)
             delete tr;
-        tr = new Chunk(CX, CY, CZ);
+        tr = new Chunk(CX, CY, CZ, _gen);
         _chunks[ind] = tr;
     }
     return *tr;

@@ -17,51 +17,46 @@ enum Side {
     NEGZ
 };
 
-void AddSquare(float X, float Y, float Z, Side S, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
+static void AddSquare(float X, float Y, float Z, int Size, Side S, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
     Vertex v[4];
     switch (S) {
         case POSX:
-            v[0].x = X + 1; v[0].y = Y + 0; v[0].z = Z + 0;
-            v[1].x = X + 1; v[1].y = Y + 1; v[1].z = Z + 0;
-            v[2].x = X + 1; v[2].y = Y + 1; v[2].z = Z + 1;
-            v[3].x = X + 1; v[3].y = Y + 0; v[3].z = Z + 1;
+            v[0].x = X + Size; v[0].y = Y + 0   ; v[0].z = Z + 0;
+            v[1].x = X + Size; v[1].y = Y + Size; v[1].z = Z + 0;
+            v[2].x = X + Size; v[2].y = Y + Size; v[2].z = Z + Size;
+            v[3].x = X + Size; v[3].y = Y + 0   ; v[3].z = Z + Size;
             break;
         case POSY:
-            v[0].x = X + 0; v[0].y = Y + 1; v[0].z = Z + 0;
-            v[1].x = X + 0; v[1].y = Y + 1; v[1].z = Z + 1;
-            v[2].x = X + 1; v[2].y = Y + 1; v[2].z = Z + 1;
-            v[3].x = X + 1; v[3].y = Y + 1; v[3].z = Z + 0;
+            v[0].x = X + 0   ; v[0].y = Y + Size; v[0].z = Z + 0;
+            v[1].x = X + 0   ; v[1].y = Y + Size; v[1].z = Z + Size;
+            v[2].x = X + Size; v[2].y = Y + Size; v[2].z = Z + Size;
+            v[3].x = X + Size; v[3].y = Y + Size; v[3].z = Z + 0;
             break;
         case POSZ:
-            v[0].x = X + 1; v[0].y = Y + 0; v[0].z = Z + 1;
-            v[1].x = X + 1; v[1].y = Y + 1; v[1].z = Z + 1;
-            v[2].x = X + 0; v[2].y = Y + 1; v[2].z = Z + 1;
-            v[3].x = X + 0; v[3].y = Y + 0; v[3].z = Z + 1;
+            v[0].x = X + Size; v[0].y = Y + 0   ; v[0].z = Z + Size;
+            v[1].x = X + Size; v[1].y = Y + Size; v[1].z = Z + Size;
+            v[2].x = X + 0   ; v[2].y = Y + Size; v[2].z = Z + Size;
+            v[3].x = X + 0   ; v[3].y = Y + 0   ; v[3].z = Z + Size;
             break;
         case NEGX:
-            v[0].x = X + 0; v[0].y = Y + 0; v[0].z = Z + 1;
-            v[1].x = X + 0; v[1].y = Y + 1; v[1].z = Z + 1;
-            v[2].x = X + 0; v[2].y = Y + 1; v[2].z = Z + 0;
-            v[3].x = X + 0; v[3].y = Y + 0; v[3].z = Z + 0;
+            v[0].x = X + 0   ; v[0].y = Y + 0   ; v[0].z = Z + Size;
+            v[1].x = X + 0   ; v[1].y = Y + Size; v[1].z = Z + Size;
+            v[2].x = X + 0   ; v[2].y = Y + Size; v[2].z = Z + 0;
+            v[3].x = X + 0   ; v[3].y = Y + 0   ; v[3].z = Z + 0;
             break;
         case NEGY:
-            v[0].x = X + 1; v[0].y = Y + 0; v[0].z = Z + 0;
-            v[1].x = X + 1; v[1].y = Y + 0; v[1].z = Z + 1;
-            v[2].x = X + 0; v[2].y = Y + 0; v[2].z = Z + 1;
-            v[3].x = X + 0; v[3].y = Y + 0; v[3].z = Z + 0;
+            v[0].x = X + Size; v[0].y = Y + 0   ; v[0].z = Z + 0;
+            v[1].x = X + Size; v[1].y = Y + 0   ; v[1].z = Z + Size;
+            v[2].x = X + 0   ; v[2].y = Y + 0   ; v[2].z = Z + Size;
+            v[3].x = X + 0   ; v[3].y = Y + 0   ; v[3].z = Z + 0;
             break;
         case NEGZ:
-            v[0].x = X + 0; v[0].y = Y + 0; v[0].z = Z + 0;
-            v[1].x = X + 0; v[1].y = Y + 1; v[1].z = Z + 0;
-            v[2].x = X + 1; v[2].y = Y + 1; v[2].z = Z + 0;
-            v[3].x = X + 1; v[3].y = Y + 0; v[3].z = Z + 0;
+            v[0].x = X + 0   ; v[0].y = Y + 0   ; v[0].z = Z + 0;
+            v[1].x = X + 0   ; v[1].y = Y + Size; v[1].z = Z + 0;
+            v[2].x = X + Size; v[2].y = Y + Size; v[2].z = Z + 0;
+            v[3].x = X + Size; v[3].y = Y + 0   ; v[3].z = Z + 0;
             break;
     }
-    v[0].r = v[0].x / 16.0f; v[0].g = v[0].y / 16.0f; v[0].b = v[0].z / 16.0f;
-    v[1].r = v[1].x / 16.1f; v[1].g = v[1].y / 16.1f; v[1].b = v[1].z / 16.1f;
-    v[2].r = v[2].x / 16.2f; v[2].g = v[2].y / 16.2f; v[2].b = v[2].z / 16.2f;
-    v[3].r = v[3].x / 16.3f; v[3].g = v[3].y / 16.3f; v[3].b = v[3].z / 16.3f;
-
     //Calc normals.
     glm::vec3 a(v[0].x , v[0].y, v[0].z);
     glm::vec3 b(v[1].x , v[1].y, v[1].z);
@@ -71,6 +66,9 @@ void AddSquare(float X, float Y, float Z, Side S, std::vector<Vertex>& Verts, st
 
     int basei = Verts.size();
     for (int i = 0; i < 4; ++i) {
+        v[i].r = 0.5f;//fabs(v[i].y / 16.0f);
+        v[i].g = 1.f;//fabs(v[i].y / 16.0f);
+        v[i].b = 0.5f;//fabs(v[i].y / 16.0f);
         v[i].nx = norm.x;
         v[i].ny = norm.y;
         v[i].nz = norm.z;
@@ -79,25 +77,28 @@ void AddSquare(float X, float Y, float Z, Side S, std::vector<Vertex>& Verts, st
     }
 }
 
-void BuildVox(int X, int Y, int Z, const World& In, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
-    if (In(X + 1, Y, Z) == 0)
-        AddSquare(X, Y, Z,  POSX, Verts, Ind);
-    if (In(X - 1, Y, Z) == 0)
-        AddSquare(X, Y, Z,  NEGX, Verts, Ind);
-    if (In(X, Y + 1, Z) == 0)
-        AddSquare(X, Y, Z,  POSY, Verts, Ind);
-    if (In(X, Y - 1, Z) == 0)
-        AddSquare(X, Y, Z,  NEGY, Verts, Ind);
-    if (In(X, Y, Z + 1) == 0)
-        AddSquare(X, Y, Z,  POSZ, Verts, Ind);
-    if (In(X, Y, Z - 1) == 0)
-        AddSquare(X, Y, Z,  NEGZ, Verts, Ind);
+static void BuildVox(int X, int Y, int Z, int Size, World& In, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
+    if (Size <= 7) {
+        if (In(X + Size, Y, Z) == 0)
+            AddSquare(X, Y, Z, Size, POSX, Verts, Ind);
+        if (In(X - Size, Y, Z) == 0)
+            AddSquare(X, Y, Z, Size, NEGX, Verts, Ind);
+        if (In(X, Y + Size, Z) == 0)
+            AddSquare(X, Y, Z, Size, POSY, Verts, Ind);
+        if (In(X, Y - Size, Z) == 0)
+            AddSquare(X, Y, Z, Size, NEGY, Verts, Ind);
+        if (In(X, Y, Z + Size) == 0)
+            AddSquare(X, Y, Z, Size, POSZ, Verts, Ind);
+        if (In(X, Y, Z - Size) == 0)
+            AddSquare(X, Y, Z, Size, NEGZ, Verts, Ind);
+    }
 }
 
-RenderChunk::RenderChunk(int X, int Y, int Z, const World& For) {
+RenderChunk::RenderChunk(int X, int Y, int Z, int LOD, World& For) {
     _x = X;
     _y = Y;
     _z = Z;
+    _lod = LOD;
 
     std::vector<Vertex> verts;
     std::vector<int>    ind;
@@ -105,22 +106,26 @@ RenderChunk::RenderChunk(int X, int Y, int Z, const World& For) {
     int bx = X * CHUNK_SIZE;
     int by = Y * CHUNK_SIZE;
     int bz = Z * CHUNK_SIZE;
-    for (int x = 0; x < CHUNK_SIZE; ++x) {
+    int itr = CHUNK_SIZE / _lod;
+    for (int x = 0; x < CHUNK_SIZE; x += itr) {
         //Global x
         int gx = x + bx;
-        for (int y = 0; y < CHUNK_SIZE; ++y) {
+        for (int y = 0; y < CHUNK_SIZE; y += itr) {
             //Global y
             int gy = y + by;
-            for (int z = 0; z < CHUNK_SIZE; ++z) {
+            for (int z = 0; z < CHUNK_SIZE; z += itr) {
                 //Global Z
                 int gz = z + bz;
                 if (For(gx, gy, gz) != 0)
-                    BuildVox(gx, gy, gz, For, verts, ind);
+                    BuildVox(gx, gy, gz, itr, For, verts, ind);
             }
         }
     }
 
-    _mesh = new Mesh(&ind[0], ind.size(), &verts[0], verts.size(), GL_QUADS);
+    if (ind.size() > 0)
+        _mesh = new Mesh(&ind[0], ind.size(), &verts[0], verts.size(), GL_QUADS);
+    else
+        _mesh = NULL;
 }
 
 RenderChunk::~RenderChunk() {

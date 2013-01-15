@@ -31,7 +31,9 @@ Mesh::Mesh (int *Indicies, int IndLen, Vertex* Verts, int VertLen, int DrawMode)
 }
 
 Mesh::~Mesh() {
-    //TODO: Figure out how to do memory managment for the buffers
+    unsigned int temp[2] = {_iboID, _vboID};
+    glDeleteBuffersARB(2, reinterpret_cast<GLuint*>(temp));
+    std::cout << "Deleted mesh with " << _vcount << " verts." << std::endl;
 }
 
 void Mesh::Render() {
