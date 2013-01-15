@@ -78,20 +78,18 @@ static void AddSquare(float X, float Y, float Z, int Size, Side S, std::vector<V
 }
 
 static void BuildVox(int X, int Y, int Z, int Size, World& In, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
-    if (Size <= 7) {
-        if (In(X + Size, Y, Z) == 0)
-            AddSquare(X, Y, Z, Size, POSX, Verts, Ind);
-        if (In(X - Size, Y, Z) == 0)
-            AddSquare(X, Y, Z, Size, NEGX, Verts, Ind);
-        if (In(X, Y + Size, Z) == 0)
-            AddSquare(X, Y, Z, Size, POSY, Verts, Ind);
-        if (In(X, Y - Size, Z) == 0)
-            AddSquare(X, Y, Z, Size, NEGY, Verts, Ind);
-        if (In(X, Y, Z + Size) == 0)
-            AddSquare(X, Y, Z, Size, POSZ, Verts, Ind);
-        if (In(X, Y, Z - Size) == 0)
-            AddSquare(X, Y, Z, Size, NEGZ, Verts, Ind);
-    }
+    if (In(X + Size, Y, Z) == 0)
+        AddSquare(X, Y, Z, Size, POSX, Verts, Ind);
+    if (In(X - Size, Y, Z) == 0)
+        AddSquare(X, Y, Z, Size, NEGX, Verts, Ind);
+    if (In(X, Y + Size, Z) == 0)
+        AddSquare(X, Y, Z, Size, POSY, Verts, Ind);
+    if (In(X, Y - Size, Z) == 0)
+        AddSquare(X, Y, Z, Size, NEGY, Verts, Ind);
+    if (In(X, Y, Z + Size) == 0)
+        AddSquare(X, Y, Z, Size, POSZ, Verts, Ind);
+    if (In(X, Y, Z - Size) == 0)
+        AddSquare(X, Y, Z, Size, NEGZ, Verts, Ind);
 }
 
 RenderChunk::RenderChunk(int X, int Y, int Z, int LOD, World& For) {

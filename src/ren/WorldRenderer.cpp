@@ -128,27 +128,33 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
                     temp.Ind = ind;
                     temp.Parent = this;
                     _toBuild.insert(temp);
-                    delete curr;
-                    _chunks[ind] = curr = NULL;
                 }
                 if (curr != NULL)
                     curr->Render();
                 elapsed = vox::platform::CurrentTime() - stime;
                 //8ms
+#ifndef VALGRIND
                 if (elapsed > 8000) {
                     goto bail;
                 }
+#endif
             }
         }
     }
 bail:
-    //XXX: Replace weird findmin with a call to sort.
+    //XXX:This prevents valgrind from letting me profile the game. To slow...
     if (!_toBuild.empty()) {
         ToBuildSet::iterator it = _toBuild.begin();
-        while (elapsed < 8000 && it != _toBuild.end()) {
+        while (
+#ifndef VALGRIND
+                elapsed < 8000 &&
+#endif
+                it != _toBuild.end()) {
             ToBuildChunk c = *it;
             _toBuild.erase(it);
             ++it;
+            delete _chunks[c.Ind];
+            _chunks[c.Ind] = NULL;
             _chunks[c.Ind] = new RenderChunk(c.X, c.Y, c.Z, c.LOD, _for);
             elapsed = vox::platform::CurrentTime() - stime;
         }

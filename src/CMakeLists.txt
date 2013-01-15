@@ -5,15 +5,22 @@ if (${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
 endif()
 
 option(PROFILE "Profile the app." FALSE)
+option(VALGRIND "Removes any time limmiters so Valgrind can run." FALSE)
 
 project(vox)
 
 add_definitions(${CMAKE_CXX_FLAGS_DEBUG} "-g")
 add_definitions(${CMAKE_CXX_FLAGS_DEBUG} "-Wall")
+
 if (PROFILE)
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
     set (CMAKE_EXE_FLAGS "${CMAKE_EXE_FLAGS} -pg")
 endif()
+
+if (VALGRIND)
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVALGRIND")
+endif()
+
 set (EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set (LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
