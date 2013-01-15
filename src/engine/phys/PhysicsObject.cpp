@@ -43,7 +43,11 @@ void PhysicsObject::DoPhysics(const World& In) {
     _aabb.Y += _vel.y;
     if (_aabb.IntersectsWorld(In)) {
         _aabb.Y -= _vel.y;
+        if (_vel.y <= 0.001)
+            _onground = true;
         _vel.y = 0;
+    } else {
+        _onground = false;
     }
 
     _aabb.Z += _vel.z;

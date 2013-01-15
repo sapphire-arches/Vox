@@ -131,4 +131,7 @@ void World::Tick() {
     if (keys[SDLK_a]) {
         player.ApplyForce(vec3(0, 0, -MoveSpeed));
     }
+    if (keys[SDLK_SPACE] && player.IsOnGround()) {
+        player.ApplyForce(vec3(0, 0.1, 0));
+    }
 }
