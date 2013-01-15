@@ -34,7 +34,7 @@ WorldRenderer::WorldRenderer(World& For) :
     _for(For),
     _basic(*(new ShaderProgram())),
     _man(75.f, 4.f/3.f),
-    _cameraPos(0, 10) {
+    _cameraPos(0, 24, 0) {
     _chunks = new RenderChunk*[VIEWDIST * VIEWDIST * VIEWDIST];
 
     memset(_chunks, NULL, VIEWDIST * VIEWDIST * VIEWDIST * sizeof(RenderChunk*));
@@ -75,8 +75,8 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
 //    std::cout << angle << std::endl;
    
 //    _cameraPos.x = GS.GetFrame() / 16.f;
-    _man.Rotate(30.f, 0., 0.);
-    _man.Translate(-_cameraPos.x, -24., -_cameraPos.y);
+    _man.Rotate(-_pitch, -_yaw, -_roll);
+    _man.Translate(-_cameraPos.x, -_cameraPos.y, -_cameraPos.z);
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     PrintGLError("Prerender");
@@ -95,8 +95,8 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
         for (int y = 0; y < VIEWDIST; ++y) {
             for (int z = 0; z < VIEWDIST; ++z) {
                 int cx = x + int(_cameraPos.x / CHUNK_SIZE) - HALFDIST;
-                int cy = y - HALFDIST;
-                int cz = z + int(_cameraPos.y / CHUNK_SIZE) - HALFDIST;
+                int cy = y + int(_cameraPos.y / CHUNK_SIZE) - HALFDIST;
+                int cz = z + int(_cameraPos.z / CHUNK_SIZE) - HALFDIST;
                 int magic = ManhatanDistance(x, y, z, HALFDIST, HALFDIST, HALFDIST) - 5;
                 if (magic < 0)
                     magic = 0;
@@ -142,7 +142,6 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
         }
     }
 bail:
-    _cameraPos.x += 0.1;
     //XXX: Replace weird findmin with a call to sort.
     if (!_toBuild.empty()) {
         ToBuildSet::iterator it = _toBuild.begin();
@@ -164,6 +163,16 @@ bail:
 
 TransformationManager* WorldRenderer::GetTranslationManager() {
     return &_man;
+}
+
+void WorldRenderer::SetCameraPosition(glm::vec3 Vec) {
+    _cameraPos = Vec;
+}
+
+void WorldRenderer::SetCameraDirection(float Yaw, float Pitch, float Roll) {
+    _yaw = Yaw;
+    _pitch = Pitch;
+    _roll = Roll;
 }
 
 //----------------------------------

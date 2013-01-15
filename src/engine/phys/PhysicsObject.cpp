@@ -52,6 +52,9 @@ void PhysicsObject::DoPhysics(const World& In) {
         _vel.z = 0;
     }
 
+    //Friction.
+    _vel.x = _vel.x * 0.9f;
+    _vel.z = _vel.z * 0.9f;
     _acc.x  = _acc.y = _acc.z = 0;
 }
 
@@ -77,10 +80,14 @@ void PhysicsObject::ResolveCollision(PhysicsObject& Other) {
     Other._acc = glm::vec3(0.f);
 }
 
-float PhysicsObject::GetMass() {
+float PhysicsObject::GetMass() const {
     return _mass;
 }
 
-bool PhysicsObject::IsOnGround() {
+bool PhysicsObject::IsOnGround() const {
     return _onground;
+}
+
+glm::vec3 PhysicsObject::GetPosition() const {
+    return glm::vec3(_aabb.X, _aabb.Y, _aabb.Z);
 }

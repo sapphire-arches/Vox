@@ -24,8 +24,10 @@ namespace vox {
                     void ApplyForce(const glm::vec3& Force);
                     void ResolveCollision(PhysicsObject& Other);
                     
-                    float GetMass();
-                    bool IsOnGround();
+                    float GetMass() const;
+                    bool IsOnGround() const;
+
+                    glm::vec3 GetPosition() const;
 
                     inline bool Intersects(PhysicsObject Other) {
                         return _aabb.Intersects(Other._aabb);

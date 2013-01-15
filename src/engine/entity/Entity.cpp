@@ -7,7 +7,9 @@ using namespace vox::engine;
 using namespace vox::engine::entity;
 using namespace vox::ren;
 
-Entity::Entity(const glm::vec3& Pos) : PhysicsObject(Pos, glm::vec3(1, 2, 1), 2) {
+using glm::vec3;
+
+Entity::Entity(const vec3& Pos, const vec3& Size) : PhysicsObject(Pos, Size, Size.x * Size.y * Size.z) {
     Vertex verts[8];
     int ind[24];
 

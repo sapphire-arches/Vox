@@ -48,16 +48,19 @@ namespace vox {
                 int _mloc;
                 int _ploc;
                 vox::ren::RenderChunk** _chunks;
-                glm::vec2 _cameraPos;
+                glm::vec3 _cameraPos;
                 ToBuildSet _toBuild;
                 friend ToBuildChunk;
+                float _yaw, _pitch, _roll;
             public:
                 WorldRenderer(vox::engine::World& For);
                 ~WorldRenderer();
 
                 void Render(vox::state::Gamestate& GS);
 
-                void SetCameraPosition(float X, float Y);
+                void SetCameraPosition(float X, float Y, float Z);
+                void SetCameraPosition(glm::vec3 Vec);
+                void SetCameraDirection(float Yaw, float Pitch, float Roll);
                 vox::ren::TransformationManager* GetTranslationManager();
         };
     }

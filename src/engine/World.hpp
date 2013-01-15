@@ -4,6 +4,7 @@
 #include "ChunkCache.hpp"
 #include <list>
 #include "engine/entity/Entity.hpp"
+#include "engine/entity/Camera.hpp"
 #include "state/GameState.hpp"
 
 namespace vox {
@@ -21,6 +22,7 @@ namespace vox {
                 ChunkCache _cache;
                 EntityList _ents;
                 vox::ren::WorldRenderer* _ren;
+                vox::engine::entity::Camera _cam;
 
                 //No copypasta
                 World(const World& Other);

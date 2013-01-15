@@ -19,7 +19,7 @@ namespace vox {
                     Entity(const Entity& Other);
                     Entity& operator= (const Entity& Other);
                 public:
-                    Entity(const glm::vec3& Pos);
+                    Entity(const glm::vec3& Pos, const glm::vec3& Size);
                     ~Entity();
 
                     virtual void Tick(const World& In);

@@ -5,6 +5,7 @@ add_library(engine
     Chunk
     ChunkCache
     entity/Entity
+    entity/Camera
     phys/PhysicsObject
     phys/Types
     )
