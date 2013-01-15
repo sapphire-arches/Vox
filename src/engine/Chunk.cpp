@@ -21,7 +21,7 @@ Chunk::Chunk(int X, int Y, int Z, WorldGenerator* Gen) {
     _data = new int [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
     //We shouldn't need this because of the next loop.
     //memset(_data, 0, sizeof(int) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
-    
+ 
     int bx = X * CHUNK_SIZE;
     int by = Y * CHUNK_SIZE;
     int bz = Z * CHUNK_SIZE;

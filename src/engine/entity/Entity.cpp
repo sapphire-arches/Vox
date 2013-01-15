@@ -50,7 +50,7 @@ void Entity::Tick(const World& In) {
 
 void Entity::Render(TransformationManager* Manager) const {
     Manager->Translate(_aabb.X, _aabb.Y, _aabb.Z);
-    Manager->Rotate(0, _yaw, 0);
+    Manager->Rotate(0, 0, 0);
     Manager->ToGPU();
     _mesh->Render();
 }

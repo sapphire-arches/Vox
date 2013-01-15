@@ -63,13 +63,13 @@ static inline int ManhatanDistance(int x1, int y1, int z1, int x2, int y2, int z
         abs(y1 - y2) +
         abs(z1 - z2);
 }
-
-static int Floor (float F) {
-    if (F < 0)
-        return (int)F -1;
-    return (int)F;
-}
-
+//
+//static int Floor (float F) {
+//    if (F < 0)
+//        return (int)F -1;
+//    return (int)F;
+//}
+//
 void WorldRenderer::Render(vox::state::Gamestate& GS) {
     float angle = GS.GetFrame() * 0.25;//glm::sin(GS.GetFrame() * 0.01f) * 90 + 90;
 //    std::cout << angle << std::endl;
@@ -151,7 +151,7 @@ bail:
 #endif
                 it != _toBuild.end()) {
             ToBuildChunk c = *it;
-            _toBuild.erase(it);
+            _toBuild.erase(ToBuildSet::iterator(it));
             ++it;
             delete _chunks[c.Ind];
             _chunks[c.Ind] = NULL;
