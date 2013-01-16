@@ -2,6 +2,8 @@
 #define _STATE_GAMESTATE_H_
 
 #include "State.hpp"
+#include "ren/RenderManager.hpp"
+#include "ren/hud/HUD.hpp"
 
 namespace vox {
     class App;
@@ -14,6 +16,9 @@ namespace vox {
         class Gamestate : public State {
             private:
                 vox::engine::World* _world;
+                vox::ren::RenderManager* _rman;
+                vox::ren::hud::HUD* _hud;
+                vox::engine::entity::PlayerEntity* _player;
                 int _frame;
             public:
                 Gamestate();

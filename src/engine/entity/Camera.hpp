@@ -1,7 +1,7 @@
 #ifndef _ENGINE_CAMERA_H_
 #define _ENGINE_CAMERA_H_
 
-#include "engine/entity/Entity.hpp"
+#include "engine/entity/PlayerEntity.hpp"
 #include "engine/phys/PhysicsObject.hpp"
 
 namespace vox {
@@ -9,15 +9,16 @@ namespace vox {
         namespace entity {
             class Camera : public vox::engine::physics::PhysicsObject {
                 private:
-                    Entity& _follow;
+                    PlayerEntity& _follow;
 
                     Camera(const Camera& Other);
                     Camera& operator= (const Camera& Other);
                 public:
-                    Camera(const glm::vec3 Pos, Entity& ToFollow);
+                    Camera(const glm::vec3 Pos, PlayerEntity& ToFollow);
 
                     void Tick(const vox::engine::World& In);
-                    Entity& GetEnt() const;
+ 
+                    PlayerEntity& GetEnt() const;
                     glm::vec3 GetDirection() const;
             };
         }

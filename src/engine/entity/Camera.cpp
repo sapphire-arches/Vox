@@ -5,9 +5,10 @@
 
 using namespace vox::engine;
 using namespace vox::engine::entity;
+using glm::vec3;
 
-Camera::Camera(const glm::vec3 Pos, Entity& ToFollow) : 
-    PhysicsObject(Pos, glm::vec3(1, 1, 1), 1), _follow(ToFollow) {
+Camera::Camera(const vec3 Pos, PlayerEntity& ToFollow) : 
+    PhysicsObject(Pos, vec3(1, 1, 1), 1), _follow(ToFollow) {
 }
 
 #define CAM_JUMP_DIST 20.f
@@ -16,7 +17,7 @@ Camera::Camera(const glm::vec3 Pos, Entity& ToFollow) :
 
 void Camera::Tick(const World& In) {
     DoPhysics(In);
-    glm::vec3 off = (_follow.GetPosition() + glm::vec3(0.5f, 3.f, 0.5f)) - glm::vec3(_aabb.X, _aabb.Y, _aabb.Z);
+    vec3 off = (_follow.GetPosition() + vec3(0.5f, 3.f, 0.5f)) - vec3(_aabb.X, _aabb.Y, _aabb.Z);
     float distSquared = off.x * off.x + off.y * off.y + off.z * off.z;
     float dist = glm::sqrt(distSquared);
     off = off * (1.f / dist);
@@ -33,10 +34,10 @@ void Camera::Tick(const World& In) {
 }
 
 //Yaw Pitch Roll order
-glm::vec3 Camera::GetDirection() const {
-    glm::vec3 tr(0.f);
-    glm::vec3 opos = _follow.GetPosition() + glm::vec3(0.5f, 1.f, 0.5f);
-    glm::vec3 diff = (glm::vec3(_aabb.X, _aabb.Y, _aabb.Z)) - opos;
+vec3 Camera::GetDirection() const {
+    vec3 tr(0.f);
+    vec3 opos = _follow.GetPosition() + vec3(0.5f, 1.f, 0.5f);
+    vec3 diff = (vec3(_aabb.X, _aabb.Y, _aabb.Z)) - opos;
     //Yaw
     tr.x = glm::degrees(glm::atan(diff.x, diff.z));
     diff = glm::rotateY(diff, -tr.x); //Remove yaw component.
@@ -47,6 +48,6 @@ glm::vec3 Camera::GetDirection() const {
     return tr;
 }
 
-Entity& Camera::GetEnt() const {
+PlayerEntity& Camera::GetEnt() const {
     return _follow;
 }

@@ -30,9 +30,9 @@ void PhysicsObject::DoPhysics(const World& In) {
     _lastPos.x = _aabb.X; _lastPos.y = _aabb.Y; _lastPos.z = _aabb.Z;
 
     _vel += _acc;
-    if (_vel.x * _vel.x + _vel.y + _vel.y + _vel.z * _vel.z > 0.25f) {
-        _vel = _vel * float(0.5 / _vel.length());
-    }
+//    if (_vel.x * _vel.x + _vel.y + _vel.y + _vel.z * _vel.z > 0.25f) {
+//        _vel = _vel * float(0.5 / _vel.length());
+//    }
     
     _aabb.X += _vel.x;
     if (_aabb.IntersectsWorld(In)) {
@@ -57,8 +57,13 @@ void PhysicsObject::DoPhysics(const World& In) {
     }
 
     //Friction.
-    _vel.x = _vel.x * 0.9f;
-    _vel.z = _vel.z * 0.9f;
+    if (_onground) {
+        _vel.x = _vel.x * 0.9f;
+        _vel.z = _vel.z * 0.9f;
+    } else {
+        _vel.x = _vel.x * 0.95f;
+        _vel.z = _vel.z * 0.95f;
+    }
     _acc.x  = _acc.y = _acc.z = 0;
 }
 

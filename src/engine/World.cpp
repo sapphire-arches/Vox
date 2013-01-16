@@ -15,7 +15,8 @@ using namespace vox::engine::entity;
 using glm::vec3;
 
 World::World() : _cache(),
-    _cam(vec3(-0, 10, 10), *(new Entity(vec3(0, 10, 0), vec3(1, 2, 1)))) {
+    _player(*(new PlayerEntity(vec3(0, 10, 0)))),
+    _cam(vec3(-0, 10, 10), _player) {
     srand(0);
     _ren = new vox::ren::WorldRenderer(*this);
     this->AddEntity(&_cam.GetEnt());
@@ -120,7 +121,6 @@ void World::Tick() {
     //Key stuff.
     int numKeys;
     Uint8* keys = SDL_GetKeyState(&numKeys);
-    Entity& player = _cam.GetEnt();
 
     const float MoveSpeed = 0.01;
 
@@ -128,7 +128,6 @@ void World::Tick() {
     camYaw = glm::radians(camYaw);
 
     float xDir = 0;
-    float yDir = 0;
     float zDir = 0;
     if (keys[SDLK_w]) {
         xDir -= glm::sin(camYaw);
@@ -146,8 +145,8 @@ void World::Tick() {
         xDir -= glm::sin(camYaw + glm::radians(90.f));
         zDir -= glm::cos(camYaw + glm::radians(90.f));
     }
-    if (keys[SDLK_SPACE] && player.IsOnGround()) {
-        player.ApplyForce(vec3(0, 0.1, 0));
+    if (keys[SDLK_SPACE]) {
+        _player.Jetpack();
     }
     if (xDir * xDir + zDir * zDir > MoveSpeed * MoveSpeed) {
         float len = glm::sqrt(xDir * xDir + zDir * zDir);
@@ -155,6 +154,6 @@ void World::Tick() {
         xDir *= fac;
         zDir *= fac;
     }
-    player.ApplyForce(glm::vec3(xDir, yDir, zDir));
-    player._yaw = glm::degrees(camYaw);
+    _player.ApplyForce(glm::vec3(xDir, 0, zDir));
+    _player._yaw = glm::degrees(camYaw);
 }

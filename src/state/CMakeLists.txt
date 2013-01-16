@@ -1,4 +1,4 @@
-include_directories(..)
+include_directories(.. .)
 add_library(state
     State
     GameState

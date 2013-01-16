@@ -62,5 +62,7 @@ add_subdirectory(state)
 add_subdirectory(res)
 add_subdirectory(platform)
 
+include_directories(.)
+
 add_executable(main main.cpp App)
 target_link_libraries(main state ren engine GLEW SDL)

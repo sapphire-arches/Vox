@@ -3,6 +3,7 @@
 
 #include "ChunkCache.hpp"
 #include <list>
+#include "engine/entity/PlayerEntity.hpp"
 #include "engine/entity/Entity.hpp"
 #include "engine/entity/Camera.hpp"
 #include "state/GameState.hpp"
@@ -22,6 +23,7 @@ namespace vox {
                 ChunkCache _cache;
                 EntityList _ents;
                 vox::ren::WorldRenderer* _ren;
+                vox::engine::entity::PlayerEntity& _player;
                 vox::engine::entity::Camera _cam;
 
                 //No copypasta
@@ -37,6 +39,10 @@ namespace vox {
                 void AddEntity(vox::engine::entity::Entity* Ent);
                 void Tick();
                 void Render(vox::state::Gamestate& State);
+
+                inline vox::engine::entity::PlayerEntity& GetPlayer() {
+                    return _player;
+                }
         };
     }
 }
