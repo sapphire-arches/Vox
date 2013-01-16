@@ -11,8 +11,9 @@ using namespace vox::engine;
 //COLOR DEFINITIONS
 static float Colors[][3] = {
     {0.0, 0.0, 0.0},
-    {0.4, 0.4, 0.4},
+    {0.9, 0.9, 0.9},
     {0.4, 0.9, 0.4},
+    {1.0, 0.0, 1.0},
 };
 //END COLOR DEFINITIONS.
 
