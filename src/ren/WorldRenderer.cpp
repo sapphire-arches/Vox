@@ -17,6 +17,14 @@ using namespace vox::ren;
 using namespace vox::ren::gl;
 using namespace vox::engine;
 
+//COLOR DEFINITIONS
+static float Colors[][3] = {
+    {0, 0, 0},
+    {0, 0.5, 0.0},
+    {0.1, 0.1, 0.1},
+};
+//END COLOR DEFINITIONS.
+
 static inline int GetInd(int X, int Y, int Z) {
     int x = X % VIEWDIST;
     if (x < 0)

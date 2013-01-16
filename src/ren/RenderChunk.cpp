@@ -8,6 +8,14 @@
 using namespace vox::ren;
 using namespace vox::engine;
 
+//COLOR DEFINITIONS
+static float Colors[][3] = {
+    {0.0, 0.0, 0.0},
+    {0.4, 0.4, 0.4},
+    {0.4, 0.9, 0.4},
+};
+//END COLOR DEFINITIONS.
+
 enum Side {
     POSX,
     POSY,
@@ -17,7 +25,7 @@ enum Side {
     NEGZ
 };
 
-static void AddSquare(float X, float Y, float Z, int Size, Side S, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
+static void AddSquare(float X, float Y, float Z, int Size, int ID, Side S, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
     Vertex v[4];
     switch (S) {
         case POSX:
@@ -66,9 +74,9 @@ static void AddSquare(float X, float Y, float Z, int Size, Side S, std::vector<V
 
     int basei = Verts.size();
     for (int i = 0; i < 4; ++i) {
-        v[i].r = 0.5f;//fabs(v[i].y / 16.0f);
-        v[i].g = 1.f;//fabs(v[i].y / 16.0f);
-        v[i].b = 0.5f;//fabs(v[i].y / 16.0f);
+        v[i].r = Colors[ID][0];//0.5f;//fabs(v[i].y / 16.0f);
+        v[i].g = Colors[ID][1];// 1.f;//fabs(v[i].y / 16.0f);
+        v[i].b = Colors[ID][2];//0.5f;//fabs(v[i].y / 16.0f);
         v[i].nx = norm.x;
         v[i].ny = norm.y;
         v[i].nz = norm.z;
@@ -78,18 +86,19 @@ static void AddSquare(float X, float Y, float Z, int Size, Side S, std::vector<V
 }
 
 static void BuildVox(int X, int Y, int Z, int Size, World& In, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
+    int id = In(X, Y, Z);
     if (In(X + Size, Y, Z) == 0)
-        AddSquare(X, Y, Z, Size, POSX, Verts, Ind);
+        AddSquare(X, Y, Z, Size, id, POSX, Verts, Ind);
     if (In(X - Size, Y, Z) == 0)
-        AddSquare(X, Y, Z, Size, NEGX, Verts, Ind);
+        AddSquare(X, Y, Z, Size, id, NEGX, Verts, Ind);
     if (In(X, Y + Size, Z) == 0)
-        AddSquare(X, Y, Z, Size, POSY, Verts, Ind);
+        AddSquare(X, Y, Z, Size, id, POSY, Verts, Ind);
     if (In(X, Y - Size, Z) == 0)
-        AddSquare(X, Y, Z, Size, NEGY, Verts, Ind);
+        AddSquare(X, Y, Z, Size, id, NEGY, Verts, Ind);
     if (In(X, Y, Z + Size) == 0)
-        AddSquare(X, Y, Z, Size, POSZ, Verts, Ind);
+        AddSquare(X, Y, Z, Size, id, POSZ, Verts, Ind);
     if (In(X, Y, Z - Size) == 0)
-        AddSquare(X, Y, Z, Size, NEGZ, Verts, Ind);
+        AddSquare(X, Y, Z, Size, id, NEGZ, Verts, Ind);
 }
 
 RenderChunk::RenderChunk(int X, int Y, int Z, int LOD, World& For) {

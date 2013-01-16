@@ -28,7 +28,7 @@ int WorldGenerator::GetBlock(int X, int Y, int Z) {
             abs(X) > MAX_WORLD_SIZE ||
             abs(Y) > MAX_WORLD_SIZE ||
             abs(Z) > MAX_WORLD_SIZE) {
-        return 1;
+        return 2;
     }
 
     float fac = 0.;
