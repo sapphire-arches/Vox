@@ -151,8 +151,8 @@ bail:
 #endif
                 it != _toBuild.end()) {
             ToBuildChunk c = *it;
-            _toBuild.erase(ToBuildSet::iterator(it));
-            ++it;
+            ToBuildSet::iterator curr = it++;
+            _toBuild.erase(curr);
             delete _chunks[c.Ind];
             _chunks[c.Ind] = NULL;
             _chunks[c.Ind] = new RenderChunk(c.X, c.Y, c.Z, c.LOD, _for);
