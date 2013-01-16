@@ -31,9 +31,9 @@ World::~World() {
     delete _ren;
 }
 
-int ZERO = 0;
+unsigned char ZERO = 0;
 
-int& World::operator() (int X, int Y, int Z) {
+unsigned char& World::operator() (int X, int Y, int Z) {
     int cx = X / CHUNK_SIZE;
     int cy = Y / CHUNK_SIZE;
     int cz = Z / CHUNK_SIZE;
@@ -51,7 +51,7 @@ int& World::operator() (int X, int Y, int Z) {
     return _cache.Get(cx, cy, cz).GetBlock(lx, ly, lz);
 }
 
-int World::operator() (int X, int Y, int Z) const {
+unsigned char World::operator() (int X, int Y, int Z) const {
     int cx = X / CHUNK_SIZE;
     int cy = Y / CHUNK_SIZE;
     int cz = Z / CHUNK_SIZE;

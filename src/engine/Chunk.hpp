@@ -10,14 +10,14 @@ namespace vox {
         class Chunk {
             private:
                 int _x, _y, _z;
-                int* _data;
+                unsigned char* _data;
             public:
                 Chunk(int X, int Y, int Z, WorldGenerator* Gen);
                 Chunk(const Chunk& Other);
                 ~Chunk();
 
-                int GetBlock(int X, int Y, int Z) const;
-                int& GetBlock (int X, int Y, int Z);
+                unsigned char GetBlock(int X, int Y, int Z) const;
+                unsigned char& GetBlock (int X, int Y, int Z);
 
                 inline int GetX() {return _x;}
                 inline int GetY() {return _y;}

@@ -33,8 +33,8 @@ namespace vox {
                 World();
                 ~World();
                 
-                int& operator() (int X, int Y, int Z);
-                int operator() (int X, int Y, int Z) const;
+                unsigned char& operator() (int X, int Y, int Z);
+                unsigned char operator() (int X, int Y, int Z) const;
 
                 void AddEntity(vox::engine::entity::Entity* Ent);
                 void Tick();

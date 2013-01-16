@@ -18,9 +18,7 @@ Chunk::Chunk(int X, int Y, int Z, WorldGenerator* Gen) {
     _x = X;
     _y = Y;
     _z = Z;
-    _data = new int [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
-    //We shouldn't need this because of the next loop.
-    //memset(_data, 0, sizeof(int) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
+    _data = new unsigned char [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
  
     int bx = X * CHUNK_SIZE;
     int by = Y * CHUNK_SIZE;
@@ -39,8 +37,8 @@ Chunk::Chunk(int X, int Y, int Z, WorldGenerator* Gen) {
 
 //Warning: slow as shit.
 Chunk::Chunk(const Chunk& Other) {
-    this->_data = new int [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
-    memcpy(this->_data, Other._data, sizeof(int) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
+    this->_data = new unsigned char [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
+    memcpy(this->_data, Other._data, sizeof(unsigned char) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
     this->_x = Other._x;
     this->_y = Other._y;
     this->_z = Other._z;
@@ -50,7 +48,7 @@ Chunk::~Chunk() {
     delete[] _data;
 }
 
-int Chunk::GetBlock(int X, int Y, int Z) const {
+unsigned char Chunk::GetBlock(int X, int Y, int Z) const {
     if (X < 0)
         X += CHUNK_SIZE;
     if (Y < 0)
@@ -61,7 +59,7 @@ int Chunk::GetBlock(int X, int Y, int Z) const {
     return _data[GetInd(X, Y, Z)];
 }
 
-int& Chunk::GetBlock(int X, int Y, int Z) {
+unsigned char& Chunk::GetBlock(int X, int Y, int Z) {
     if (X < 0)
         X += CHUNK_SIZE;
     if (Y < 0)
