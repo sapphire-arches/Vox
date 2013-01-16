@@ -26,6 +26,8 @@ World::World() : _cache(),
 }
 
 World::~World() {
+    std::cout << "Deleted World." << std::endl;
+    delete _ren;
 }
 
 int ZERO = 0;

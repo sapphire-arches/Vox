@@ -1,5 +1,6 @@
 #include "ChunkCache.hpp"
 #include <cstdlib>
+#include <iostream>
 
 using namespace vox::engine;
 
@@ -10,6 +11,7 @@ ChunkCache::ChunkCache() : _gen(new WorldGenerator(100)) {
 }
 
 ChunkCache::~ChunkCache() {
+    std::cout << "Deleted Chunk cache" << std::endl;
     for (int i = 0; i < CHUNK_CACHE_SIZE_CUBED; ++i) {
         if (_chunks[i] != NULL)
             delete _chunks[i];
