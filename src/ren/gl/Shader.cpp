@@ -37,6 +37,7 @@ string ReadFullFile (const char* fname) {
         in.close();
         return(contents);
     }
+    std::cout << fname << " " << in.is_open() << std::endl;
     throw(in.fail());
 }
 
@@ -79,14 +80,11 @@ FragmentShader::~FragmentShader() {
 }
 
 //class ShaderProgram
-ShaderProgram::ShaderProgram() {
-    const char* vname = "res/base.vert";
-    const char* fname = "res/base.frag";
-    
-    string *vsource = new string(ReadFullFile(vname));
+ShaderProgram::ShaderProgram(const char* FName, const char* VName) {
+    string *vsource = new string(ReadFullFile(VName));
     cout << "vsource is: " << endl << *vsource << endl;
 
-    string *fsource = new string(ReadFullFile(fname));
+    string *fsource = new string(ReadFullFile(FName));
     cout << "fsource is: " << endl << *fsource << endl;
 
     _programID = glCreateProgramObjectARB();

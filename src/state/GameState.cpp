@@ -39,7 +39,9 @@ void Gamestate::Render(App& TheApp) {
     _world->Render(*this);
     _rman->LeaveGameWorldRender();
 
-    //TODO: UI Render
+    _rman->EnterHUDRender();
+    _hud->Render();
+    _rman->LeaveHUDRender();
 }
 
 void Gamestate::Tick(App& TheApp) {

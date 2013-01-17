@@ -10,17 +10,18 @@ RenderManager::~RenderManager() {
 }
 
 void RenderManager::EnterGameWorldRender() {
-    //TODO: Implement
+    glEnable(GL_DEPTH_TEST);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
 void RenderManager::LeaveGameWorldRender() {
-    //TODO: Implement, undo whatever was done in RenderManager::EnterGameWorldRender();
+    glDisable(GL_DEPTH_TEST);
 }
 
 void RenderManager::EnterHUDRender() {
-    //Any setup/cleanup not here is done in ren/hud/HUD.cpp
+    glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 void RenderManager::LeaveHUDRender() {
-    //Any setup/cleanup not here is done in ren/hud/HUD.cpp
+    
 }

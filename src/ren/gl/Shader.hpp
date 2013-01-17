@@ -36,7 +36,7 @@ namespace vox {
 
             class ShaderProgram {
                 public:
-                    ShaderProgram();
+                    ShaderProgram(const char* FName, const char* VName);
                     ~ShaderProgram();
 
                     void AttachVertexShader(VertexShader& VertShader);
