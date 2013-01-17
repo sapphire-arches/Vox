@@ -42,8 +42,8 @@ void HUD::Render() {
     float lvl = _moniter.GetJetpackLevel() / 10.f;
     glBegin(GL_QUADS);
         glColor3f(0.2, 0.2, 0.2);
-        Draw2DBox(0., 585., 110., 600., LAYER_DATA);
+        Draw2DBox(0., 585., 110., 600., LAYER_BACK);
         glColor3f(1., 0., 0.);
-        Draw2DBox(5., 590., 100. * lvl + 5., 600., LAYER_BACK);
+        Draw2DBox(5., 590., 100. * lvl + 5., 600., LAYER_DATA);
     glEnd();
 }
