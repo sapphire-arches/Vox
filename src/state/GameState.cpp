@@ -81,8 +81,8 @@ void Gamestate::OnMouseClick(int Button, int X, int Y) {
         std::cout << dir.x << " " << dir.y << " " << dir.z << " " << dir.w << std::endl;
         std::cout << X << " " << Y << " " << " " << xOff << " " << yOff << std::endl;
         glm::vec3 pos = _world->GetCamera().GetPosition();
-        //Half of player width - half of rocket size. + glm::vec3(0.35, 3, 0.35)
-        Rocket* r = new Rocket(pos, (glm::vec3(dir.x, dir.y, dir.z)));
+        //Half of camera width - half of rocket size.
+        Rocket* r = new Rocket(pos - glm::vec3(0.25, 0.25, 0.25), (glm::vec3(dir.x, dir.y, dir.z)));
         _world->AddEntity(r);
     }
 }
