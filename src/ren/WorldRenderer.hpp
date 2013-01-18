@@ -51,8 +51,8 @@ namespace vox {
                 glm::vec3 _cameraPos;
                 ToBuildSet _toBuild;
                 friend ToBuildChunk;
-                float _yaw, _pitch, _roll;
             public:
+                float _yaw, _pitch, _roll;
                 WorldRenderer(vox::engine::World& For);
                 ~WorldRenderer();
 

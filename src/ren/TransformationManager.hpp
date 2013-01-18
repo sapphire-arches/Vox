@@ -33,6 +33,8 @@ namespace vox {
                 void SetLocations(int MViewLoc, int PLoc);
                 void ToGPU();
 
+                glm::vec3 Unproject(glm::vec3 V);
+
                 TransformationManager& operator= (const TransformationManager& Other);
         };
     }

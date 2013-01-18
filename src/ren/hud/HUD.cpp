@@ -31,13 +31,13 @@ static void Draw2DBox(float x1, float y1, float x2, float y2, float Layer) {
     glVertex3f(x1, y2, Layer);
 }
 
-#define LAYER_DATA 0.1f
-#define LAYER_BACK 0.2f
+#define LAYER_DATA 0.2f
+#define LAYER_BACK 0.1f
 
 void HUD::Render() {
     _prog.Use();
     glUniformMatrix4fvARB(_mloc, 1, GL_FALSE, glm::value_ptr(_mview));
-    glUniformMatrix4fvARB(_ploc    , 1, GL_FALSE, glm::value_ptr(_proj));
+    glUniformMatrix4fvARB(_ploc, 1, GL_FALSE, glm::value_ptr(_proj));
 
     float lvl = _moniter.GetJetpackLevel() / 10.f;
     glBegin(GL_QUADS);

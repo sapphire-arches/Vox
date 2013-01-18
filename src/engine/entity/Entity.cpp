@@ -26,7 +26,7 @@ Entity::Entity(const vec3& Pos, const vec3& Size) : PhysicsObject(Pos, Size, Siz
         verts[i].r = 1.f;
         verts[i].g = 0.5f;
         verts[i].b = 0.5f;
-        verts[i].x *= 1.f; verts[i].y *= 2.f; verts[i].z *= 1.f;
+        verts[i].x *= Size.x; verts[i].y *= Size.y; verts[i].z *= Size.z;
     }
 
     ind[ 0] = 0; ind[ 1] = 1; ind[ 2] = 3; ind[ 3] = 2;

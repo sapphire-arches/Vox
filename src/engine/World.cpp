@@ -157,3 +157,21 @@ void World::Tick() {
     _player.ApplyForce(glm::vec3(xDir, 0, zDir));
     _player._yaw = glm::degrees(camYaw);
 }
+
+vec3 World::Unproject(vec3 V) {
+    vox::ren::TransformationManager* man = _ren->GetTranslationManager();
+
+    man->PushMatrix();
+
+    vec3 cameraPos = _cam.GetPosition();
+        
+    man->Rotate(-_ren->_pitch, -_ren->_yaw, -_ren->_roll);
+    man->Translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
+
+    vec3 tr = man->Unproject(V);
+
+    man->PopMatrix();
+
+    return tr;
+
+}

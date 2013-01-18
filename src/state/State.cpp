@@ -43,3 +43,6 @@ State& State::operator= (const State& rhs) {
 
     return *this;
 }
+
+void State::OnMouseClick(int Button, int X, int Y) {
+}

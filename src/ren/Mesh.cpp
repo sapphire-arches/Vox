@@ -12,7 +12,7 @@ using namespace vox::ren;
 Mesh::Mesh (int *Indicies, int IndLen, Vertex* Verts, int VertLen, int DrawMode) {
     _vcount = IndLen;
     _drawMode = DrawMode;
-    std::cout << "Mesh created with " << _vcount << " verts." << std::endl;
+//    std::cout << "Mesh created with " << _vcount << " verts." << std::endl;
     GLuint temp[2];
     glGenBuffersARB(2, temp);
     _iboID = temp[0];
@@ -33,7 +33,7 @@ Mesh::Mesh (int *Indicies, int IndLen, Vertex* Verts, int VertLen, int DrawMode)
 Mesh::~Mesh() {
     unsigned int temp[2] = {_iboID, _vboID};
     glDeleteBuffersARB(2, reinterpret_cast<GLuint*>(temp));
-    std::cout << "Deleted mesh with " << _vcount << " verts." << std::endl;
+//    std::cout << "Deleted mesh with " << _vcount << " verts." << std::endl;
 }
 
 void Mesh::Render() {

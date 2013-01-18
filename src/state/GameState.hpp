@@ -32,6 +32,8 @@ namespace vox {
                 inline int GetFrame() {
                     return _frame;
                 }
+
+                virtual void OnMouseClick(int Button, int X, int Y);
         };
     }
 }

@@ -58,6 +58,9 @@ void App::OnEvent(SDL_Event* Event) {
         cout << Event->key.keysym.sym << endl;
         if (Event->key.keysym.sym == SDLK_ESCAPE)
             _running = false;
+    } else if (Event->type == SDL_MOUSEBUTTONDOWN) {
+        SDL_MouseButtonEvent ev = Event->button;
+        _curr->OnMouseClick(ev.button, ev.x, ev.y);
     }
 }
 

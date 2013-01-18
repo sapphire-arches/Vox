@@ -1,9 +1,14 @@
 #include "GameState.hpp"
 #include "App.hpp"
 #include "engine/World.hpp"
+#include "engine/entity/Rocket.hpp"
+#include "ren/WorldRenderer.hpp"
+
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
 using namespace vox;
+using namespace vox::engine::entity;
 using namespace vox::state;
 
 Gamestate::Gamestate() : 
@@ -47,4 +52,31 @@ void Gamestate::Render(App& TheApp) {
 void Gamestate::Tick(App& TheApp) {
     _world->Tick();
     ++_frame;
+}
+
+#define WIDTH 800
+#define HEIGHT 600
+
+void Gamestate::OnMouseClick(int Button, int X, int Y) {
+    if (Button == 1) {
+        //Yaw Pitch Roll
+        glm::vec3 cdir = _world->GetCamera().GetDirection();
+
+        glm::vec4 dir(0., 0., 1., 0.);
+        glm::mat4 trans(1.f);
+//        trans = glm::rotate(trans, (float)-cdir.z, glm::vec3(0, 0, 1));
+        trans = glm::rotate(trans, (float)cdir.x, glm::vec3(0, 1, 0));
+        trans = glm::rotate(trans, (float)cdir.y, glm::vec3(1, 0, 0));
+        dir = trans * dir;
+        dir = -dir;
+//        dir = dir / float(glm::sqrt(dir.x * dir.x + dir.y * dir.y + dir.z * dir.z));
+        std::cout << "-----" << std::endl;
+        std::cout << cdir.x << " " << cdir.y << " " << cdir.z << std::endl;
+        std::cout << dir.x << " " << dir.y << " " << dir.z << " " << dir.w << std::endl;
+        std::cout << X << " " << Y << " " << 1 << std::endl;
+        glm::vec3 pos = _world->GetCamera().GetPosition();
+        //Half of player width - half of rocket size. + glm::vec3(0.35, 3, 0.35)
+        Rocket* r = new Rocket(pos, (glm::vec3(dir.x, dir.y, dir.z)));
+        _world->AddEntity(r);
+    }
 }

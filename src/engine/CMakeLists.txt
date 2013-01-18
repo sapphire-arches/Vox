@@ -7,8 +7,10 @@ add_library(engine
     entity/Entity
     entity/PlayerEntity
     entity/Camera
+    entity/Rocket
     phys/PhysicsObject
     phys/Types
+    util/Perlin
+    util/Raymarch
     )
-add_subdirectory(util)
-target_link_libraries(engine enutil ren)
+target_link_libraries(engine ren)

@@ -19,9 +19,10 @@ void RenderManager::LeaveGameWorldRender() {
 }
 
 void RenderManager::EnterHUDRender() {
+    glEnable(GL_DEPTH_TEST);
     glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 void RenderManager::LeaveHUDRender() {
-    
+    glDisable(GL_DEPTH_TEST);
 }

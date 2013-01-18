@@ -8,7 +8,7 @@ using namespace vox::engine::entity;
 using glm::vec3;
 
 Camera::Camera(const vec3 Pos, PlayerEntity& ToFollow) : 
-    PhysicsObject(Pos, vec3(1, 1, 1), 1), _follow(ToFollow) {
+    PhysicsObject(Pos, vec3(0.9f, 0.9f, 0.9f), 1), _follow(ToFollow) {
 }
 
 #define CAM_JUMP_DIST 20.f

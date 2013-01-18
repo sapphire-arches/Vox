@@ -40,8 +40,18 @@ namespace vox {
                 void Tick();
                 void Render(vox::state::Gamestate& State);
 
+                glm::vec3 Unproject(glm::vec3 V);
+
+                inline vox::ren::WorldRenderer* GetRenderer() {
+                    return _ren;
+                }
+
                 inline vox::engine::entity::PlayerEntity& GetPlayer() {
                     return _player;
+                }
+
+                inline vox::engine::entity::Camera& GetCamera() {
+                    return _cam;
                 }
         };
     }

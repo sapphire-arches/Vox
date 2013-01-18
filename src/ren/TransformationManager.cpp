@@ -50,9 +50,9 @@ void TransformationManager::Translate(glm::vec3 Amount) {
 }
 
 void TransformationManager::Rotate(float Pitch, float Yaw, float Roll) {
-    Rotate(glm::vec3(0, 0, 1), Roll);
     Rotate(glm::vec3(1, 0, 0), Pitch);
     Rotate(glm::vec3(0, 1, 0), Yaw);
+    Rotate(glm::vec3(0, 0, 1), Roll);
 }
 
 void TransformationManager::Rotate(glm::vec3 Axis, float Angle) {
@@ -71,4 +71,10 @@ void TransformationManager::SetLocations(int MViewLoc, int PLoc) {
 void TransformationManager::ToGPU() {
     glUniformMatrix4fvARB(_mviewLoc, 1, GL_FALSE, glm::value_ptr(_modelview));
     glUniformMatrix4fvARB(_pLoc    , 1, GL_FALSE, glm::value_ptr(_projection));
+}
+
+glm::vec3 TransformationManager::Unproject(glm::vec3 V) {
+    glm::mat4 inv = glm::inverse(_modelview) * glm::inverse(_projection);
+    glm::vec4 tr = inv * glm::vec4(V, 1);
+    return glm::vec3(tr.x, tr.y, tr.z);
 }

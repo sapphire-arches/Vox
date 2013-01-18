@@ -9,7 +9,7 @@ namespace vox {
             public:
                 State();
                 State(State& Next);
-                ~State();
+                virtual ~State();
 
                 virtual void Enter(App& TheApp);
                 virtual void Leave(App& TheApp);
@@ -18,6 +18,8 @@ namespace vox {
 
                 virtual bool Finished();
                 State* GetNext();
+
+                virtual void OnMouseClick(int Button, int X, int Y);
 
                 State& operator= (const State& rhs);
             private:
