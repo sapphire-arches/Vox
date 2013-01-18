@@ -57,21 +57,29 @@ void Gamestate::Tick(App& TheApp) {
 
 void Gamestate::OnMouseClick(int Button, int X, int Y) {
     if (Button == 1) {
-        //Yaw Pitch Roll
+        //Normalize to [-1, 1]
+        float xOff = ((X / WIDTH) * 2. - 1.);
+        float yOff = ((Y / HEIGHT) * 2. - 1.);
+        //Calculate angle offsets.
+        float yawOffset = xOff * (FOV / 2.);
+        float pitchOffset = yOff * (FOV / 2.) * ASPECT;
+
+        //Whatever format makes this work...
         glm::vec3 cdir = _world->GetCamera().GetDirection();
 
         glm::vec4 dir(0., 0., 1., 0.);
         glm::mat4 trans(1.f);
-//        trans = glm::rotate(trans, (float)-cdir.z, glm::vec3(0, 0, 1));
-        trans = glm::rotate(trans, (float)cdir.x, glm::vec3(0, 1, 0));
-        trans = glm::rotate(trans, (float)cdir.y, glm::vec3(1, 0, 0));
+        trans = glm::rotate(trans, (float)cdir.z              , glm::vec3(0, 0, 1));
+        trans = glm::rotate(trans, (float)cdir.x - yawOffset  , glm::vec3(0, 1, 0));
+        trans = glm::rotate(trans, (float)cdir.y - pitchOffset, glm::vec3(1, 0, 0));
         dir = trans * dir;
         dir = -dir;
 //        dir = dir / float(glm::sqrt(dir.x * dir.x + dir.y * dir.y + dir.z * dir.z));
         std::cout << "-----" << std::endl;
         std::cout << cdir.x << " " << cdir.y << " " << cdir.z << std::endl;
+        std::cout << cdir.x - yawOffset << " " << cdir.y - pitchOffset << " " << cdir.z << std::endl;
         std::cout << dir.x << " " << dir.y << " " << dir.z << " " << dir.w << std::endl;
-        std::cout << X << " " << Y << " " << 1 << std::endl;
+        std::cout << X << " " << Y << " " << " " << xOff << " " << yOff << std::endl;
         glm::vec3 pos = _world->GetCamera().GetPosition();
         //Half of player width - half of rocket size. + glm::vec3(0.35, 3, 0.35)
         Rocket* r = new Rocket(pos, (glm::vec3(dir.x, dir.y, dir.z)));
