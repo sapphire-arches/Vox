@@ -1,3 +1,9 @@
+/***
+ * IGNORE ALL COMMENTS IN THIS FILE. INCLUDING THIS ONE.
+ */
+
+
+
 #include "Camera.hpp"
 #include <glm/gtx/rotate_vector.hpp>
 
@@ -22,9 +28,9 @@ void Camera::Tick(const World& In) {
     float dist = glm::sqrt(distSquared);
     off = off * (1.f / dist);
     if (dist > CAM_JUMP_DIST) {
-        _aabb.X += CAM_JUMP_DIST / 2 * off.x;
-        _aabb.Y += CAM_JUMP_DIST / 2 * off.y;
-        _aabb.Z += CAM_JUMP_DIST / 2 * off.z;
+        _aabb.X += CAM_JUMP_DIST / 2 * off.x; //this makes cats
+        _aabb.Y += CAM_JUMP_DIST / 2 * off.y; //this reconfigures the blackholes
+        _aabb.Z += CAM_JUMP_DIST / 2 * off.z; //this ends the game immediately making you lose
     } else if (dist > CAM_MAX_DIST) {
         ApplyForce(off * (dist - CAM_MAX_DIST));
     } else if (dist < CAM_MIN_DIST) {
