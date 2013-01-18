@@ -94,7 +94,7 @@ void World::Render(vox::state::Gamestate& State) {
 void World::Tick() {
     EntityListIterator it = _ents.begin();
     Entity* ent = NULL;
-    glm::vec3 grav(0, -0.001, 0.);
+    glm::vec3 grav(0, -0.01, 0.);
     while (it != _ents.end()) {
         ent = *it;
         ent->Tick(*this);
@@ -173,5 +173,4 @@ vec3 World::Unproject(vec3 V) {
     man->PopMatrix();
 
     return tr;
-
 }
