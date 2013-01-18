@@ -4,12 +4,27 @@
 using namespace vox::engine;
 using namespace vox::engine::physics;
 
-PhysicsObject::PhysicsObject(const glm::vec3& Pos, glm::vec3 Size, float Mass) :
-    _aabb(Size.x, Size.y, Size.z) {
+//ID 0 is reserved for NO_PARENT
+#define NO_PARENT 0
+static int CURR_ID = 1;
+
+PhysicsObject::PhysicsObject(const glm::vec3& Pos, const glm::vec3 Size, float Mass) :
+    _aabb(Size.x, Size.y, Size.z), _id(CURR_ID++) {
     _aabb.X = Pos.x;
     _aabb.Y = Pos.y;
     _aabb.Z = Pos.z;
     _mass = Mass;
+    std::cout << "Created PhysicsObject. ID: " << _id << ". Parent ID: " << NO_PARENT << "." << std::endl;
+}
+
+PhysicsObject::PhysicsObject(const glm::vec3& Pos, const glm::vec3 Size, float Mass, const PhysicsObject& Parent) :
+    _aabb(Size.x, Size.y, Size.z), _id(CURR_ID++) {
+    _aabb.X = Pos.x;
+    _aabb.Y = Pos.y;
+    _aabb.Z = Pos.z;
+    _mass = Mass;
+    _parentID = Parent._id;
+    std::cout << "Created PhysicsObject. ID: " << _id << ". Parent ID: " << Parent._id << "." << std::endl;
 }
 
 #define C_OF_RESTITUTION 0.9f

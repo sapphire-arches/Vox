@@ -17,8 +17,12 @@ namespace vox {
                     glm::vec3 _acc;
                     bool _onground;
                     float _mass;
+                    int _id;
+                    //We don't collide with parents.
+                    int _parentID;
                 public:
-                    PhysicsObject (const glm::vec3& Pos, glm::vec3 Size, float Mass);
+                    PhysicsObject (const glm::vec3& Pos, const glm::vec3 Size, float Mass);
+                    PhysicsObject (const glm::vec3& Pos, const glm::vec3 Size, float Mass, const PhysicsObject& Parent);
                     
                     void DoPhysics(const World& In);
                     void ApplyForce(const glm::vec3& Force);
@@ -30,6 +34,8 @@ namespace vox {
                     glm::vec3 GetPosition() const;
 
                     inline bool Intersects(PhysicsObject Other) {
+                        if (Other._id == _parentID || Other._parentID == _id)
+                            return false;
                         return _aabb.Intersects(Other._aabb);
                     }
             };

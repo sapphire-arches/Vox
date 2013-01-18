@@ -9,7 +9,7 @@ using namespace vox::ren;
 
 using glm::vec3;
 
-Entity::Entity(const vec3& Pos, const vec3& Size) : PhysicsObject(Pos, Size, Size.x * Size.y * Size.z) {
+static vox::ren::Mesh* BuildMesh(const vec3& Size) {
     Vertex verts[8];
     int ind[24];
 
@@ -36,7 +36,16 @@ Entity::Entity(const vec3& Pos, const vec3& Size) : PhysicsObject(Pos, Size, Siz
     ind[16] = 2; ind[17] = 3; ind[18] = 7; ind[19] = 6;
     ind[20] = 0; ind[21] = 4; ind[22] = 5; ind[23] = 1;
 
-    _mesh = new Mesh(ind, 24, verts, 24, GL_QUADS);
+    return new Mesh(ind, 24, verts, 24, GL_QUADS);
+}
+
+Entity::Entity(const vec3& Pos, const vec3& Size) : PhysicsObject(Pos, Size, Size.x * Size.y * Size.z) {
+    _mesh = BuildMesh(Size);
+}
+
+Entity::Entity(const vec3& Pos, const vec3& Size, const PhysicsObject& Parent) 
+    : PhysicsObject(Pos, Size, Size.x * Size.y * Size.z, Parent) {
+    _mesh = BuildMesh(Size);
 }
 
 Entity::~Entity() {

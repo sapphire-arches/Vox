@@ -20,6 +20,8 @@ namespace vox {
                     Entity& operator= (const Entity& Other);
                 public:
                     Entity(const glm::vec3& Pos, const glm::vec3& Size);
+                    Entity(const glm::vec3& Pos, const glm::vec3& Size, 
+                            const vox::engine::physics::PhysicsObject& Parent);
                     ~Entity();
 
                     virtual void Tick(const World& In);

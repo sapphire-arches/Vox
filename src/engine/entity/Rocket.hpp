@@ -10,7 +10,7 @@ namespace vox {
                 private:
                     glm::vec3 _dir;
                 public:
-                    Rocket(glm::vec3 Pos, glm::vec3 Dir);
+                    Rocket(const glm::vec3 Pos, const glm::vec3 Dir, const PhysicsObject& Parent);
                     ~Rocket();
 
                     virtual void Tick(const vox::engine::World& W);

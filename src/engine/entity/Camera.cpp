@@ -74,4 +74,9 @@ PlayerEntity& Camera::GetEnt() const {
 void Camera::OnMouseMove(int XDelta, int YDelta) {
     _yaw -= XDelta * MOUSE_SPEED;
     _pitch -= YDelta * MOUSE_SPEED;
+
+    if (_pitch < -90.f)
+        _pitch = -90.f;
+    if (_pitch > 90.f)
+        _pitch = 90.f;
 }
