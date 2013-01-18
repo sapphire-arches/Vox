@@ -39,7 +39,7 @@ static inline void InelasticCollision(glm::vec3* Vel, float* Mass, glm::vec3* ou
     out[1] = (C_OF_RESTITUTION * (Vel[1] - Vel[0]) + tv) / tm;
 }
 
-#define FRICTION 0.99
+#define FRICTION 0.9
 
 void PhysicsObject::DoPhysics(const World& In) {
     _lastPos.x = _aabb.X; _lastPos.y = _aabb.Y; _lastPos.z = _aabb.Z;
@@ -73,11 +73,11 @@ void PhysicsObject::DoPhysics(const World& In) {
 
     //Friction.
     if (_onground) {
-        _vel.x = _vel.x * 0.9f;
-        _vel.z = _vel.z * 0.9f;
+        _vel.x = _vel.x * FRICTION;
+        _vel.z = _vel.z * FRICTION;
     } else {
-        _vel.x = _vel.x * 0.95f;
-        _vel.z = _vel.z * 0.95f;
+        _vel.x = _vel.x * (FRICTION + 0.05f);
+        _vel.z = _vel.z * (FRICTION + 0.05f);
     }
     _acc.x  = _acc.y = _acc.z = 0;
 }

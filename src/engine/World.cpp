@@ -122,7 +122,7 @@ void World::Tick() {
     int numKeys;
     Uint8* keys = SDL_GetKeyState(&numKeys);
 
-    const float MoveSpeed = 0.025;
+    const float MoveSpeed = 0.01;
 
     float camYaw = _cam.GetDirection().x;
     camYaw = glm::radians(camYaw);
