@@ -2,13 +2,11 @@
 #include "state/State.hpp"
 #include <GL/glew.h>
 #include <iostream>
+#include "GraphicsDefs.hpp"
 
 using namespace std;
 using namespace vox;
 using namespace vox::state;
-
-#define WIDTH 800
-#define HEIGHT 600
 
 App::App() : _running(true), _curr(NULL) {
 }

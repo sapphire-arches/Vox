@@ -3,6 +3,7 @@
 #include "engine/World.hpp"
 #include "engine/entity/Rocket.hpp"
 #include "ren/WorldRenderer.hpp"
+#include "GraphicsDefs.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
@@ -53,9 +54,6 @@ void Gamestate::Tick(App& TheApp) {
     _world->Tick();
     ++_frame;
 }
-
-#define WIDTH 800
-#define HEIGHT 600
 
 void Gamestate::OnMouseClick(int Button, int X, int Y) {
     if (Button == 1) {

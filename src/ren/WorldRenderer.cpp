@@ -4,6 +4,7 @@
 #include "engine/World.hpp"
 #include "./gl/Shader.hpp"
 #include "./gl/Util.hpp"
+#include "GraphicsDefs.hpp"
 #include <cstring>
 #include <list>
 
@@ -33,7 +34,7 @@ static inline int GetInd(int X, int Y, int Z) {
 WorldRenderer::WorldRenderer(World& For) : 
     _for(For),
     _basic(*(new ShaderProgram("res/base.frag", "res/base.vert"))),
-    _man(75.f, 4.f/3.f),
+    _man(FOV, ASPECT),
     _cameraPos(0, 24, 0) {
     _chunks = new RenderChunk*[VIEWDIST * VIEWDIST * VIEWDIST];
 
