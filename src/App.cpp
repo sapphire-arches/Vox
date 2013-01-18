@@ -53,7 +53,6 @@ void App::OnEvent(SDL_Event* Event) {
     if (Event->type == SDL_QUIT) {
         _running = false;
     } else if (Event->type == SDL_KEYDOWN) {
-        cout << Event->key.keysym.sym << endl;
         if (Event->key.keysym.sym == SDLK_ESCAPE)
             _running = false;
     } else if (Event->type == SDL_MOUSEBUTTONDOWN) {
