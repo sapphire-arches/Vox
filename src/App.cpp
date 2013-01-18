@@ -59,6 +59,10 @@ void App::OnEvent(SDL_Event* Event) {
     } else if (Event->type == SDL_MOUSEBUTTONDOWN) {
         SDL_MouseButtonEvent ev = Event->button;
         _curr->OnMouseClick(ev.button, ev.x, ev.y);
+    } else if (Event->type == SDL_MOUSEMOTION) {
+        SDL_MouseMotionEvent ev = Event->motion;
+        SDL_WarpMouse(WIDTH / 2, HEIGHT / 2);
+        _curr->OnMouseMove(ev);
     }
 }
 

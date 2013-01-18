@@ -14,7 +14,8 @@ using namespace vox::engine::entity;
 using glm::vec3;
 
 Camera::Camera(const vec3 Pos, PlayerEntity& ToFollow) : 
-    PhysicsObject(Pos, vec3(0.9f, 0.9f, 0.9f), 1), _follow(ToFollow) {
+    _follow(ToFollow) {
+        
 }
 
 #define CAM_JUMP_DIST 20.f
@@ -22,6 +23,8 @@ Camera::Camera(const vec3 Pos, PlayerEntity& ToFollow) :
 #define CAM_MIN_DIST 5.f
 
 void Camera::Tick(const World& In) {
+    //3rd person camera. TODO: Fix
+#ifdef THREERDPERSON
     DoPhysics(In);
     vec3 off = (_follow.GetPosition() + vec3(0.5f, 3.f, 0.5f)) - vec3(_aabb.X, _aabb.Y, _aabb.Z);
     float distSquared = off.x * off.x + off.y * off.y + off.z * off.z;
@@ -37,11 +40,14 @@ void Camera::Tick(const World& In) {
         ApplyForce(off * (dist - CAM_MIN_DIST));
     }
     _vel.y *= 0.9;
+#endif
+    //First person mode.
 }
 
 //Yaw Pitch Roll order
 vec3 Camera::GetDirection() const {
     vec3 tr(0.f);
+#ifdef THREERDPERSON
     vec3 opos = _follow.GetPosition() + vec3(0.5f, 1.f, 0.5f);
     vec3 diff = (vec3(_aabb.X, _aabb.Y, _aabb.Z)) - opos;
     //Yaw
@@ -49,11 +55,23 @@ vec3 Camera::GetDirection() const {
     diff = glm::rotateY(diff, -tr.x); //Remove yaw component.
     //Pitch
     tr.y = -glm::degrees(glm::atan(diff.y, diff.z));
-
-
+#endif
+    tr.x = _yaw;
+    tr.y = _pitch;
     return tr;
+}
+
+glm::vec3 Camera::GetPosition() const {
+    return _follow.GetPosition() + vec3(0.5f, 1.75f, 0.5f);
 }
 
 PlayerEntity& Camera::GetEnt() const {
     return _follow;
+}
+
+#define MOUSE_SPEED 0.11f
+
+void Camera::OnMouseMove(int XDelta, int YDelta) {
+    _yaw -= XDelta * MOUSE_SPEED;
+    _pitch -= YDelta * MOUSE_SPEED;
 }

@@ -8,6 +8,13 @@ namespace vox {
     }
 
     class App {
+        private:
+            bool _running;
+            SDL_Surface* _surface;
+            vox::state::State* _curr;
+
+            int _mouseX;
+            int _mouseY;
         public:
             App();
 
@@ -19,10 +26,6 @@ namespace vox {
             void OnRender();
             void OnCleanup();
 
-        private:
-            bool _running;
-            SDL_Surface* _surface;
-            vox::state::State* _curr;
     };
 }
 #endif

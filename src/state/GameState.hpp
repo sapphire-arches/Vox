@@ -34,6 +34,7 @@ namespace vox {
                 }
 
                 virtual void OnMouseClick(int Button, int X, int Y);
+                virtual void OnMouseMove(const SDL_MouseMotionEvent& Motion);
         };
     }
 }

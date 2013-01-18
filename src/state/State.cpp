@@ -46,3 +46,6 @@ State& State::operator= (const State& rhs) {
 
 void State::OnMouseClick(int Button, int X, int Y) {
 }
+
+void State::OnMouseMove(const SDL_MouseMotionEvent& Motion) {
+}

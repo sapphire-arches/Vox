@@ -86,3 +86,7 @@ void Gamestate::OnMouseClick(int Button, int X, int Y) {
         _world->AddEntity(r);
     }
 }
+
+void Gamestate::OnMouseMove(const SDL_MouseMotionEvent& Motion) {
+    _world->GetCamera().OnMouseMove(Motion.x - (WIDTH / 2), Motion.y - (HEIGHT / 2));
+}

@@ -82,8 +82,6 @@ void PhysicsObject::ResolveCollision(PhysicsObject& Other) {
     InelasticCollision(tempIn, tempM, tempOut);
     _vel = tempOut[0];
     Other._vel = tempOut[1];
-    //Offset ourselves, so we don't keep colliding.
-    _aabb.X += _vel.x; _aabb.Y += _vel.y; _aabb.Z += _vel.z;
     //Zero out accelerations.
     _acc = glm::vec3(0.f);
     Other._acc = glm::vec3(0.f);
