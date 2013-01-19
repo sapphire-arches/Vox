@@ -101,6 +101,7 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
                 int magic = ManhatanDistance(x, y, z, HALFDIST, HALFDIST, HALFDIST) - 5;
                 if (magic < 0)
                     magic = 0;
+                magic = 0;
                 int lod = CHUNK_SIZE >> magic;
                 if (lod == 0)
                     lod = 1;
