@@ -1,6 +1,7 @@
 #include "Perlin.hpp"
 #include <cstdlib>
 #include <cstring>
+#include "MathUtil.hpp"
 
 #define SIZE 16
 #define SIZE_CUBED (SIZE * SIZE * SIZE)
@@ -44,20 +45,14 @@ Perlin3D& Perlin3D::operator= (const Perlin3D& Other) {
     return *this;
 }
 
-static inline int Floor(float F) {
-    if (F > 0)
-        return (int) F;
-    return (int)F - 1;
-}
-
 static inline float Lerp(float F1, float F2, float F) {
     return F2 * F + F1 * (1 - F);
 }
 
 float Perlin3D::Get(float X, float Y, float Z) {
-    int ix = Floor(X);
-    int iy = Floor(Y);
-    int iz = Floor(Z);
+    int ix = vox::Floor(X);
+    int iy = vox::Floor(Y);
+    int iz = vox::Floor(Z);
 
     float fx = X - ix;
     float fy = Y - iy;

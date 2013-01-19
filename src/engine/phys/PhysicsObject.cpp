@@ -14,6 +14,7 @@ PhysicsObject::PhysicsObject(const glm::vec3& Pos, const glm::vec3 Size, float M
     _aabb.Y = Pos.y;
     _aabb.Z = Pos.z;
     _mass = Mass;
+    _parentID = NO_PARENT;
     std::cout << "Created PhysicsObject. ID: " << _id << ". Parent ID: " << NO_PARENT << "." << std::endl;
 }
 

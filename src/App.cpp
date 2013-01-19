@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <iostream>
 #include "GraphicsDefs.hpp"
+#include <cstring>
 
 using namespace std;
 using namespace vox;
@@ -90,6 +91,7 @@ int App::OnExecute(State* First) {
     }
 
     SDL_Event event;
+    memset(&event, 0, sizeof(SDL_Event));
 
     while (_running) {
         while (SDL_PollEvent(&event)) {

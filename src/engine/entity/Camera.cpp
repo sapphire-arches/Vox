@@ -15,7 +15,8 @@ using glm::vec3;
 
 Camera::Camera(const vec3 Pos, PlayerEntity& ToFollow) : 
     _follow(ToFollow) {
-        
+    _yaw = 0;
+    _pitch = 0;    
 }
 
 #define CAM_JUMP_DIST 20.f

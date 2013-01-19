@@ -7,6 +7,7 @@ Rocket::Rocket(vec3 Pos, vec3 Dir, const PhysicsObject& Parent) : Entity(Pos, ve
     _dir = _dir / float(_dir.length());
     ApplyForce(_dir * 3.f);
     _vel = _dir * 1.f;
+    _detonate = false;
 }
 
 void Rocket::Tick(const vox::engine::World& W) {
@@ -14,6 +15,7 @@ void Rocket::Tick(const vox::engine::World& W) {
     ApplyForce((_dir * 3.f) - _vel);
     if (_detonate) {
         std::cout << "Detonating rocket:" << _id << std::endl;
+        std::cout << _aabb.X << " " << _aabb.Y << " " << _aabb.Z << std::endl;
         this->_health = 0;
     }
 }
