@@ -62,6 +62,7 @@ namespace vox {
                 void SetCameraPosition(glm::vec3 Vec);
                 void SetCameraDirection(float Yaw, float Pitch, float Roll);
                 vox::ren::TransformationManager* GetTranslationManager();
+                void MarkBlockDirty(int X, int Y, int Z);
         };
     }
 }

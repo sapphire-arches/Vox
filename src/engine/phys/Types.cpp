@@ -11,7 +11,7 @@ AABB::AABB(float Width, float Height, float Depth) {
     this->Depth = Depth;
 }
 
-bool AABB::IntersectsWorld(const vox::engine::World& W, int* Pos) const {
+bool AABB::IntersectsWorld(vox::engine::World& W, int* Pos) const {
     int xmin = vox::Floor(X);
     int ymin = vox::Floor(Y);
     int zmin = vox::Floor(Z);
@@ -23,7 +23,7 @@ bool AABB::IntersectsWorld(const vox::engine::World& W, int* Pos) const {
     for (int x = xmin; x <= xmax; ++x) {
         for (int y = ymin; y <= ymax; ++y) {
             for (int z = zmin; z <= zmax; ++z) {
-                if (W(x, y, z) != 0) {
+                if (W.GetBlock(x, y, z) != 0) {
                     Pos[0] = x; Pos[1] = y; Pos[2] = z;
                     return true;
                 }

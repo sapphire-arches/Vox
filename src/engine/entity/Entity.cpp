@@ -68,7 +68,7 @@ Entity& Entity::operator= (const Entity& Other) {
     return *this;
 }
 
-void Entity::Tick(const World& In) {
+void Entity::Tick(World& In) {
     DoPhysics(In);
     //Nothing else to do here...
 }

@@ -15,7 +15,7 @@ namespace vox {
                 public:
                     PlayerEntity(glm::vec3 Pos);
 
-                    virtual void Tick(const vox::engine::World& W);
+                    virtual void Tick(vox::engine::World& W);
 
                     void Jetpack();
                     inline float GetJetpackLevel() {

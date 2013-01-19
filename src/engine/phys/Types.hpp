@@ -27,7 +27,7 @@ namespace vox {
                         (d >= O.Z && Z <= od);
                 }
 
-                bool IntersectsWorld(const vox::engine::World& W, int* Pos) const;
+                bool IntersectsWorld(vox::engine::World& W, int* Pos) const;
             };
         }
     }

@@ -6,7 +6,7 @@ PlayerEntity::PlayerEntity(glm::vec3 Pos) : Entity(Pos, glm::vec3(0.9F, 1.9f, 0.
     _jpLevel = 0;
 }
 
-void PlayerEntity::Tick(const vox::engine::World& W) {
+void PlayerEntity::Tick(vox::engine::World& W) {
     DoPhysics(W);
     if (_jpLevel < 10.f && _onground) {
         _jpLevel += 0.2f;

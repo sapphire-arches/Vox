@@ -42,7 +42,7 @@ static inline void InelasticCollision(glm::vec3* Vel, float* Mass, glm::vec3* ou
 
 #define FRICTION 0.9
 
-void PhysicsObject::DoPhysics(const World& In) {
+void PhysicsObject::DoPhysics(World& In) {
     _lastPos.x = _aabb.X; _lastPos.y = _aabb.Y; _lastPos.z = _aabb.Z;
 
     _vel += _acc;

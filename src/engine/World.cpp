@@ -34,7 +34,7 @@ World::~World() {
 
 unsigned char ZERO = 0;
 
-unsigned char& World::operator() (int X, int Y, int Z) {
+int World::GetBlock(int X, int Y, int Z) {
     int cx = X / CHUNK_SIZE;
     int cy = Y / CHUNK_SIZE;
     int cz = Z / CHUNK_SIZE;
@@ -52,7 +52,8 @@ unsigned char& World::operator() (int X, int Y, int Z) {
     return _cache.Get(cx, cy, cz).GetBlock(lx, ly, lz);
 }
 
-unsigned char World::operator() (int X, int Y, int Z) const {
+void World::SetBlock(int X, int Y, int Z, unsigned char Val) {
+    _ren->MarkBlockDirty(X, Y, Z);
     int cx = X / CHUNK_SIZE;
     int cy = Y / CHUNK_SIZE;
     int cz = Z / CHUNK_SIZE;
@@ -67,7 +68,7 @@ unsigned char World::operator() (int X, int Y, int Z) const {
     if (Z < 0 && lz != 0)
         --cz;
     
-    return _cache.Get(cx, cy, cz).GetBlock(lx, ly, lz);
+    _cache.Get(cx, cy, cz).GetBlock(lx, ly, lz) = Val;
 }
 
 void World::AddEntity(Entity* Ent) {

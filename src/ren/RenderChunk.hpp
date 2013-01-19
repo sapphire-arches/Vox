@@ -10,6 +10,7 @@ namespace vox {
             private:
                 int _x, _y, _z;
                 int _lod;
+                bool _dirty;
                 vox::ren::Mesh* _mesh;
             public:
                 RenderChunk(int X, int Y, int Z, int LOD, vox::engine::World& For);
@@ -18,6 +19,10 @@ namespace vox {
                 inline void Render() {
                     if (_mesh)
                         _mesh->Render();
+                }
+
+                inline void MarkDirty() {
+                    _dirty = true;
                 }
 
                 inline int GetX() {
@@ -30,6 +35,10 @@ namespace vox {
 
                 inline int GetZ() {
                     return _z;
+                }
+
+                inline bool IsDirty() {
+                    return _dirty;
                 }
                 
                 inline int GetLOD() {

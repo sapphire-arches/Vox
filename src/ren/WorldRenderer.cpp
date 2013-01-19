@@ -5,6 +5,7 @@
 #include "./gl/Shader.hpp"
 #include "./gl/Util.hpp"
 #include "GraphicsDefs.hpp"
+#include "MathUtil.hpp"
 #include <cstring>
 #include <list>
 
@@ -64,13 +65,7 @@ static inline int ManhatanDistance(int x1, int y1, int z1, int x2, int y2, int z
         abs(y1 - y2) +
         abs(z1 - z2);
 }
-//
-//static int Floor (float F) {
-//    if (F < 0)
-//        return (int)F -1;
-//    return (int)F;
-//}
-//
+
 void WorldRenderer::Render(vox::state::Gamestate& GS) {
     float angle = GS.GetFrame() * 0.25;//glm::sin(GS.GetFrame() * 0.01f) * 90 + 90;
 //    std::cout << angle << std::endl;
@@ -121,7 +116,8 @@ void WorldRenderer::Render(vox::state::Gamestate& GS) {
                         curr->GetLOD() != lod ||
                         curr->GetX() != cx ||
                         curr->GetY() != cy ||
-                        curr->GetZ() != cz) {
+                        curr->GetZ() != cz ||
+                        curr->IsDirty()) {
                     ToBuildChunk temp;
                     temp.X = cx;
                     temp.Y = cy;
@@ -181,6 +177,13 @@ void WorldRenderer::SetCameraDirection(float Yaw, float Pitch, float Roll) {
     _yaw = Yaw;
     _pitch = Pitch;
     _roll = Roll;
+}
+
+void WorldRenderer::MarkBlockDirty(int X, int Y, int Z) {
+    int cx = vox::Floor(X / float(CHUNK_SIZE));
+    int cy = vox::Floor(Y / float(CHUNK_SIZE));
+    int cz = vox::Floor(Z / float(CHUNK_SIZE));
+    _chunks[GetInd(cx, cy, cz)]->MarkDirty();
 }
 
 //----------------------------------

@@ -30,7 +30,7 @@ namespace vox {
                         std::cout << "Freeing entity: " << _id << std::endl;
                     }
 
-                    virtual void Tick(const World& In);
+                    virtual void Tick(World& In);
                     virtual void Render(vox::ren::TransformationManager* Manager) const;
 
                     void Hurt(int Damage);

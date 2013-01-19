@@ -87,18 +87,18 @@ static void AddSquare(float X, float Y, float Z, int Size, int ID, Side S, std::
 }
 
 static void BuildVox(int X, int Y, int Z, int Size, World& In, std::vector<Vertex>& Verts, std::vector<int>& Ind) {
-    int id = In(X, Y, Z);
-    if (In(X + Size, Y, Z) == 0)
+    int id = In.GetBlock(X, Y, Z);
+    if (In.GetBlock(X + Size, Y, Z) == 0)
         AddSquare(X, Y, Z, Size, id, POSX, Verts, Ind);
-    if (In(X - Size, Y, Z) == 0)
+    if (In.GetBlock(X - Size, Y, Z) == 0)
         AddSquare(X, Y, Z, Size, id, NEGX, Verts, Ind);
-    if (In(X, Y + Size, Z) == 0)
+    if (In.GetBlock(X, Y + Size, Z) == 0)
         AddSquare(X, Y, Z, Size, id, POSY, Verts, Ind);
-    if (In(X, Y - Size, Z) == 0)
+    if (In.GetBlock(X, Y - Size, Z) == 0)
         AddSquare(X, Y, Z, Size, id, NEGY, Verts, Ind);
-    if (In(X, Y, Z + Size) == 0)
+    if (In.GetBlock(X, Y, Z + Size) == 0)
         AddSquare(X, Y, Z, Size, id, POSZ, Verts, Ind);
-    if (In(X, Y, Z - Size) == 0)
+    if (In.GetBlock(X, Y, Z - Size) == 0)
         AddSquare(X, Y, Z, Size, id, NEGZ, Verts, Ind);
 }
 
@@ -124,7 +124,7 @@ RenderChunk::RenderChunk(int X, int Y, int Z, int LOD, World& For) {
             for (int z = 0; z < CHUNK_SIZE; z += itr) {
                 //Global Z
                 int gz = z + bz;
-                if (For(gx, gy, gz) != 0)
+                if (For.GetBlock(gx, gy, gz) != 0)
                     BuildVox(gx, gy, gz, itr, For, verts, ind);
             }
         }
@@ -134,6 +134,7 @@ RenderChunk::RenderChunk(int X, int Y, int Z, int LOD, World& For) {
         _mesh = new Mesh(&ind[0], ind.size(), &verts[0], verts.size(), GL_QUADS);
     else
         _mesh = NULL;
+    _dirty = false;
 }
 
 RenderChunk::~RenderChunk() {
