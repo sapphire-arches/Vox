@@ -184,6 +184,31 @@ void WorldRenderer::MarkBlockDirty(int X, int Y, int Z) {
     int cy = vox::Floor(Y / float(CHUNK_SIZE));
     int cz = vox::Floor(Z / float(CHUNK_SIZE));
     _chunks[GetInd(cx, cy, cz)]->MarkDirty();
+    //Handle *puts on sunglasses* edge cases.
+    int lx = X % CHUNK_SIZE;
+    if (lx < 0)
+        lx += CHUNK_SIZE;
+    int ly = Y % CHUNK_SIZE;
+    if (ly < 0)
+        ly += CHUNK_SIZE;
+    int lz = Z % CHUNK_SIZE;
+    if (lz < 0)
+        lz += CHUNK_SIZE;
+    if (lx == 0) {
+        _chunks[GetInd(cx - 1, cy, cz)] ->MarkDirty();
+    } else if (lx == CHUNK_SIZE - 1) {
+        _chunks[GetInd(cx + 1, cy, cz)]->MarkDirty();
+    }
+    if (ly == 0) {
+        _chunks[GetInd(cx, cy - 1, cz)]->MarkDirty();
+    } else if (ly == CHUNK_SIZE - 1) {
+        _chunks[GetInd(cx, cy + 1, cz)]->MarkDirty();
+    }
+    if (lz == 0) {
+        _chunks[GetInd(cx, cy, cz - 1)]->MarkDirty();
+    } else if (lz == CHUNK_SIZE - 1) {
+        _chunks[GetInd(cx, cy, cz + 1)]->MarkDirty();
+    }
 }
 
 //----------------------------------
