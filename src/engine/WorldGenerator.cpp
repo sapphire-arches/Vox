@@ -33,7 +33,9 @@ int WorldGenerator::GetBlock(int X, int Y, int Z) {
 
     float fac = 0.;
     fac += _per.Get(X * 0.05f, Y * 0.05f, Z * 0.05f);
-    if (fac > 0.5f) {
+    if (fac > 0.7f) {
+        return 3;
+    } else if (fac > 0.5f) {
         return 1;
     }
     return 0;
