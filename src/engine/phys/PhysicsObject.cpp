@@ -48,15 +48,18 @@ void PhysicsObject::DoPhysics(const World& In) {
 //    if (_vel.x * _vel.x + _vel.y + _vel.y + _vel.z * _vel.z > 0.25f) {
 //        _vel = _vel * float(0.5 / _vel.length());
 //    }
+    int hitPos[3];
     
     _aabb.X += _vel.x;
-    if (_aabb.IntersectsWorld(In)) {
+    if (_aabb.IntersectsWorld(In, hitPos)) {
+        OnWorldHit(hitPos[0], hitPos[1], hitPos[2]);
         _aabb.X -= _vel.x;
         _vel.x = 0;
     }
 
     _aabb.Y += _vel.y;
-    if (_aabb.IntersectsWorld(In)) {
+    if (_aabb.IntersectsWorld(In, hitPos)) {
+        OnWorldHit(hitPos[0], hitPos[1], hitPos[2]);
         _aabb.Y -= _vel.y;
         if (_vel.y <= 0.001)
             _onground = true;
@@ -66,7 +69,8 @@ void PhysicsObject::DoPhysics(const World& In) {
     }
 
     _aabb.Z += _vel.z;
-    if (_aabb.IntersectsWorld(In)) {
+    if (_aabb.IntersectsWorld(In, hitPos)) {
+        OnWorldHit(hitPos[0], hitPos[1], hitPos[2]);
         _aabb.Z -= _vel.z;
         _vel.z = 0;
     }

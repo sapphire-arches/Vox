@@ -15,6 +15,7 @@ using namespace vox::engine::entity;
 using glm::vec3;
 
 World::World() : _cache(),
+    _ents(),
     _player(*(new PlayerEntity(vec3(0, 10, 0)))),
     _cam(vec3(-0, 10, 10), _player) {
     srand(0);
@@ -97,10 +98,14 @@ void World::Tick() {
     glm::vec3 grav(0, -0.01, 0.);
     while (it != _ents.end()) {
         ent = *it;
+        EntityListIterator curr = it++;
         ent->Tick(*this);
         ent->ApplyForce(grav * ent->GetMass());
 
-        ++it;
+        if (ent->GetHealth() <= 0) {
+            delete ent;
+            _ents.erase(curr);
+        }
     }
 
     _cam.Tick(*this);
@@ -155,7 +160,7 @@ void World::Tick() {
         zDir *= fac;
     }
     _player.ApplyForce(glm::vec3(xDir, 0, zDir));
-    _player._yaw = glm::degrees(camYaw);
+    _player.Yaw = glm::degrees(camYaw);
 }
 
 vec3 World::Unproject(vec3 V) {

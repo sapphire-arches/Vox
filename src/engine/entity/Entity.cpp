@@ -39,17 +39,33 @@ static vox::ren::Mesh* BuildMesh(const vec3& Size) {
     return new Mesh(ind, 24, verts, 24, GL_QUADS);
 }
 
-Entity::Entity(const vec3& Pos, const vec3& Size) : PhysicsObject(Pos, Size, Size.x * Size.y * Size.z) {
-    _mesh = BuildMesh(Size);
+Entity::Entity(const vec3& Pos, const vec3& Size, int Health) : 
+    PhysicsObject(Pos, Size, Size.x * Size.y * Size.z) {
+    _health = Health;
+    _mesh = boost::shared_ptr<Mesh>(BuildMesh(Size));
 }
 
-Entity::Entity(const vec3& Pos, const vec3& Size, const PhysicsObject& Parent) 
+Entity::Entity(const vec3& Pos, const vec3& Size, int Health,
+        const PhysicsObject& Parent) 
     : PhysicsObject(Pos, Size, Size.x * Size.y * Size.z, Parent) {
-    _mesh = BuildMesh(Size);
+    _health = Health;
+    _mesh = boost::shared_ptr<Mesh>(BuildMesh(Size));
 }
 
-Entity::~Entity() {
-    //Nothing to do here.
+
+Entity::Entity(const Entity& Other) : PhysicsObject(Other) {
+    _mesh = Other._mesh;
+    _health = Other._health;
+}
+
+Entity& Entity::operator= (const Entity& Other) {
+    if (&Other != this) {
+        return *this;
+    }
+    _mesh.reset();
+    _mesh = Other._mesh;
+
+    return *this;
 }
 
 void Entity::Tick(const World& In) {

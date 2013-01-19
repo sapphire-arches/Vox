@@ -27,6 +27,11 @@ namespace vox {
                     void DoPhysics(const World& In);
                     void ApplyForce(const glm::vec3& Force);
                     void ResolveCollision(PhysicsObject& Other);
+
+                    //Ment to be overriden by subclasses interested in collisions with other entities.
+                    virtual void OnCollision(const PhysicsObject& With) {}
+                    //Ment to be overriden by subclasses interested in collisions with the world.
+                    virtual void OnWorldHit(int X, int Y, int Z) {}
                     
                     float GetMass() const;
                     bool IsOnGround() const;

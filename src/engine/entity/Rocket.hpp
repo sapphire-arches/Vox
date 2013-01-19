@@ -9,11 +9,15 @@ namespace vox {
             class Rocket : public Entity {
                 private:
                     glm::vec3 _dir;
+                    bool _detonate;
                 public:
                     Rocket(const glm::vec3 Pos, const glm::vec3 Dir, const PhysicsObject& Parent);
-                    ~Rocket();
+                    ~Rocket() {
+                        std::cout << "ROCKETBLARG" << std::endl;
+                    }
 
                     virtual void Tick(const vox::engine::World& W);
+                    virtual void OnWorldHit(int X, int Y, int Z);
             };
         }
     }

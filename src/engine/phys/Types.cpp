@@ -16,19 +16,22 @@ static inline int Floor(float F) {
     return (int)F;
 }
 
-bool AABB::IntersectsWorld(const vox::engine::World& W) const {
+bool AABB::IntersectsWorld(const vox::engine::World& W, int* Pos) const {
     int xmin = Floor(X);
     int ymin = Floor(Y);
     int zmin = Floor(Z);
     int xmax = Floor(X + Width);
     int ymax = Floor(Y + Height);
     int zmax = Floor(Z + Depth);
+    Pos[0] = Pos[1] = Pos[2] = 0;
 
     for (int x = xmin; x <= xmax; ++x) {
         for (int y = ymin; y <= ymax; ++y) {
             for (int z = zmin; z <= zmax; ++z) {
-                if (W(x, y, z) != 0)
+                if (W(x, y, z) != 0) {
+                    Pos[0] = x; Pos[1] = y; Pos[2] = z;
                     return true;
+                }
             }
         }
     }
