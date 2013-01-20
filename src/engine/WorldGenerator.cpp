@@ -24,19 +24,28 @@ WorldGenerator& WorldGenerator::operator= (const WorldGenerator& Other) {
 #define MAX_WORLD_SIZE 128
 
 int WorldGenerator::GetBlock(int X, int Y, int Z) {
+    bool solid = false;
     if (
             abs(X) > MAX_WORLD_SIZE ||
             abs(Y) > MAX_WORLD_SIZE ||
             abs(Z) > MAX_WORLD_SIZE) {
-        return 2;
+        solid = true;
     }
 
     float fac = 0.;
     fac += _per.Get(X * 0.05f, Y * 0.05f, Z * 0.05f);
-    if (fac > 0.7f) {
-        return 3;
-    } else if (fac > 0.5f) {
-        return 1;
+    if (fac > 0.5f) {
+        solid = true;
+    }
+    if (solid) {
+        float fac2 = _per.Get(X * 0.1f, Y * 0.1f, Z * 0.1f);
+        if (fac2 > 0.66f) {
+            return 3;
+        } else if (fac2 > 0.33f) {
+            return 2;
+        } else {
+            return 1;
+        }
     }
     return 0;
 }
