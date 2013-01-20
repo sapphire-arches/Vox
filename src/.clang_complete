@@ -1,1 +1,3 @@
- -I/home/bob_twinkles/Code/CnCPP/Vox/src/
+ -I/home/bob_twinkles/Code/CnCPP/Vox/src/common
+ -I/home/bob_twinkles/Code/CnCPP/Vox/src/server
+ -I/home/bob_twinkles/Code/CnCPP/Vox/src/client

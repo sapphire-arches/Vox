@@ -124,8 +124,9 @@ RenderChunk::RenderChunk(int X, int Y, int Z, int LOD, World& For) {
             for (int z = 0; z < CHUNK_SIZE; z += itr) {
                 //Global Z
                 int gz = z + bz;
-                if (For.GetBlock(gx, gy, gz) != 0)
+                if (For.GetBlock(gx, gy, gz) != 0) {
                     BuildVox(gx, gy, gz, itr, For, verts, ind);
+                }
             }
         }
     }
@@ -135,6 +136,7 @@ RenderChunk::RenderChunk(int X, int Y, int Z, int LOD, World& For) {
     else
         _mesh = NULL;
     _dirty = false;
+
 }
 
 RenderChunk::~RenderChunk() {

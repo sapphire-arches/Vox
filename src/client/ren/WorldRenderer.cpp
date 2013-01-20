@@ -8,6 +8,7 @@
 #include "MathUtil.hpp"
 #include <cstring>
 #include <list>
+#include <algorithm>
 
 #include <iostream>
 
@@ -18,6 +19,36 @@ using namespace std;
 using namespace vox::ren;
 using namespace vox::ren::gl;
 using namespace vox::engine;
+using namespace vox::engine::entity;
+
+struct OnBlockSetHandler {
+    WorldRenderer& Ren;
+    OnBlockSetHandler(WorldRenderer& For) : Ren(For) {
+    }
+
+    void operator() (int X, int Y, int Z, unsigned char Val) {
+        Ren.MarkBlockDirty(X, Y, Z);
+    }
+};
+
+struct OnEntityAddHandler {
+    WorldRenderer& Ren;
+    OnEntityAddHandler(WorldRenderer& For) : Ren(For) {
+    }
+
+    void operator() (Entity* Ent) {
+        Ren.AddEntityRenderer(new EntityRenderer(*Ent));
+    }
+};
+
+struct OnEntityRemoveHandler {
+    WorldRenderer& Ren;
+    OnEntityRemoveHandler(WorldRenderer& For) : Ren(For) {
+    }
+
+    void operator() (Entity* Ent) {
+    }
+};
 
 static inline int GetInd(int X, int Y, int Z) {
     int x = X % VIEWDIST;
@@ -38,8 +69,13 @@ WorldRenderer::WorldRenderer(World& For) :
     _man(FOV, ASPECT),
     _cameraPos(0, 24, 0) {
     _chunks = new RenderChunk*[VIEWDIST * VIEWDIST * VIEWDIST];
+    _pitch = _yaw = _roll = 0;
 
     memset(_chunks, (int)NULL, VIEWDIST * VIEWDIST * VIEWDIST * sizeof(RenderChunk*));
+
+    For.OnBlockSet.connect(OnBlockSetHandler(*this));
+    For.OnAddEntity.connect(OnEntityAddHandler(*this));
+    For.OnRemoveEntity.connect(OnEntityRemoveHandler(*this));
 
     string m("MView");
     string p("MProj");
@@ -66,11 +102,8 @@ static inline int ManhatanDistance(int x1, int y1, int z1, int x2, int y2, int z
         abs(z1 - z2);
 }
 
-void WorldRenderer::Render(vox::state::Gamestate& GS) {
-    float angle = GS.GetFrame() * 0.25;//glm::sin(GS.GetFrame() * 0.01f) * 90 + 90;
-//    std::cout << angle << std::endl;
-   
-//    _cameraPos.x = GS.GetFrame() / 16.f;
+void WorldRenderer::Render() {
+    _man.PushMatrix();
     _man.Rotate(-_pitch, -_yaw, -_roll);
     _man.Translate(-_cameraPos.x, -_cameraPos.y, -_cameraPos.z);
     
@@ -160,6 +193,8 @@ bail:
 
     glEnableClientState(GL_COLOR_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
+
+    _man.PopMatrix();
     
     PrintGLError("Postrender");
     glFlush();
@@ -209,6 +244,14 @@ void WorldRenderer::MarkBlockDirty(int X, int Y, int Z) {
     } else if (lz == CHUNK_SIZE - 1) {
         _chunks[GetInd(cx, cy, cz + 1)]->MarkDirty();
     }
+}
+
+void WorldRenderer::AddEntityRenderer(EntityRenderer* Ent) {
+    _ents.push_front(Ent);
+}
+
+void WorldRenderer::RemoveEntityRenderer(EntityRenderer* Ent) {
+    _ents.erase(find(_ents.begin(), _ents.end(), Ent));
 }
 
 //----------------------------------

@@ -9,8 +9,7 @@
 #include "Mesh.hpp"
 #include "RenderChunk.hpp"
 #include "TransformationManager.hpp"
-
-#include "state/GameState.hpp"
+#include "EntityRenderer.hpp"
 
 namespace vox {
     namespace engine {
@@ -22,9 +21,12 @@ namespace vox {
             class ShaderProgram;
         }
 
+        class WorldRenderer;
+
         struct ToBuildChunk {
             int X, Y, Z, LOD, Ind;
             WorldRenderer* Parent;
+
 
             bool operator= (const ToBuildChunk& Other) const{
                 return 
@@ -50,19 +52,22 @@ namespace vox {
                 vox::ren::RenderChunk** _chunks;
                 glm::vec3 _cameraPos;
                 ToBuildSet _toBuild;
-                friend ToBuildChunk;
+                std::list<EntityRenderer*> _ents;
+                friend struct ToBuildChunk;
             public:
                 float _yaw, _pitch, _roll;
                 WorldRenderer(vox::engine::World& For);
                 ~WorldRenderer();
 
-                void Render(vox::state::Gamestate& GS);
+                void Render();
 
                 void SetCameraPosition(float X, float Y, float Z);
                 void SetCameraPosition(glm::vec3 Vec);
                 void SetCameraDirection(float Yaw, float Pitch, float Roll);
                 vox::ren::TransformationManager* GetTranslationManager();
                 void MarkBlockDirty(int X, int Y, int Z);
+                void AddEntityRenderer(EntityRenderer* Ent);
+                void RemoveEntityRenderer(EntityRenderer* Ent);
         };
     }
 }

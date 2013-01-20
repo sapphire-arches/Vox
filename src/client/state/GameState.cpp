@@ -2,7 +2,6 @@
 #include "App.hpp"
 #include "engine/World.hpp"
 #include "engine/entity/Rocket.hpp"
-#include "ren/WorldRenderer.hpp"
 #include "GraphicsDefs.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -22,11 +21,13 @@ Gamestate::~Gamestate() {
         delete _world;
         delete _rman;
         delete _hud;
+        delete _ren;
     }
 }
 
 void Gamestate::Enter(App& TheApp) {
     _world = new vox::engine::World();
+    _ren = new vox::ren::WorldRenderer(*_world);
     _rman = new vox::ren::RenderManager();
     _player = &_world->GetPlayer();
     _hud = new vox::ren::hud::HUD(*_player);
@@ -34,6 +35,7 @@ void Gamestate::Enter(App& TheApp) {
 
 void Gamestate::Leave(App& TheApp) {
     std::cout << "Leaving Gamestate" << std::endl;
+    delete _ren;
     delete _world;
     delete _rman;
     delete _hud;
@@ -42,7 +44,7 @@ void Gamestate::Leave(App& TheApp) {
 
 void Gamestate::Render(App& TheApp) {
     _rman->EnterGameWorldRender();
-    _world->Render(*this);
+    _ren->Render();
     _rman->LeaveGameWorldRender();
 
     _rman->EnterHUDRender();
@@ -52,6 +54,9 @@ void Gamestate::Render(App& TheApp) {
 
 void Gamestate::Tick(App& TheApp) {
     _world->Tick();
+    _ren->SetCameraPosition(_world->GetCamera().GetPosition());
+    glm::vec3 dir = _world->GetCamera().GetDirection();
+    _ren->SetCameraDirection(dir.x, dir.y, dir.z);
     ++_frame;
 }
 
@@ -73,7 +78,7 @@ void Gamestate::OnMouseClick(int Button, int X, int Y) {
 //        std::cout << dir.x << " " << dir.y << " " << dir.z << " " << dir.w << std::endl;
 //        std::cout << X << " " << Y << std::endl;
         glm::vec3 pos = _world->GetCamera().GetPosition();
-        const float OFFSET = glm::sqrt(3);
+        const float OFFSET = glm::sqrt(3.f);
         glm::vec3 off(glm::cos(cdir.x) * OFFSET, 0, glm::sin(cdir.x));
         //Position + offset to avoid clipping.
         Rocket* r = new Rocket(pos - glm::vec3(0.25, 0.25, 0.25), (glm::vec3(dir.x, dir.y, dir.z)), _world->GetPlayer());

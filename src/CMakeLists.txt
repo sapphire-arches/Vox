@@ -33,11 +33,13 @@ include_directories(${GLUT_INCLUDE_DIR})
 find_package(GLEW 1.9 REQUIRED)
 include_directories(${GLEW_INCLUDE_DIR})
 
-find_package(Boost 1.40 REQUIRED)
+#BOOST finding
+find_package(Boost 1.49 REQUIRED COMPONENTS signals)
 include_directories(${Boost_INCLUDE_DIR})
 
 find_package(SDL 1.2 REQUIRED)
 include_directories(${SDL_INCLUDE_DIR})
 
+add_subdirectory(common)
 add_subdirectory(client)
 add_subdirectory(server)

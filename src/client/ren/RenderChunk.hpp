@@ -1,7 +1,7 @@
 #ifndef _REN_RENDERCHUNK_H_
 #define _REN_RENDERCHUNK_H_
 
-#include "../engine/World.hpp"
+#include "engine/World.hpp"
 #include "Mesh.hpp"
 
 namespace vox {
