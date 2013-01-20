@@ -1,4 +1,0 @@
-We need tom implement networking!
-We also need some sort of config parser. This is lower priority, but once tech is stable we need this so we can hand the game over to Robert for balance tweaks.
-That data will also have to go over network (gravity speed, player speed, rocket speed, rocket capacity.)
-We need some text rendering. Thinking bitmap fonts. Signed distance field vector fonts sound cool, but I don't want to write the code to parse vector fonts.
