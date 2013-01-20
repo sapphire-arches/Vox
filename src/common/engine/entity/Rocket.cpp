@@ -18,8 +18,6 @@ void Rocket::Tick(vox::engine::World& W) {
     DoPhysics(W);
     ApplyForce((_dir * 3.f) - _vel);
     if (_detonate) {
-        std::cout << "Detonating rocket:" << _id << std::endl;
-        std::cout << _aabb.X << " " << _aabb.Y << " " << _aabb.Z << std::endl;
         this->_health = 0;
         int x = vox::Floor(_aabb.X + _dir.x);
         int y = vox::Floor(_aabb.Y + _dir.y);

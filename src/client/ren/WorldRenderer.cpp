@@ -47,6 +47,7 @@ struct OnEntityRemoveHandler {
     }
 
     void operator() (Entity* Ent) {
+        Ren.RemoveRendererForEntity(Ent);
     }
 };
 
@@ -173,7 +174,7 @@ void WorldRenderer::Render() {
         }
     }
 bail:
-    //XXX:This prevents valgrind from letting me profile the game. To slow...
+    //XXX:This prevents valgrind from letting me profile the game. Too slow...
     if (!_toBuild.empty()) {
         ToBuildSet::iterator it = _toBuild.begin();
         while (
@@ -191,8 +192,12 @@ bail:
         }
     }
 
-    glEnableClientState(GL_COLOR_ARRAY);
-    glEnableClientState(GL_VERTEX_ARRAY);
+    for (
+        std::list<EntityRenderer*>::iterator it = _ents.begin();
+        it != _ents.end();
+        ++it) {
+        (*it)->Render(&_man);
+    }
 
     _man.PopMatrix();
     
@@ -252,6 +257,16 @@ void WorldRenderer::AddEntityRenderer(EntityRenderer* Ent) {
 
 void WorldRenderer::RemoveEntityRenderer(EntityRenderer* Ent) {
     _ents.erase(find(_ents.begin(), _ents.end(), Ent));
+}
+
+void WorldRenderer::RemoveRendererForEntity(vox::engine::entity::Entity* Ent) {
+    std::list<EntityRenderer*>::iterator it = _ents.begin();
+    while (it != _ents.end()) {
+        std::list<EntityRenderer*>::iterator curr = it++;
+        if ((*curr)->IsRendererFor(Ent)) {
+            _ents.erase(curr);
+        }
+    }
 }
 
 //----------------------------------

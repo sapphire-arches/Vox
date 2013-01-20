@@ -22,7 +22,6 @@ namespace vox {
                     Entity& operator= (const Entity& Other);
                     
                     virtual ~Entity() {
-                        std::cout << "Freeing entity: " << _id << std::endl;
                     }
 
                     virtual void Tick(World& In);

@@ -17,6 +17,8 @@ namespace vox {
                 ~EntityRenderer();
 
                 void Render(TransformationManager* Manager) const;
+
+                bool IsRendererFor(vox::engine::entity::Entity* Ent) const;
         };
     }
 }

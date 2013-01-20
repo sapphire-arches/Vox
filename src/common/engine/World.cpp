@@ -68,7 +68,7 @@ void World::SetBlock(int X, int Y, int Z, unsigned char Val) {
 }
 
 void World::AddEntity(Entity* Ent) {
-    OnRemoveEntity(Ent);
+    OnAddEntity(Ent);
     _ents.push_back(Ent);
 }
 

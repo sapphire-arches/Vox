@@ -43,3 +43,7 @@ void EntityRenderer::Render(TransformationManager* Manager) const {
     Manager->ToGPU();
     _mesh->Render();
 }
+
+bool EntityRenderer::IsRendererFor(Entity* Ent) const {
+    return Ent == &_ent;
+}

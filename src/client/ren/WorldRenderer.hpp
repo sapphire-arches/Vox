@@ -68,6 +68,7 @@ namespace vox {
                 void MarkBlockDirty(int X, int Y, int Z);
                 void AddEntityRenderer(EntityRenderer* Ent);
                 void RemoveEntityRenderer(EntityRenderer* Ent);
+                void RemoveRendererForEntity(vox::engine::entity::Entity* Ent);
         };
     }
 }
