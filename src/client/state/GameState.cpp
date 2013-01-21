@@ -29,7 +29,8 @@ void Gamestate::Enter(App& TheApp) {
     _world = new vox::engine::World();
     _ren = new vox::ren::WorldRenderer(*_world);
     _rman = new vox::ren::RenderManager();
-    _player = &_world->GetPlayer();
+    _player = new PlayerEntity(glm::vec3(0, 0, 0));
+    _world->AddEntity(_player);
     _hud = new vox::ren::hud::HUD(*_player);
 }
 

@@ -18,9 +18,6 @@ namespace vox {
             private:
                 ChunkCache _cache;
                 EntityList _ents;
-                vox::engine::entity::PlayerEntity& _player;
-                vox::engine::entity::Camera _cam;
-
                 //No copypasta
                 World(const World& Other);
                 World& operator= (const World& Other);
@@ -38,15 +35,6 @@ namespace vox {
                 boost::signals2::signal<void (vox::engine::entity::Entity*)> OnAddEntity;
                 boost::signals2::signal<void (vox::engine::entity::Entity*)> OnRemoveEntity;
                 void Tick();
-
-                inline vox::engine::entity::PlayerEntity& GetPlayer() {
-                    return _player;
-                }
-
-                inline vox::engine::entity::Camera& GetCamera() {
-                    return _cam;
-                }
-
         };
     }
 }

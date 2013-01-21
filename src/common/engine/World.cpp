@@ -13,12 +13,8 @@ using namespace vox::engine::entity;
 using glm::vec3;
 
 World::World() : _cache(),
-    _ents(),
-    _player(*(new PlayerEntity(vec3(0, 10, 0)))),
-    _cam(vec3(-0, 10, 10), _player) {
+    _ents() {
     srand(0);
-    this->AddEntity(&_cam.GetEnt());
-    _cam.GetEnt().ApplyForce(vec3(-0.1, 0.0, 0.0));
 //    Entity* ent = new Entity(vec3(0, 10, 10), vec3(1, 2, 1));
 //    ent->ApplyForce(glm::vec3(0, 0, -0.1));
 //    this->AddEntity(ent);
