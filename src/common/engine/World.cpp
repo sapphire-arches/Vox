@@ -2,7 +2,6 @@
 #include "WorldGenerator.hpp"
 #include "Chunk.hpp"
 
-#include <SDL/SDL.h>
 #include <cstdlib>
 #include <iostream>
 #include <functional>
@@ -15,9 +14,6 @@ using glm::vec3;
 World::World() : _cache(),
     _ents() {
     srand(0);
-//    Entity* ent = new Entity(vec3(0, 10, 10), vec3(1, 2, 1));
-//    ent->ApplyForce(glm::vec3(0, 0, -0.1));
-//    this->AddEntity(ent);
 }
 
 World::~World() {
@@ -85,8 +81,6 @@ void World::Tick() {
         }
     }
 
-    _cam.Tick(*this);
-
     for (EntityListIterator en1 = _ents.begin();
             en1 != _ents.end();
             ++en1) {
@@ -100,45 +94,6 @@ void World::Tick() {
         }
     }
 
-    //Key stuff.
-    int numKeys;
-    Uint8* keys = SDL_GetKeyState(&numKeys);
-
-    const float MoveSpeed = 0.01;
-
-    float camYaw = _cam.GetDirection().x;
-    camYaw = glm::radians(camYaw);
-
-    float xDir = 0;
-    float zDir = 0;
-    //TODO: Move this out of common.
-    if (keys[SDLK_w]) {
-        xDir -= glm::sin(camYaw);
-        zDir -= glm::cos(camYaw);
-    }
-    if (keys[SDLK_s]) {
-        xDir += glm::sin(camYaw);
-        zDir += glm::cos(camYaw);
-    }
-    if (keys[SDLK_d]) {
-        xDir += glm::sin(camYaw + glm::radians(90.f));
-        zDir += glm::cos(camYaw + glm::radians(90.f));
-    }
-    if (keys[SDLK_a]) {
-        xDir -= glm::sin(camYaw + glm::radians(90.f));
-        zDir -= glm::cos(camYaw + glm::radians(90.f));
-    }
-    if (keys[SDLK_SPACE]) {
-        _player.Jetpack();
-    }
-    if (xDir * xDir + zDir * zDir > MoveSpeed * MoveSpeed) {
-        float len = glm::sqrt(xDir * xDir + zDir * zDir);
-        float fac = 1 / len * MoveSpeed;
-        xDir *= fac;
-        zDir *= fac;
-    }
-    _player.ApplyForce(glm::vec3(xDir, 0, zDir));
-    _player.Yaw = glm::degrees(camYaw);
 }
 
 /*

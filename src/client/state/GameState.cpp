@@ -31,6 +31,7 @@ void Gamestate::Enter(App& TheApp) {
     _rman = new vox::ren::RenderManager();
     _player = new PlayerEntity(glm::vec3(0, 0, 0));
     _world->AddEntity(_player);
+    _cam = new Camera(glm::vec3(0, 0, 0), *_player);
     _hud = new vox::ren::hud::HUD(*_player);
 }
 
@@ -55,16 +56,59 @@ void Gamestate::Render(App& TheApp) {
 
 void Gamestate::Tick(App& TheApp) {
     _world->Tick();
-    _ren->SetCameraPosition(_world->GetCamera().GetPosition());
-    glm::vec3 dir = _world->GetCamera().GetDirection();
+    _ren->SetCameraPosition(_cam->GetPosition());
+    glm::vec3 dir = _cam->GetDirection();
     _ren->SetCameraDirection(dir.x, dir.y, dir.z);
+
+    _cam->Tick(*_world);
+    //Key stuff.
+    int numKeys;
+    Uint8* keys = SDL_GetKeyState(&numKeys);
+
+    const float MoveSpeed = 0.01;
+
+    float camYaw = _cam->GetDirection().x;
+    camYaw = glm::radians(camYaw);
+
+    float xDir = 0;
+    float zDir = 0;
+    //TODO: Move this out of common.
+    if (keys[SDLK_w]) {
+        xDir -= glm::sin(camYaw);
+        zDir -= glm::cos(camYaw);
+    }
+    if (keys[SDLK_s]) {
+        xDir += glm::sin(camYaw);
+        zDir += glm::cos(camYaw);
+    }
+    if (keys[SDLK_d]) {
+        xDir += glm::sin(camYaw + glm::radians(90.f));
+        zDir += glm::cos(camYaw + glm::radians(90.f));
+    }
+    if (keys[SDLK_a]) {
+        xDir -= glm::sin(camYaw + glm::radians(90.f));
+        zDir -= glm::cos(camYaw + glm::radians(90.f));
+    }
+    if (keys[SDLK_SPACE]) {
+        _player->Jetpack();
+    }
+    if (xDir * xDir + zDir * zDir > MoveSpeed * MoveSpeed) {
+        float len = glm::sqrt(xDir * xDir + zDir * zDir);
+        float fac = 1 / len * MoveSpeed;
+        xDir *= fac;
+        zDir *= fac;
+    }
+    _player->ApplyForce(glm::vec3(xDir, 0, zDir));
+    _player->Yaw = glm::degrees(camYaw);
+
+
     ++_frame;
 }
 
 void Gamestate::OnMouseClick(int Button, int X, int Y) {
     if (Button == 1) {
         //Whatever format makes this work...
-        glm::vec3 cdir = _world->GetCamera().GetDirection();
+        glm::vec3 cdir = _cam->GetDirection();
 
         glm::vec4 dir(0., 0., 1., 0.);
         glm::mat4 trans(1.f);
@@ -78,15 +122,15 @@ void Gamestate::OnMouseClick(int Button, int X, int Y) {
 //        std::cout << cdir.x << " " << cdir.y << " " << cdir.z << std::endl;
 //        std::cout << dir.x << " " << dir.y << " " << dir.z << " " << dir.w << std::endl;
 //        std::cout << X << " " << Y << std::endl;
-        glm::vec3 pos = _world->GetCamera().GetPosition();
+        glm::vec3 pos = _cam->GetPosition();
         const float OFFSET = glm::sqrt(3.f);
         glm::vec3 off(glm::cos(cdir.x) * OFFSET, 0, glm::sin(cdir.x));
         //Position + offset to avoid clipping.
-        Rocket* r = new Rocket(pos - glm::vec3(0.25, 0.25, 0.25), (glm::vec3(dir.x, dir.y, dir.z)), _world->GetPlayer());
+        Rocket* r = new Rocket(pos - glm::vec3(0.25, 0.25, 0.25), (glm::vec3(dir.x, dir.y, dir.z)), *_player);
         _world->AddEntity(r);
     }
 }
 
 void Gamestate::OnMouseMove(const SDL_MouseMotionEvent& Motion) {
-    _world->GetCamera().OnMouseMove(Motion.x - (WIDTH / 2), Motion.y - (HEIGHT / 2));
+    _cam->OnMouseMove(Motion.x - (WIDTH / 2), Motion.y - (HEIGHT / 2));
 }

@@ -21,6 +21,7 @@ namespace vox {
                 vox::ren::WorldRenderer* _ren;
                 vox::ren::hud::HUD* _hud;
                 vox::engine::entity::PlayerEntity* _player;
+                vox::engine::entity::Camera* _cam;
                 int _frame;
             public:
                 Gamestate();
