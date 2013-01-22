@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <iostream>
 #include "GraphicsDefs.hpp"
+#include "platform/Timer.hpp"
 #include <cstring>
 
 using namespace std;
@@ -92,14 +93,24 @@ int App::OnExecute(State* First) {
 
     SDL_Event event;
     memset(&event, 0, sizeof(SDL_Event));
+    
+    unsigned int stime = vox::platform::CurrentTime();
+    unsigned int frame = 0;
+    unsigned int ttime = 0;
 
     while (_running) {
+        stime = vox::platform::CurrentTime();
         while (SDL_PollEvent(&event)) {
             OnEvent(&event);
         }
 
         OnLoop();
         OnRender();
+        ttime += vox::platform::CurrentTime() - stime;
+        ++frame;
+        if (frame % 60 == 0) {
+            std::cout << "Average FPS: " << (1000000. / (ttime / float(frame))) << std::endl;
+        }
     }
 
     OnCleanup();

@@ -1,5 +1,7 @@
 include_directories(.)
 
+add_subdirectory(platform)
+
 add_library(common
     engine/World
     engine/WorldGenerator

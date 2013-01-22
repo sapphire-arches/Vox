@@ -6,7 +6,6 @@ include_directories(../common)
 add_subdirectory(ren)
 add_subdirectory(state)
 add_subdirectory(res)
-add_subdirectory(platform)
 
 add_executable(client main.cpp App)
 target_link_libraries(client state ren common ${GLEW_LIBRARIES} ${SDL_LIBRARY} ${BOOST_LIBRARIES})
