@@ -2,6 +2,7 @@
 #define _ENGINE_WORLD_H_INCLUDED
 
 #include "ChunkCache.hpp"
+#include "ChunkProvider.hpp"
 #include <list>
 #include "engine/entity/PlayerEntity.hpp"
 #include "engine/entity/Entity.hpp"
@@ -22,11 +23,11 @@ namespace vox {
                 World(const World& Other);
                 World& operator= (const World& Other);
             public:
-                World();
+                World(ChunkProvider* Provider);
                 ~World();
                 
-                int GetBlock(int X, int Y, int Z);
-                void SetBlock(int X, int Y, int Z, unsigned char Val);
+                Block GetBlock(int X, int Y, int Z);
+                void SetBlock(int X, int Y, int Z, Block Val);
                 
                 //Arguments are X, Y, Z, value.
                 boost::signals2::signal<void (int, int, int, unsigned char To)> OnBlockSet;

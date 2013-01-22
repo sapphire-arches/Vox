@@ -11,7 +11,7 @@ using namespace vox::engine::entity;
 
 using glm::vec3;
 
-World::World() : _cache(),
+World::World(ChunkProvider* Provider) : _cache(Provider),
     _ents() {
     srand(0);
 }
@@ -22,7 +22,7 @@ World::~World() {
 
 unsigned char ZERO = 0;
 
-int World::GetBlock(int X, int Y, int Z) {
+Block World::GetBlock(int X, int Y, int Z) {
     int cx = X / CHUNK_SIZE;
     int cy = Y / CHUNK_SIZE;
     int cz = Z / CHUNK_SIZE;
@@ -37,10 +37,13 @@ int World::GetBlock(int X, int Y, int Z) {
     if (Z < 0 && lz != 0)
         --cz;
     
-    return _cache.Get(cx, cy, cz).GetBlock(lx, ly, lz);
+    Chunk* tr = _cache.Get(cx, cy, cz);
+    if (tr != NULL) {
+        return tr->GetBlock(lx, ly, lz);
+    }
 }
 
-void World::SetBlock(int X, int Y, int Z, unsigned char Val) {
+void World::SetBlock(int X, int Y, int Z, Block Val) {
     OnBlockSet(X, Y, Z, Val);
     int cx = X / CHUNK_SIZE;
     int cy = Y / CHUNK_SIZE;
@@ -56,7 +59,10 @@ void World::SetBlock(int X, int Y, int Z, unsigned char Val) {
     if (Z < 0 && lz != 0)
         --cz;
     
-    _cache.Get(cx, cy, cz).GetBlock(lx, ly, lz) = Val;
+    Chunk* tr = _cache.Get(cx, cy, cz);
+    if (tr != NULL) {
+        tr->GetBlock(lx, ly, lz) = Val;
+    }
 }
 
 void World::AddEntity(Entity* Ent) {

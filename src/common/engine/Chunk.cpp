@@ -13,32 +13,19 @@ static inline int GetInd(int X, int Y, int Z) {
     return ind;
 }
 
-Chunk::Chunk(int X, int Y, int Z, WorldGenerator* Gen) {
+Chunk::Chunk(int X, int Y, int Z, unsigned char* Data) {
 //    std::cout << "Building chunk ("<<X<<","<<Y<<","<<Z<<")"<<std::endl;
     _x = X;
     _y = Y;
     _z = Z;
-    _data = new unsigned char [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
- 
-    int bx = X * CHUNK_SIZE;
-    int by = Y * CHUNK_SIZE;
-    int bz = Z * CHUNK_SIZE;
-    for (int x = 0; x < CHUNK_SIZE; ++x) {
-        int gx = x + bx;
-        for (int y = 0; y < CHUNK_SIZE; ++y) {
-            int gy = y + by;
-            for (int z = 0; z < CHUNK_SIZE; ++z) {
-                int gz = z + bz;
-                _data[GetInd(x, y, z)] = Gen->GetBlock(gx, gy, gz); 
-            }
-        }
-    }
+    _data = new Block [CHUNK_BLOCKS];
+    memcpy(Data, _data, CHUNK_BLOCKS * sizeof(Block));
 }
 
 //Warning: slow as shit.
 Chunk::Chunk(const Chunk& Other) {
-    this->_data = new unsigned char [CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE];
-    memcpy(this->_data, Other._data, sizeof(unsigned char) * CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE);
+    this->_data = new Block [CHUNK_BLOCKS];
+    memcpy(this->_data, Other._data, sizeof(Block) * CHUNK_BLOCKS);
     this->_x = Other._x;
     this->_y = Other._y;
     this->_z = Other._z;
@@ -48,7 +35,7 @@ Chunk::~Chunk() {
     delete[] _data;
 }
 
-unsigned char Chunk::GetBlock(int X, int Y, int Z) const {
+Block Chunk::GetBlock(int X, int Y, int Z) const {
     if (X < 0)
         X += CHUNK_SIZE;
     if (Y < 0)
@@ -59,7 +46,7 @@ unsigned char Chunk::GetBlock(int X, int Y, int Z) const {
     return _data[GetInd(X, Y, Z)];
 }
 
-unsigned char& Chunk::GetBlock(int X, int Y, int Z) {
+Block& Chunk::GetBlock(int X, int Y, int Z) {
     if (X < 0)
         X += CHUNK_SIZE;
     if (Y < 0)

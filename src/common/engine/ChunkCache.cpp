@@ -4,10 +4,11 @@
 
 using namespace vox::engine;
 
-ChunkCache::ChunkCache() : _gen(new WorldGenerator(100)) {
+ChunkCache::ChunkCache(ChunkProvider* Provider) : _prov(Provider){
     _chunks = new Chunk*[CHUNK_CACHE_SIZE_CUBED];
-    for (int i = 0; i < CHUNK_CACHE_SIZE_CUBED; ++i)
+    for (int i = 0; i < CHUNK_CACHE_SIZE_CUBED; ++i) {
         _chunks[i] = NULL;
+    }
 }
 
 ChunkCache::~ChunkCache() {
@@ -17,14 +18,13 @@ ChunkCache::~ChunkCache() {
             delete _chunks[i];
     }
     delete[] _chunks;
-    delete _gen;
 }
 
 static inline int Ind(int CX, int CY, int CZ) {
     return CX + CY * CHUNK_CACHE_SIZE + CZ * CHUNK_CACHE_SIZE * CHUNK_CACHE_SIZE;
 }
 
-Chunk& ChunkCache::Get(int CX, int CY, int CZ) {
+Chunk* ChunkCache::Get(int CX, int CY, int CZ) {
     int x = CX % CHUNK_CACHE_SIZE;
     int y = CY % CHUNK_CACHE_SIZE;
     int z = CZ % CHUNK_CACHE_SIZE;
@@ -40,15 +40,16 @@ Chunk& ChunkCache::Get(int CX, int CY, int CZ) {
             || tr->GetX() != CX
             || tr->GetY() != CY
             || tr->GetZ() != CZ) {
-        if (tr != NULL)
+        if (tr != NULL) {
             delete tr;
-        tr = new Chunk(CX, CY, CZ, _gen);
+        }
+        tr = _prov->GetChunk(CX, CY, CZ);
         _chunks[ind] = tr;
     }
-    return *tr;
+    return tr;
 }
 
-Chunk ChunkCache::Get(int CX, int CY, int CZ) const {
+Chunk* ChunkCache::Get(int CX, int CY, int CZ) const {
     int x = CX % CHUNK_CACHE_SIZE;
     int y = CY % CHUNK_CACHE_SIZE;
     int z = CZ % CHUNK_CACHE_SIZE;
@@ -64,10 +65,11 @@ Chunk ChunkCache::Get(int CX, int CY, int CZ) const {
             || tr->GetX() != CX
             || tr->GetY() != CY
             || tr->GetZ() != CZ) {
-        if (tr != NULL)
+        if (tr != NULL) {
             delete tr;
-        tr = new Chunk(CX, CY, CZ, _gen);
+        }
+        tr = _prov->GetChunk(CX, CY, CZ);
         _chunks[ind] = tr;
     }
-    return *tr;
+    return tr;
 }

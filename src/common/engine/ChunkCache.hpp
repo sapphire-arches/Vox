@@ -3,6 +3,7 @@
 
 #include "Chunk.hpp"
 #include "WorldGenerator.hpp"
+#include "ChunkProvider.hpp"
 
 #define CHUNK_CACHE_SIZE 16
 #define CHUNK_CACHE_SIZE_CUBED CHUNK_CACHE_SIZE * CHUNK_CACHE_SIZE * CHUNK_CACHE_SIZE
@@ -12,13 +13,13 @@ namespace vox {
         class ChunkCache {
             private:
                 Chunk** _chunks;
-                WorldGenerator* _gen;
+                ChunkProvider* _prov;
             public:
-                ChunkCache();
+                ChunkCache(ChunkProvider* Provider);
                 ~ChunkCache();
 
-                Chunk& Get(int CX, int CY, int CZ);
-                Chunk Get(int CX, int CY, int CZ) const;
+                Chunk* Get(int CX, int CY, int CZ);
+                Chunk* Get(int CX, int CY, int CZ) const;
         };
     }
 }

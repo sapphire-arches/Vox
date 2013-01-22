@@ -2,6 +2,7 @@
 #include "App.hpp"
 #include "engine/World.hpp"
 #include "engine/entity/Rocket.hpp"
+#include "engine/NetworkChunkProvider.hpp"
 #include "GraphicsDefs.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -26,7 +27,8 @@ Gamestate::~Gamestate() {
 }
 
 void Gamestate::Enter(App& TheApp) {
-    _world = new vox::engine::World();
+    vox::engine::NetworkChunkProvider* prov = new vox::engine::NetworkChunkProvider();
+    _world = new vox::engine::World(prov);
     _ren = new vox::ren::WorldRenderer(*_world);
     _rman = new vox::ren::RenderManager();
     _player = new PlayerEntity(glm::vec3(0, 0, 0));
