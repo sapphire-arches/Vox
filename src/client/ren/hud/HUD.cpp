@@ -40,11 +40,14 @@ void HUD::Render() {
     glUniformMatrix4fvARB(_mloc, 1, GL_FALSE, glm::value_ptr(_mview));
     glUniformMatrix4fvARB(_ploc, 1, GL_FALSE, glm::value_ptr(_proj));
 
-    float lvl = _moniter.GetJetpackLevel() / 10.f;
+    float lvl = _moniter.GetJetpackLevel() / float(PLAYER_MAX_JETPACK);
+    float health = _moniter.GetHealth() / float(PLAYER_MAX_HEALTH);
     glBegin(GL_QUADS);
-        glColor3f(0.2, 0.2, 0.2);
-        Draw2DBox(0., 585., 110., 600., LAYER_BACK);
-        glColor3f(1., 0., 0.);
+        glColor3ub(0xFD, 0xF6, 0xE3);
+        Draw2DBox(0., 565., 115., 600., LAYER_BACK);
+        glColor3ub(0xDC, 0x32, 0x2F);
         Draw2DBox(5., 590., 100. * lvl + 5., 600., LAYER_DATA);
+        glColor3ub(0x85, 0x99, 0x00);
+        Draw2DBox(5., 575., 100. * health + 5., 585., LAYER_DATA);
     glEnd();
 }

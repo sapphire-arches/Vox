@@ -2,6 +2,8 @@
 #define _ENGINE_ENTITY_PLAYERENTITY_H_
 
 #include "engine/entity/Entity.hpp"
+#define PLAYER_MAX_HEALTH 100
+#define PLAYER_MAX_JETPACK 10.f
 
 namespace vox {
     namespace engine {

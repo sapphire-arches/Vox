@@ -2,17 +2,17 @@
 
 using namespace vox::engine::entity;
 
-PlayerEntity::PlayerEntity(glm::vec3 Pos) : Entity(Pos, glm::vec3(0.9F, 1.9f, 0.9f), 100) {
+PlayerEntity::PlayerEntity(glm::vec3 Pos) : Entity(Pos, glm::vec3(0.9F, 1.9f, 0.9f), PLAYER_MAX_HEALTH) {
     _jpLevel = 0;
 }
 
 void PlayerEntity::Tick(vox::engine::World& W) {
     DoPhysics(W);
-    if (_jpLevel < 10.f && _onground) {
+    if (_jpLevel < PLAYER_MAX_JETPACK && _onground) {
         _jpLevel += 0.2f;
     }
-    if (_jpLevel > 10.f) {
-        _jpLevel = 10.f;
+    if (_jpLevel > PLAYER_MAX_JETPACK) {
+        _jpLevel = PLAYER_MAX_JETPACK;
     }
 }
 
