@@ -2,10 +2,11 @@ include_directories(.)
 
 add_subdirectory(platform)
 
-add_library(common
+add_library(common-util
     engine/util/Perlin
     engine/util/Raymarch
-    engine/util/SpatialHashtable
+    )
+add_library(common
     engine/World
     engine/WorldGenerator
     engine/Chunk
@@ -18,4 +19,5 @@ add_library(common
     engine/phys/Types
     )
 
-target_link_libraries(common ${BOOST_LIBRARIES})
+target_link_libraries(common common-util ${BOOST_LIBRARIES})
+

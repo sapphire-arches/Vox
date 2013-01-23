@@ -12,8 +12,7 @@ namespace vox {
     namespace engine {
         class ChunkCache {
             private:
-                typedef vox::engine::util::SpatialHashtable<Chunk, CHUNK_CACHE_SIZE> Cache;
-                Cache _cache;
+                vox::engine::util::SpatialHashtable<Chunk*, CHUNK_CACHE_SIZE> _cache;
                 ChunkProvider* _prov;
             public:
                 ChunkCache(ChunkProvider* Provider);
