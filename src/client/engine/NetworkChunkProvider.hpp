@@ -11,7 +11,8 @@ namespace vox {
         class NetworkChunkProvider : public ChunkProvider {
             private:
                 NetworkListner _listen;
-                boost::interprocess::message_queue _queue;
+                boost::interprocess::message_queue* _in;
+                boost::interprocess::message_queue* _req;
             public:
                 //TODO: Impelent this
 //                NetworkChunkProvider(boost::asio::ip::udp::socket& Listen);

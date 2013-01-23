@@ -1,4 +1,5 @@
 #include "WorldGenerator.hpp"
+#include "engine/Chunk.hpp"
 #include <cmath>
 
 using namespace std;
@@ -23,7 +24,7 @@ WorldGenerator& WorldGenerator::operator= (const WorldGenerator& Other) {
 
 #define MAX_WORLD_SIZE 128
 
-int WorldGenerator::GetBlock(int X, int Y, int Z) {
+Block WorldGenerator::GetBlock(int X, int Y, int Z) {
     bool solid = false;
     if (
             abs(X) > MAX_WORLD_SIZE ||
@@ -48,4 +49,17 @@ int WorldGenerator::GetBlock(int X, int Y, int Z) {
         }
     }
     return 0;
+}
+
+void WorldGenerator::Fill (int CX, int CY, int CZ, Block* Blocks) {
+    int bx = CX * CHUNK_SIZE;
+    int by = CY * CHUNK_SIZE;
+    int bz = CZ * CHUNK_SIZE;
+    for (int x = 0; x < CHUNK_SIZE; ++x) {
+        for (int y = 0; y < CHUNK_SIZE; ++y) {
+            for (int z = 0; z < CHUNK_SIZE; ++z) {
+                Blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE] = GetBlock(bx + x, by + y, bz + z);
+            }
+        }
+    }
 }

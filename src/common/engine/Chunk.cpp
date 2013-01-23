@@ -13,7 +13,7 @@ static inline int GetInd(int X, int Y, int Z) {
     return ind;
 }
 
-Chunk::Chunk(int X, int Y, int Z, unsigned char* Data) {
+Chunk::Chunk(int X, int Y, int Z, Block* Data) {
 //    std::cout << "Building chunk ("<<X<<","<<Y<<","<<Z<<")"<<std::endl;
     _x = X;
     _y = Y;

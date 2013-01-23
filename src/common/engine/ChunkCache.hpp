@@ -4,22 +4,22 @@
 #include "Chunk.hpp"
 #include "WorldGenerator.hpp"
 #include "ChunkProvider.hpp"
+#include "engine/util/SpatialHashtable.hpp"
 
 #define CHUNK_CACHE_SIZE 16
-#define CHUNK_CACHE_SIZE_CUBED CHUNK_CACHE_SIZE * CHUNK_CACHE_SIZE * CHUNK_CACHE_SIZE
 
 namespace vox {
     namespace engine {
         class ChunkCache {
             private:
-                Chunk** _chunks;
+                typedef vox::engine::util::SpatialHashtable<Chunk, CHUNK_CACHE_SIZE> Cache;
+                Cache _cache;
                 ChunkProvider* _prov;
             public:
                 ChunkCache(ChunkProvider* Provider);
                 ~ChunkCache();
 
                 Chunk* Get(int CX, int CY, int CZ);
-                Chunk* Get(int CX, int CY, int CZ) const;
         };
     }
 }

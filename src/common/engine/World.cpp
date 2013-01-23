@@ -41,6 +41,7 @@ Block World::GetBlock(int X, int Y, int Z) {
     if (tr != NULL) {
         return tr->GetBlock(lx, ly, lz);
     }
+    return 0;
 }
 
 void World::SetBlock(int X, int Y, int Z, Block Val) {

@@ -1,6 +1,7 @@
 #ifndef _ENGINE_WORLDGENERATOR_H_
 #define _ENGINE_WORLDGENERATOR_H_
 #include "util/Perlin.hpp"
+#include "engine/Block.hpp"
 
 namespace vox {
     namespace engine {
@@ -13,7 +14,8 @@ namespace vox {
 
                 WorldGenerator& operator= (const WorldGenerator& Other);
 
-                int GetBlock(int X, int Y, int Z);
+                Block GetBlock(int X, int Y, int Z);
+                void Fill(int CX, int CY, int CZ, Block* Blocks);
         };
     }
 }

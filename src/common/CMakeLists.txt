@@ -3,6 +3,9 @@ include_directories(.)
 add_subdirectory(platform)
 
 add_library(common
+    engine/util/Perlin
+    engine/util/Raymarch
+    engine/util/SpatialHashtable
     engine/World
     engine/WorldGenerator
     engine/Chunk
@@ -13,8 +16,6 @@ add_library(common
     engine/entity/Rocket
     engine/phys/PhysicsObject
     engine/phys/Types
-    engine/util/Perlin
-    engine/util/Raymarch
     )
 
 target_link_libraries(common ${BOOST_LIBRARIES})

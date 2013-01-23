@@ -1,14 +1,13 @@
 #ifndef _ENGINE_CHUNK_H_
 #define _ENGINE_CHUNK_H_
 
-#include "WorldGenerator.hpp"
+#include "Block.hpp"
 
 #define CHUNK_SIZE 16
 #define CHUNK_BLOCKS CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE
 
 namespace vox {
     namespace engine {
-        typedef unsigned char Block;
 
         class Chunk {
             private:
@@ -16,7 +15,7 @@ namespace vox {
                 Block* _data;
             public:
                 //We copy data, dealoc it your self plz.
-                Chunk(int X, int Y, int Z, unsigned char* Data);
+                Chunk(int X, int Y, int Z, Block* Data);
                 Chunk(const Chunk& Other);
                 ~Chunk();
 
