@@ -15,10 +15,11 @@ namespace vox {
                 vox::engine::util::SpatialHashtable<Chunk*, CHUNK_CACHE_SIZE> _cache;
                 ChunkProvider* _prov;
             public:
-                ChunkCache(ChunkProvider* Provider);
+                ChunkCache();
                 ~ChunkCache();
 
                 Chunk* Get(int CX, int CY, int CZ);
+                void SetChunkProvider(ChunkProvider* Provider);
         };
     }
 }

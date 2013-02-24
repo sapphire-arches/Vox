@@ -9,6 +9,7 @@ using namespace vox::ren;
 using namespace vox::engine;
 
 //COLOR DEFINITIONS
+#define NUM_COLORS 4
 static float Colors[][3] = {
     {0.0, 0.0, 0.0},
     {0.9, 0.9, 0.9},
@@ -75,9 +76,13 @@ static void AddSquare(float X, float Y, float Z, int Size, int ID, Side S, std::
 
     int basei = Verts.size();
     for (int i = 0; i < 4; ++i) {
-        v[i].r = Colors[ID][0];//0.5f;//fabs(v[i].y / 16.0f);
-        v[i].g = Colors[ID][1];// 1.f;//fabs(v[i].y / 16.0f);
-        v[i].b = Colors[ID][2];//0.5f;//fabs(v[i].y / 16.0f);
+        if (ID < NUM_COLORS) {
+            v[i].r = Colors[ID][0];//0.5f;//fabs(v[i].y / 16.0f);
+            v[i].g = Colors[ID][1];// 1.f;//fabs(v[i].y / 16.0f);
+            v[i].b = Colors[ID][2];//0.5f;//fabs(v[i].y / 16.0f);
+        } else {
+            v[i].r = v[i].b = v[i].g = 0;
+        }
         v[i].nx = norm.x;
         v[i].ny = norm.y;
         v[i].nz = norm.z;
@@ -136,7 +141,6 @@ RenderChunk::RenderChunk(int X, int Y, int Z, int LOD, World& For) {
     else
         _mesh = NULL;
     _dirty = false;
-
 }
 
 RenderChunk::~RenderChunk() {

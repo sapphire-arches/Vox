@@ -1,26 +1,30 @@
-#ifndef _CLIENT_ENGINE_NETWORKLISTNER_H_
-#define _CLIENT_ENGINE_NETWORKLISTNER_H_
+#ifndef _VOX_ENGINE_NETWORKLISTNER_H_
+#define _VOX_ENGINE_NETWORKLISTNER_H_
 
-#define MQ_CHUNK_OUT "ClientChunkQueue"
-#define MQ_CHUNK_REQ "ClientChunkRequestQueue"
-
-#include <boost/thread/thread.hpp>
-#include <boost/interprocess/ipc/message_queue.hpp>
+#include "engine/World.hpp"
+#include "engine/ChunkProvider.hpp"
+#include "engine/WorldGenerator.hpp"
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
 
 namespace vox {
     namespace engine {
-        class NetworkListner {
+        class NetworkListner : public ChunkProvider {
             private:
-                boost::thread _thread;
-
-                //Not copyable.
-                NetworkListner(const NetworkListner& Other);
-                NetworkListner& operator= (const NetworkListner& Other);
+                boost::asio::ip::udp::socket* _sock;
+                boost::asio::io_service _service;
+                vox::engine::World& _world;
+                //Temporary stuff
+                WorldGenerator _TEMPTHINGY;
+                Block* _TEMPBLOCKS;
             public:
-                NetworkListner();
+                NetworkListner(
+                        const boost::asio::ip::udp::endpoint Endpoint,
+                        vox::engine::World& World
+                        );
                 ~NetworkListner();
 
-                bool IsRunning();
+                virtual vox::engine::Chunk* GetChunk(int CX, int CY, int CZ);
         };
     }
 }

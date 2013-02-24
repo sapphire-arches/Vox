@@ -4,7 +4,8 @@
 
 using namespace vox::engine;
 
-ChunkCache::ChunkCache(ChunkProvider* Provider) : _prov(Provider){
+ChunkCache::ChunkCache() {
+    _prov = NULL;
 }
 
 ChunkCache::~ChunkCache() {
@@ -20,8 +21,17 @@ Chunk* ChunkCache::Get(int CX, int CY, int CZ) {
         if (tr != NULL) {
             delete tr;
         }
-        tr = _prov->GetChunk(CX, CY, CZ);
-        _cache.Set(CX, CY, CZ, tr);
+        if (_prov != NULL) {
+            tr = _prov->GetChunk(CX, CY, CZ);
+            _cache.Set(CX, CY, CZ, tr);
+        } else {
+            std::cout << "Error: Asked chunk cache for chunk without setting a provider!" << std::endl;
+            std::exit(-1);
+        }
     }
     return tr;
+}
+
+void ChunkCache::SetChunkProvider(ChunkProvider* Provider) {
+    _prov = Provider;
 }

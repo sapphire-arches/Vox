@@ -1,6 +1,7 @@
 #include "WorldGenerator.hpp"
 #include "engine/Chunk.hpp"
 #include <cmath>
+#include <iostream>
 
 using namespace std;
 using namespace vox::engine;
@@ -58,7 +59,8 @@ void WorldGenerator::Fill (int CX, int CY, int CZ, Block* Blocks) {
     for (int x = 0; x < CHUNK_SIZE; ++x) {
         for (int y = 0; y < CHUNK_SIZE; ++y) {
             for (int z = 0; z < CHUNK_SIZE; ++z) {
-                Blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE] = GetBlock(bx + x, by + y, bz + z);
+                Block tmp = GetBlock(bx + x, by + y, bz + z);
+                Blocks[x + y * CHUNK_SIZE + z * CHUNK_SIZE * CHUNK_SIZE] = tmp; 
             }
         }
     }

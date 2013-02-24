@@ -19,7 +19,8 @@ Chunk::Chunk(int X, int Y, int Z, Block* Data) {
     _y = Y;
     _z = Z;
     _data = new Block [CHUNK_BLOCKS];
-    memcpy(Data, _data, CHUNK_BLOCKS * sizeof(Block));
+    memcpy(_data, Data, CHUNK_BLOCKS * sizeof(Block));
+//    memset(_data, 0, CHUNK_BLOCKS * sizeof(Block));
 }
 
 //Warning: slow as shit.

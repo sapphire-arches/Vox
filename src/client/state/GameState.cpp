@@ -2,15 +2,17 @@
 #include "App.hpp"
 #include "engine/World.hpp"
 #include "engine/entity/Rocket.hpp"
-#include "engine/NetworkChunkProvider.hpp"
+#include "engine/NetworkListner.hpp"
 #include "GraphicsDefs.hpp"
 
+#include <boost/asio.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
 using namespace vox;
 using namespace vox::engine::entity;
 using namespace vox::state;
+using namespace boost::asio::ip;
 
 Gamestate::Gamestate() : 
     State() {
@@ -27,8 +29,13 @@ Gamestate::~Gamestate() {
 }
 
 void Gamestate::Enter(App& TheApp) {
-    vox::engine::NetworkChunkProvider* prov = new vox::engine::NetworkChunkProvider();
-    _world = new vox::engine::World(prov);
+    _world = new vox::engine::World();
+    vox::engine::NetworkListner* prov =
+        new vox::engine::NetworkListner(
+                udp::endpoint(address::from_string("127.0.0.1"), 12090),
+                *_world
+                );
+    _world->SetChunkProvider(prov);
     _ren = new vox::ren::WorldRenderer(*_world);
     _rman = new vox::ren::RenderManager();
     _player = new PlayerEntity(glm::vec3(0, 0, 0));

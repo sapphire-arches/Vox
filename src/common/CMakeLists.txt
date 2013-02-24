@@ -20,4 +20,3 @@ add_library(common
     )
 
 target_link_libraries(common common-util ${BOOST_LIBRARIES})
-

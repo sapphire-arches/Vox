@@ -11,7 +11,8 @@ using namespace vox::engine::entity;
 
 using glm::vec3;
 
-World::World(ChunkProvider* Provider) : _cache(Provider),
+World::World() : 
+    _cache(),
     _ents() {
     srand(0);
 }
@@ -103,21 +104,6 @@ void World::Tick() {
 
 }
 
-/*
-vec3 World::Unproject(vec3 V) {
-    vox::ren::TransformationManager* man = _ren->GetTranslationManager();
-
-    man->PushMatrix();
-
-    vec3 cameraPos = _cam.GetPosition();
-        
-    man->Rotate(-_ren->_pitch, -_ren->_yaw, -_ren->_roll);
-    man->Translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-
-    vec3 tr = man->Unproject(V);
-
-    man->PopMatrix();
-
-    return tr;
+void World::SetChunkProvider(ChunkProvider* Provider) {
+    _cache.SetChunkProvider(Provider);
 }
-*/

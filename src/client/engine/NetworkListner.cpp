@@ -1,50 +1,31 @@
 #include "NetworkListner.hpp"
-#include "engine/Chunk.hpp"
-#include "engine/WorldGenerator.hpp"
-#include "InternalMessage.hpp"
+#include <iostream>
 
 using namespace vox::engine;
-using namespace vox::engine::client;
-using namespace boost::interprocess;
+using namespace boost::asio;
+using namespace boost::asio::ip;
 
-static void ListenFunc();
-
-NetworkListner::NetworkListner() :
-    _thread(ListenFunc) {
+NetworkListner::NetworkListner(const ip::udp::endpoint Endpoint, World& W) :
+     ChunkProvider()
+    , _service()
+    , _world(W)
+    , _TEMPTHINGY(100) {
+    _TEMPBLOCKS = new Block[CHUNK_BLOCKS];
+    _sock = new ip::udp::socket(_service, Endpoint);
 }
 
 NetworkListner::~NetworkListner() {
-}
-
-bool NetworkListner::IsRunning() {
-    return _thread.joinable();
-}
-
-static void ListenFunc() {
-    message_queue::remove(MQ_CHUNK_OUT); //Delete from last crash.
-    message_queue _chunkOut(create_only, MQ_CHUNK_OUT, 4, CHUNK_BLOCKS * sizeof (Block));
-    message_queue _chunkReq(open_only, MQ_CHUNK_REQ);
-    Block temp[CHUNK_BLOCKS];
-    WorldGenerator g(100);
-
-    client::Message msg;
-    msg.Type = MSG_NO_MSG;
-    unsigned int priority;
-    message_queue::size_type recieveSize;
-
-    while (msg.Type != MSG_QUIT) {
-        _chunkReq.receive(&msg, sizeof(Message), recieveSize, priority);
-        if (msg.Type == MSG_CHUNK_REQ) {
-            int x = msg.Data.CRequest.X;
-            int y = msg.Data.CRequest.Y;
-            int z = msg.Data.CRequest.Z;
-            g.Fill(x, y, z, temp);
-            std::cout << "Magic" << std::endl;
-            _chunkOut.send(temp, sizeof(Block) * CHUNK_BLOCKS, 0);
-        } else {
-            std::cout << "Network listning thread got message of type: " << msg.Type << std::endl;
-        }
+    delete _sock;
+    delete[] _TEMPBLOCKS;
+    int qcount;
+    if ((qcount = _service.poll()) > 0) {
+        std::cout << "Client network listner service object has " << qcount << " more tasks." << std::endl;
+        _service.run();
     }
+    _service.stop();
+}
 
-    message_queue::remove(MQ_CHUNK_REQ);
+Chunk* NetworkListner::GetChunk(int CX, int CY, int CZ) {
+    _TEMPTHINGY.Fill(CX, CY, CZ, _TEMPBLOCKS);
+    return new Chunk(CX, CY, CZ, _TEMPBLOCKS);
 }
