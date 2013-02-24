@@ -8,4 +8,4 @@ add_library(ren
     hud/HUD
     Mesh)
 add_subdirectory(gl)
-target_link_libraries(ren common graphics state platform ${OPENGL_gl_LIBRARY})
+target_link_libraries(ren common graphics state platform ${OPENGL_gl_LIBRARY} ${BOOST_LIBRARIES})

@@ -34,7 +34,7 @@ find_package(GLEW 1.9 REQUIRED)
 include_directories(${GLEW_INCLUDE_DIR})
 
 #BOOST finding
-find_package(Boost 1.46 REQUIRED COMPONENTS system thread)
+find_package(Boost 1.46 REQUIRED COMPONENTS system thread signals)
 include_directories(${Boost_INCLUDE_DIR})
 
 find_package(SDL 1.2 REQUIRED)

@@ -9,4 +9,4 @@ add_subdirectory(state)
 add_subdirectory(res)
 
 add_executable(client main.cpp App)
-target_link_libraries(client state ren common client_engine ${GLEW_LIBRARIES} ${SDL_LIBRARY} ${BOOST_LIBRARIES})
+target_link_libraries(client state ren common client_engine ${GLEW_LIBRARIES} ${SDL_LIBRARY} ${Boost_LIBRARIES})

@@ -7,7 +7,7 @@
 #include "engine/entity/PlayerEntity.hpp"
 #include "engine/entity/Entity.hpp"
 #include "engine/entity/Camera.hpp"
-#include <boost/signals2.hpp>
+#include <boost/signals.hpp>
 
 namespace vox {
     namespace engine {
@@ -30,11 +30,11 @@ namespace vox {
                 void SetBlock(int X, int Y, int Z, Block Val);
                 
                 //Arguments are X, Y, Z, value.
-                boost::signals2::signal<void (int, int, int, unsigned char To)> OnBlockSet;
+                boost::signal<void (int, int, int, unsigned char To)> OnBlockSet;
 
                 void AddEntity(vox::engine::entity::Entity* Ent);
-                boost::signals2::signal<void (vox::engine::entity::Entity*)> OnAddEntity;
-                boost::signals2::signal<void (vox::engine::entity::Entity*)> OnRemoveEntity;
+                boost::signal<void (vox::engine::entity::Entity*)> OnAddEntity;
+                boost::signal<void (vox::engine::entity::Entity*)> OnRemoveEntity;
                 void Tick(int& DT);
 
                 void SetChunkProvider(ChunkProvider* Provider);

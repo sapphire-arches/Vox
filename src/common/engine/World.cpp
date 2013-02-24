@@ -46,7 +46,6 @@ Block World::GetBlock(int X, int Y, int Z) {
 }
 
 void World::SetBlock(int X, int Y, int Z, Block Val) {
-    OnBlockSet(X, Y, Z, Val);
     int cx = X / CHUNK_SIZE;
     int cy = Y / CHUNK_SIZE;
     int cz = Z / CHUNK_SIZE;
@@ -63,7 +62,11 @@ void World::SetBlock(int X, int Y, int Z, Block Val) {
     
     Chunk* tr = _cache.Get(cx, cy, cz);
     if (tr != NULL) {
-        tr->GetBlock(lx, ly, lz) = Val;
+        Block& b = tr->GetBlock(lx, ly, lz);
+        if (b != Val) {
+            b = Val;
+            OnBlockSet(X, Y, Z, Val);
+        }
     }
 }
 

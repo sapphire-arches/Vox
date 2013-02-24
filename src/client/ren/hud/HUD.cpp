@@ -61,6 +61,6 @@ void HUD::Render(vox::state::Gamestate* GS) {
         Draw2DBox(5., 590., 100. * lvl + 5., 600., LAYER_DATA);
         glColor3ub(0x85, 0x99, 0x00);
         Draw2DBox(5., 575., 100. * health + 5., 585., LAYER_DATA);
-        DrawStat(delta, 0, 0, 100, 16, LAYER_DATA);
+        DrawStat(delta, 0, 0, 100, 4, LAYER_DATA);
     glEnd();
 }

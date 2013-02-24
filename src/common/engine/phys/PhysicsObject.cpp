@@ -15,7 +15,7 @@ PhysicsObject::PhysicsObject(const glm::vec3& Pos, const glm::vec3 Size, float M
     _aabb.Z = Pos.z;
     _mass = Mass;
     _parentID = NO_PARENT;
-    std::cout << "Created PhysicsObject. ID: " << _id << ". Parent ID: " << NO_PARENT << "." << std::endl;
+//    std::cout << "Created PhysicsObject. ID: " << _id << ". Parent ID: " << NO_PARENT << "." << std::endl;
 }
 
 PhysicsObject::PhysicsObject(const glm::vec3& Pos, const glm::vec3 Size, float Mass, const PhysicsObject& Parent) :
@@ -25,7 +25,7 @@ PhysicsObject::PhysicsObject(const glm::vec3& Pos, const glm::vec3 Size, float M
     _aabb.Z = Pos.z;
     _mass = Mass;
     _parentID = Parent._id;
-    std::cout << "Created PhysicsObject. ID: " << _id << ". Parent ID: " << Parent._id << "." << std::endl;
+//    std::cout << "Created PhysicsObject. ID: " << _id << ". Parent ID: " << Parent._id << "." << std::endl;
 }
 
 #define C_OF_RESTITUTION 0.9f

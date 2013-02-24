@@ -224,7 +224,9 @@ void WorldRenderer::MarkBlockDirty(int X, int Y, int Z) {
     int cx = vox::Floor(X / float(CHUNK_SIZE));
     int cy = vox::Floor(Y / float(CHUNK_SIZE));
     int cz = vox::Floor(Z / float(CHUNK_SIZE));
-    _chunks[GetInd(cx, cy, cz)]->MarkDirty();
+    RenderChunk* tmp = NULL;
+    tmp = _chunks[GetInd(cx, cy, cz)];
+    if (tmp != NULL) tmp->MarkDirty();
     //Handle *puts on sunglasses* edge cases.
     int lx = X % CHUNK_SIZE;
     if (lx < 0)
@@ -236,19 +238,25 @@ void WorldRenderer::MarkBlockDirty(int X, int Y, int Z) {
     if (lz < 0)
         lz += CHUNK_SIZE;
     if (lx == 0) {
-        _chunks[GetInd(cx - 1, cy, cz)] ->MarkDirty();
+        tmp = _chunks[GetInd(cx - 1, cy, cz)];
+        if (tmp != NULL) tmp->MarkDirty();
     } else if (lx == CHUNK_SIZE - 1) {
-        _chunks[GetInd(cx + 1, cy, cz)]->MarkDirty();
+        tmp = _chunks[GetInd(cx + 1, cy, cz)];
+        if (tmp != NULL) tmp->MarkDirty();
     }
     if (ly == 0) {
-        _chunks[GetInd(cx, cy - 1, cz)]->MarkDirty();
+        tmp = _chunks[GetInd(cx, cy - 1, cz)];
+        if (tmp != NULL) tmp->MarkDirty();
     } else if (ly == CHUNK_SIZE - 1) {
-        _chunks[GetInd(cx, cy + 1, cz)]->MarkDirty();
+        tmp = _chunks[GetInd(cx, cy + 1, cz)];
+        if (tmp != NULL) tmp->MarkDirty();
     }
     if (lz == 0) {
-        _chunks[GetInd(cx, cy, cz - 1)]->MarkDirty();
+        tmp = _chunks[GetInd(cx, cy, cz - 1)];
+        if (tmp != NULL) tmp->MarkDirty();
     } else if (lz == CHUNK_SIZE - 1) {
-        _chunks[GetInd(cx, cy, cz + 1)]->MarkDirty();
+        tmp = _chunks[GetInd(cx, cy, cz + 1)];
+        if (tmp != NULL) tmp->MarkDirty();
     }
 }
 

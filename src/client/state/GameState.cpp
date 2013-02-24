@@ -145,6 +145,7 @@ void Gamestate::Tick(App& TheApp) {
         _delta.Min = _delta.Current;
     } else if (_delta.Current > _delta.Max) {
         _delta.Max = _delta.Current;
+        std::cout << "Frame took: " << timeChange << std::endl;
     }
 }
 
