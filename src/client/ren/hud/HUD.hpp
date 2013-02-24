@@ -5,6 +5,10 @@
 #include "ren/gl/Shader.hpp"
 
 namespace vox {
+    namespace state {
+        class Gamestate;
+    }
+
     namespace ren {
         namespace hud {
             class HUD {
@@ -24,7 +28,7 @@ namespace vox {
                     HUD(vox::engine::entity::PlayerEntity& Moniter);
                     ~HUD();
 
-                    void Render();
+                    void Render(vox::state::Gamestate* GS);
             };
         }
     }

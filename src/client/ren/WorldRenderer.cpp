@@ -72,6 +72,7 @@ WorldRenderer::WorldRenderer(World& For) :
     _chunks = new RenderChunk*[VIEWDIST * VIEWDIST * VIEWDIST];
     _pitch = _yaw = _roll = 0;
 
+    std::cout << "Nulling out chunks." << std::endl;
     memset(_chunks, (int)NULL, VIEWDIST * VIEWDIST * VIEWDIST * sizeof(RenderChunk*));
 
     For.OnBlockSet.connect(OnBlockSetHandler(*this));

@@ -11,7 +11,8 @@ using namespace vox::engine::entity;
 
 using glm::vec3;
 
-World::World(ChunkProvider* Provider) : _cache(Provider),
+World::World() : 
+    _cache(),
     _ents() {
     srand(0);
 }
@@ -71,53 +72,42 @@ void World::AddEntity(Entity* Ent) {
     _ents.push_back(Ent);
 }
 
-void World::Tick() {
-    EntityListIterator it = _ents.begin();
-    Entity* ent = NULL;
-    glm::vec3 grav(0, -0.01, 0.);
-    while (it != _ents.end()) {
-        ent = *it;
-        EntityListIterator curr = it++;
-        ent->Tick(*this);
-        ent->ApplyForce(grav * ent->GetMass());
+#define SIMTIME 7
 
-        if (ent->GetHealth() <= 0) {
-            OnRemoveEntity(ent);
-            delete ent;
-            _ents.erase(curr);
+void World::Tick(int& DT) {
+    while (DT > SIMTIME) {
+        EntityListIterator it = _ents.begin();
+        Entity* ent = NULL;
+        glm::vec3 grav(0, -0.01, 0.);
+        while (it != _ents.end()) {
+            ent = *it;
+            EntityListIterator curr = it++;
+            ent->Tick(*this);
+            ent->ApplyForce(grav * ent->GetMass());
+
+            if (ent->GetHealth() <= 0) {
+                OnRemoveEntity(ent);
+                delete ent;
+                _ents.erase(curr);
+            }
         }
-    }
 
-    for (EntityListIterator en1 = _ents.begin();
-            en1 != _ents.end();
-            ++en1) {
-        EntityListIterator en2 = en1; 
-        for (++en2;
-                en2 != _ents.end();
-                ++en2) {
-            if ((*en1)->Intersects(**en2)){
-                (*en1)->ResolveCollision(**en2);
-           }
+        for (EntityListIterator en1 = _ents.begin();
+                en1 != _ents.end();
+                ++en1) {
+            EntityListIterator en2 = en1; 
+            for (++en2;
+                    en2 != _ents.end();
+                    ++en2) {
+                if ((*en1)->Intersects(**en2)){
+                    (*en1)->ResolveCollision(**en2);
+               }
+            }
         }
+        DT -= SIMTIME;
     }
-
 }
 
-/*
-vec3 World::Unproject(vec3 V) {
-    vox::ren::TransformationManager* man = _ren->GetTranslationManager();
-
-    man->PushMatrix();
-
-    vec3 cameraPos = _cam.GetPosition();
-        
-    man->Rotate(-_ren->_pitch, -_ren->_yaw, -_ren->_roll);
-    man->Translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-
-    vec3 tr = man->Unproject(V);
-
-    man->PopMatrix();
-
-    return tr;
+void World::SetChunkProvider(ChunkProvider* Provider) {
+    _cache.SetChunkProvider(Provider);
 }
-*/

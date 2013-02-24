@@ -11,6 +11,7 @@ namespace vox {
             class PlayerEntity : public Entity {
                 private:
                     float _jpLevel;
+                    bool _jpNextTick;
                     //No Copypasta
                     PlayerEntity(const PlayerEntity& Other);
                     PlayerEntity& operator= (PlayerEntity& Other);

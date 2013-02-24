@@ -5,6 +5,7 @@
 #include "ren/RenderManager.hpp"
 #include "ren/WorldRenderer.hpp"
 #include "ren/hud/HUD.hpp"
+#include "engine/Stat.hpp"
 
 namespace vox {
     class App;
@@ -23,6 +24,10 @@ namespace vox {
                 vox::engine::entity::PlayerEntity* _player;
                 vox::engine::entity::Camera* _cam;
                 int _frame;
+                vox::engine::Stat<float> _delta;
+                int _skipedFrames;
+                bool _skipFrame;
+                int _simTime;
             public:
                 Gamestate();
                 ~Gamestate();
@@ -34,6 +39,10 @@ namespace vox {
 
                 inline int GetFrame() {
                     return _frame;
+                }
+
+                inline vox::engine::Stat<float> GetDeltaStat() {
+                    return _delta;
                 }
 
                 virtual void OnMouseClick(int Button, int X, int Y);
