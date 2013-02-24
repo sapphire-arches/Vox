@@ -12,6 +12,12 @@ NetworkListner::NetworkListner(const ip::udp::endpoint Endpoint, World& W) :
     , _TEMPTHINGY(100) {
     _TEMPBLOCKS = new Block[CHUNK_BLOCKS];
     _sock = new ip::udp::socket(_service, Endpoint);
+    if (_sock->is_open()) {
+        std::cout << "We have an open socket to the server!" << std::endl;
+    } else {
+        std::cerr << "We couldn't open a connection to the server =(" << std::endl;
+        exit(-1);
+    }
 }
 
 NetworkListner::~NetworkListner() {
