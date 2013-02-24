@@ -35,7 +35,7 @@ namespace vox {
                 void AddEntity(vox::engine::entity::Entity* Ent);
                 boost::signals2::signal<void (vox::engine::entity::Entity*)> OnAddEntity;
                 boost::signals2::signal<void (vox::engine::entity::Entity*)> OnRemoveEntity;
-                void Tick();
+                void Tick(float Delta);
 
                 void SetChunkProvider(ChunkProvider* Provider);
         };

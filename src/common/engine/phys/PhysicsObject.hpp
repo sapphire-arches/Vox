@@ -24,7 +24,7 @@ namespace vox {
                     PhysicsObject (const glm::vec3& Pos, const glm::vec3 Size, float Mass);
                     PhysicsObject (const glm::vec3& Pos, const glm::vec3 Size, float Mass, const PhysicsObject& Parent);
                     
-                    void DoPhysics(World& In);
+                    void DoPhysics(World& In, float Delta);
                     void ApplyForce(const glm::vec3& Force);
                     void ResolveCollision(PhysicsObject& Other);
 

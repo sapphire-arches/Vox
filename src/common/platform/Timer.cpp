@@ -7,6 +7,8 @@
 #elif defined _WIN32
 #include <windows.h>
 #error "Timer is not implemented for windows!"
+#else
+#error "Timer is not implemented on your platform!"
 #endif
 
 unsigned int vox::platform::CurrentTime() {

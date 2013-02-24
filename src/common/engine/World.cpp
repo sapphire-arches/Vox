@@ -72,14 +72,14 @@ void World::AddEntity(Entity* Ent) {
     _ents.push_back(Ent);
 }
 
-void World::Tick() {
+void World::Tick(float Delta) {
     EntityListIterator it = _ents.begin();
     Entity* ent = NULL;
     glm::vec3 grav(0, -0.01, 0.);
     while (it != _ents.end()) {
         ent = *it;
         EntityListIterator curr = it++;
-        ent->Tick(*this);
+        ent->Tick(*this, Delta);
         ent->ApplyForce(grav * ent->GetMass());
 
         if (ent->GetHealth() <= 0) {

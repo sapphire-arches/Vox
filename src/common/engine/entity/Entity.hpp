@@ -24,7 +24,7 @@ namespace vox {
                     virtual ~Entity() {
                     }
 
-                    virtual void Tick(World& In);
+                    virtual void Tick(World& In, float Delta);
 
                     void Hurt(int Damage);
                     

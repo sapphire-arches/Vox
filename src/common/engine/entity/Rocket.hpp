@@ -15,7 +15,7 @@ namespace vox {
                     ~Rocket() {
                     }
 
-                    virtual void Tick(vox::engine::World& W);
+                    virtual void Tick(vox::engine::World& W, float Delta);
                     virtual void OnWorldHit(int X, int Y, int Z);
             };
         }

@@ -11,13 +11,14 @@ namespace vox {
             class PlayerEntity : public Entity {
                 private:
                     float _jpLevel;
+                    bool _jpNextTick;
                     //No Copypasta
                     PlayerEntity(const PlayerEntity& Other);
                     PlayerEntity& operator= (PlayerEntity& Other);
                 public:
                     PlayerEntity(glm::vec3 Pos);
 
-                    virtual void Tick(vox::engine::World& W);
+                    virtual void Tick(vox::engine::World& W, float Delta);
 
                     void Jetpack();
                     inline float GetJetpackLevel() {
