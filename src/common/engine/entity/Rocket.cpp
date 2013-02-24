@@ -14,8 +14,8 @@ Rocket::Rocket(vec3 Pos, vec3 Dir, const PhysicsObject& Parent) : Entity(Pos, ve
 
 #define SPLOSION_RADIUS 5
 
-void Rocket::Tick(vox::engine::World& W, float Delta) {
-    DoPhysics(W, Delta);
+void Rocket::Tick(vox::engine::World& W) {
+    DoPhysics(W);
     ApplyForce((_dir * 3.f) - _vel);
     if (_detonate) {
         this->_health = 0;

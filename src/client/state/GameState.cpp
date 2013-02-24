@@ -33,6 +33,7 @@ void Gamestate::Enter(App& TheApp) {
     _delta = {0, 0, 0, 0, 0, 0};
     _skipFrame = false;
     _skipedFrames = 0;
+    _simTime = 0;
 
     _world = new vox::engine::World();
     vox::engine::NetworkListner* prov =
@@ -84,7 +85,7 @@ void Gamestate::Tick(App& TheApp) {
         _delta.Current = 1;
     }
     
-    _world->Tick(_delta.Current);
+    _world->Tick(_simTime);
     _ren->SetCameraPosition(_cam->GetPosition());
     glm::vec3 dir = _cam->GetDirection();
     _ren->SetCameraDirection(dir.x, dir.y, dir.z);
@@ -131,6 +132,7 @@ void Gamestate::Tick(App& TheApp) {
 
     ++_frame;
     unsigned int timeChange = vox::platform::CurrentTime() - time;
+    _simTime += timeChange;
     //We want 24 fps at least
     _delta.Current = timeChange * (1 / 24.f);
     _delta.Total += _delta.Current;

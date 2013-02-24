@@ -27,6 +27,7 @@ namespace vox {
                 vox::engine::Stat<float> _delta;
                 int _skipedFrames;
                 bool _skipFrame;
+                int _simTime;
             public:
                 Gamestate();
                 ~Gamestate();

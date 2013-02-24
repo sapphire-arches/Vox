@@ -34,7 +34,7 @@ Entity& Entity::operator= (const Entity& Other) {
     return *this;
 }
 
-void Entity::Tick(World& In, float Delta) {
-    DoPhysics(In, Delta);
+void Entity::Tick(World& In) {
+    DoPhysics(In);
     //Nothing else to do here...
 }

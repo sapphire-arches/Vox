@@ -72,36 +72,40 @@ void World::AddEntity(Entity* Ent) {
     _ents.push_back(Ent);
 }
 
-void World::Tick(float Delta) {
-    EntityListIterator it = _ents.begin();
-    Entity* ent = NULL;
-    glm::vec3 grav(0, -0.01, 0.);
-    while (it != _ents.end()) {
-        ent = *it;
-        EntityListIterator curr = it++;
-        ent->Tick(*this, Delta);
-        ent->ApplyForce(grav * ent->GetMass());
+#define SIMTIME 7
 
-        if (ent->GetHealth() <= 0) {
-            OnRemoveEntity(ent);
-            delete ent;
-            _ents.erase(curr);
+void World::Tick(int& DT) {
+    while (DT > SIMTIME) {
+        EntityListIterator it = _ents.begin();
+        Entity* ent = NULL;
+        glm::vec3 grav(0, -0.01, 0.);
+        while (it != _ents.end()) {
+            ent = *it;
+            EntityListIterator curr = it++;
+            ent->Tick(*this);
+            ent->ApplyForce(grav * ent->GetMass());
+
+            if (ent->GetHealth() <= 0) {
+                OnRemoveEntity(ent);
+                delete ent;
+                _ents.erase(curr);
+            }
         }
-    }
 
-    for (EntityListIterator en1 = _ents.begin();
-            en1 != _ents.end();
-            ++en1) {
-        EntityListIterator en2 = en1; 
-        for (++en2;
-                en2 != _ents.end();
-                ++en2) {
-            if ((*en1)->Intersects(**en2)){
-                (*en1)->ResolveCollision(**en2);
-           }
+        for (EntityListIterator en1 = _ents.begin();
+                en1 != _ents.end();
+                ++en1) {
+            EntityListIterator en2 = en1; 
+            for (++en2;
+                    en2 != _ents.end();
+                    ++en2) {
+                if ((*en1)->Intersects(**en2)){
+                    (*en1)->ResolveCollision(**en2);
+               }
+            }
         }
+        DT -= SIMTIME;
     }
-
 }
 
 void World::SetChunkProvider(ChunkProvider* Provider) {
