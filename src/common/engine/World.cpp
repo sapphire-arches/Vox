@@ -75,7 +75,7 @@ void World::AddEntity(Entity* Ent) {
     _ents.push_back(Ent);
 }
 
-#define SIMTIME 7
+#define SIMTIME 41666
 
 void World::Tick(int& DT) {
     while (DT > SIMTIME) {

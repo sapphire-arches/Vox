@@ -23,7 +23,6 @@ namespace vox {
                 vox::ren::hud::HUD* _hud;
                 vox::engine::entity::PlayerEntity* _player;
                 vox::engine::entity::Camera* _cam;
-                int _frame;
                 vox::engine::Stat<float> _delta;
                 int _skipedFrames;
                 bool _skipFrame;
@@ -37,9 +36,9 @@ namespace vox {
                 virtual void Render(App& TheApp);
                 virtual void Tick(App& TheApp);
 
-                inline int GetFrame() {
-                    return _frame;
-                }
+                //inline int GetFrame() {
+                //    return _frame;
+                //}
 
                 inline vox::engine::Stat<float> GetDeltaStat() {
                     return _delta;

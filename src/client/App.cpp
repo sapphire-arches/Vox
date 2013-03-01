@@ -94,9 +94,9 @@ int App::OnExecute(State* First) {
     SDL_Event event;
     memset(&event, 0, sizeof(SDL_Event));
     
-    unsigned int stime = vox::platform::CurrentTime();
-    unsigned int frame = 0;
-    unsigned int ttime = 0;
+    unsigned int stime = 0;//vox::platform::CurrentTime();
+    _frameTime.Current = _frameTime.Count = _frameTime.Average = _frameTime.Total = _frameTime.Min = 0;
+    _frameTime.Max = 0xFFF;//Big number
 
     while (_running) {
         stime = vox::platform::CurrentTime();
@@ -106,10 +106,22 @@ int App::OnExecute(State* First) {
 
         OnLoop();
         OnRender();
-        ttime += vox::platform::CurrentTime() - stime;
-        ++frame;
-        if (frame % 60 == 0) {
-            std::cout << "Average FPS: " << (1000000. / (ttime / float(frame))) << std::endl;
+
+        int etime = int(vox::platform::CurrentTime() - stime);
+        _frameTime.Current = etime;
+        _frameTime.Total += etime;
+        _frameTime.Count++;
+        if (etime < _frameTime.Min) {
+            _frameTime.Min = etime;
+        } else if (etime < _frameTime.Max) {
+            _frameTime.Max = etime;
+        }
+        if (_frameTime.Count % 1000 == 0) {
+            _frameTime.Min = 0xFFF;
+            _frameTime.Max = 0;
+        }
+        if (_frameTime.Count % 60 == 0) {
+            std::cout << "Average FPS: " << (1000000. / (_frameTime.Total / float(_frameTime.Count))) << std::endl;
         }
     }
 

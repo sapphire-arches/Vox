@@ -30,7 +30,6 @@ Gamestate::~Gamestate() {
 }
 
 void Gamestate::Enter(App& TheApp) {
-    _delta = {0, 0, 0, 0, 0, 0};
     _skipFrame = false;
     _skipedFrames = 0;
     _simTime = 0;
@@ -77,7 +76,6 @@ void Gamestate::Render(App& TheApp) {
 }
 
 void Gamestate::Tick(App& TheApp) {
-    unsigned int time = vox::platform::CurrentTime();
     if (_delta.Current > 1) {
         _delta.Current = 1;
         _skipFrame = true;
@@ -127,17 +125,16 @@ void Gamestate::Tick(App& TheApp) {
         xDir *= fac;
         zDir *= fac;
     }
-    _player->ApplyForce(glm::vec3(xDir / _delta.Current, 0, zDir / _delta.Current));
+    _player->ApplyForce(glm::vec3(xDir, 0, zDir));
     _player->Yaw = glm::degrees(camYaw);
 
-    ++_frame;
-    unsigned int timeChange = vox::platform::CurrentTime() - time;
-    _simTime += timeChange;
+    vox::engine::Stat<int> frameTime = TheApp.GetFrameTime();
+    _simTime += frameTime.Current;
     //We want 24 fps at least
-    _delta.Current = timeChange * (1 / 24.f);
+    _delta.Current = frameTime.Current * (1 / 4.1667e7);
     _delta.Total += _delta.Current;
     ++_delta.Count;
-    if (_frame % 1000 == 1) {
+    if (TheApp.GetFrame() % 1000 == 1) {
         _delta.Min = 100;
         _delta.Max = 0;
     }
@@ -145,7 +142,6 @@ void Gamestate::Tick(App& TheApp) {
         _delta.Min = _delta.Current;
     } else if (_delta.Current > _delta.Max) {
         _delta.Max = _delta.Current;
-        std::cout << "Frame took: " << timeChange << std::endl;
     }
 }
 

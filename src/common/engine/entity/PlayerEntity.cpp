@@ -20,7 +20,8 @@ void PlayerEntity::Tick(vox::engine::World& W) {
             _jpLevel -= 0.1f;
         }
         if (_onground) {
-            this->ApplyForce(glm::vec3(0.f, 0.1f, 0.f));
+            //Boost when on ground so that we can get a bit of a jump without using jetpack
+            this->ApplyForce(glm::vec3(0.f, 1.f, 0.f));
         }
         if (_jpLevel < 0) {
             _jpLevel = 0;
