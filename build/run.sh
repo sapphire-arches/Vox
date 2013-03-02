@@ -13,5 +13,5 @@ make install
 if [ $? -eq 0 ]
 then
     cd bin
-    ./main
+    ./client
 fi
