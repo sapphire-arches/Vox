@@ -35,3 +35,6 @@ Chunk* NetworkListner::GetChunk(int CX, int CY, int CZ) {
     _TEMPTHINGY.Fill(CX, CY, CZ, _TEMPBLOCKS);
     return new Chunk(CX, CY, CZ, _TEMPBLOCKS);
 }
+
+void NetworkListner::HandleEvents(vox::state::Gamestate& GS) {
+}

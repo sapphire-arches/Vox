@@ -4,6 +4,7 @@
 #include "engine/World.hpp"
 #include "engine/ChunkProvider.hpp"
 #include "engine/WorldGenerator.hpp"
+#include "state/GameState.hpp"
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 
@@ -25,6 +26,7 @@ namespace vox {
                 ~NetworkListner();
 
                 virtual vox::engine::Chunk* GetChunk(int CX, int CY, int CZ);
+                void HandleEvents (vox::state::Gamestate& GS);
         };
     }
 }
