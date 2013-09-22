@@ -93,7 +93,7 @@ void Gamestate::Tick(App& TheApp) {
     int numKeys;
     Uint8* keys = SDL_GetKeyState(&numKeys);
 
-    const float MoveSpeed = 0.01;
+    const float MoveSpeed = 0.05;
 
     float camYaw = _cam->GetDirection().x;
     camYaw = glm::radians(camYaw);

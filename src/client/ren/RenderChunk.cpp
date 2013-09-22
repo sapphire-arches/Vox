@@ -4,6 +4,7 @@
 #include <iostream>
 #include <boost/static_assert.hpp>
 #include <glm/glm.hpp>
+#include <cstdlib>
 
 using namespace vox::ren;
 using namespace vox::engine;
@@ -75,11 +76,13 @@ static void AddSquare(float X, float Y, float Z, int Size, int ID, Side S, std::
     glm::vec3 norm = glm::cross(b - a, c - a);
 
     int basei = Verts.size();
+    srand(X + Y + Z);
+    float fac = (rand() / float(RAND_MAX)) * 0.5f + 0.5f;
     for (int i = 0; i < 4; ++i) {
         if (ID < NUM_COLORS) {
-            v[i].r = Colors[ID][0];//0.5f;//fabs(v[i].y / 16.0f);
-            v[i].g = Colors[ID][1];// 1.f;//fabs(v[i].y / 16.0f);
-            v[i].b = Colors[ID][2];//0.5f;//fabs(v[i].y / 16.0f);
+            v[i].r = Colors[ID][0] * fac;//0.5f;//fabs(v[i].y / 16.0f);
+            v[i].g = Colors[ID][1] * fac;// 1.f;//fabs(v[i].y / 16.0f);
+            v[i].b = Colors[ID][2] * fac;//0.5f;//fabs(v[i].y / 16.0f);
         } else {
             v[i].r = v[i].b = v[i].g = 0;
         }
