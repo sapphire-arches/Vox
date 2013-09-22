@@ -12,7 +12,7 @@
 
 #include <iostream>
 
-#define VIEWDIST 10
+#define VIEWDIST 15
 #define HALFDIST (VIEWDIST / 2)
 
 using namespace std;
@@ -201,6 +201,9 @@ bail:
             elapsed = vox::platform::CurrentTime() - stime;
         }
     }
+    //We figure that we will have different priorities for what chunk render
+    //next frame
+    _toBuild.clear();
 
     for (
         std::list<EntityRenderer*>::iterator it = _ents.begin();
