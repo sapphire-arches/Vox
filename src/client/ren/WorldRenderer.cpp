@@ -12,7 +12,7 @@
 
 #include <iostream>
 
-#define VIEWDIST 8
+#define VIEWDIST 10
 #define HALFDIST (VIEWDIST / 2)
 
 using namespace std;
@@ -104,6 +104,48 @@ static inline int ManhatanDistance(int x1, int y1, int z1, int x2, int y2, int z
         abs(z1 - z2);
 }
 
+void WorldRenderer::DoRenderChunk(int X, int Y, int Z) {
+    int cx = X + int(_cameraPos.x / CHUNK_SIZE);
+    int cy = Y + int(_cameraPos.y / CHUNK_SIZE);
+    int cz = Z + int(_cameraPos.z / CHUNK_SIZE);
+    int magic = ManhatanDistance(X, Y, Z, HALFDIST, HALFDIST, HALFDIST) - 5;
+    if (magic < 0)
+        magic = 0;
+    magic = 0;
+    int lod = CHUNK_SIZE >> magic;
+    if (lod == 0)
+        lod = 1;
+    int ind = GetInd(cx, cy, cz);
+    RenderChunk* curr = _chunks[ind];
+    if (curr == NULL) {
+        ToBuildChunk temp;
+        temp.X = cx;
+        temp.Y = cy;
+        temp.Z = cz;
+        temp.LOD = lod;
+        temp.Ind = ind;
+        temp.Parent = this;
+        _toBuild.insert(temp);
+        curr = NULL;
+    } else if (
+            curr->GetLOD() != lod ||
+            curr->GetX() != cx ||
+            curr->GetY() != cy ||
+            curr->GetZ() != cz ||
+            curr->IsDirty()) {
+        ToBuildChunk temp;
+        temp.X = cx;
+        temp.Y = cy;
+        temp.Z = cz;
+        temp.LOD = lod;
+        temp.Ind = ind;
+        temp.Parent = this;
+        _toBuild.insert(temp);
+    }
+    if (curr != NULL)
+        curr->Render();
+}
+
 void WorldRenderer::Render() {
     _man.PushMatrix();
     _man.Rotate(-_pitch, -_yaw, -_roll);
@@ -122,58 +164,27 @@ void WorldRenderer::Render() {
 
     unsigned int stime = vox::platform::CurrentTime(); 
     unsigned int elapsed = 0;
-    for (int x = 0; x < VIEWDIST; ++x) {
-        for (int y = 0; y < VIEWDIST; ++y) {
-            for (int z = 0; z < VIEWDIST; ++z) {
-                int cx = x + int(_cameraPos.x / CHUNK_SIZE) - HALFDIST;
-                int cy = y + int(_cameraPos.y / CHUNK_SIZE) - HALFDIST;
-                int cz = z + int(_cameraPos.z / CHUNK_SIZE) - HALFDIST;
-                int magic = ManhatanDistance(x, y, z, HALFDIST, HALFDIST, HALFDIST) - 5;
-                if (magic < 0)
-                    magic = 0;
-                magic = 0;
-                int lod = CHUNK_SIZE >> magic;
-                if (lod == 0)
-                    lod = 1;
-                int ind = GetInd(cx, cy, cz);
-                RenderChunk* curr = _chunks[ind];
-                if (curr == NULL) {
-                    ToBuildChunk temp;
-                    temp.X = cx;
-                    temp.Y = cy;
-                    temp.Z = cz;
-                    temp.LOD = lod;
-                    temp.Ind = ind;
-                    temp.Parent = this;
-                    _toBuild.insert(temp);
-                    curr = NULL;
-                } else if (
-                        curr->GetLOD() != lod ||
-                        curr->GetX() != cx ||
-                        curr->GetY() != cy ||
-                        curr->GetZ() != cz ||
-                        curr->IsDirty()) {
-                    ToBuildChunk temp;
-                    temp.X = cx;
-                    temp.Y = cy;
-                    temp.Z = cz;
-                    temp.LOD = lod;
-                    temp.Ind = ind;
-                    temp.Parent = this;
-                    _toBuild.insert(temp);
-                }
-                if (curr != NULL)
-                    curr->Render();
-                elapsed = vox::platform::CurrentTime() - stime;
-                //8ms
+    for (int d = 0; d < HALFDIST; ++d) {
+        for (int x = -d; x <= d; ++x) {
+            for (int y = -d; y <= d; ++y) {
+                for (int z = -d; z <= d; ++z) {
+                    if (x == d ||  y == d ||  z == d ||
+                       -x == d || -y == d || -z == d) {
+                        std::cout << x << " " << y << " " << z << std::endl;
+                        this->DoRenderChunk(x, y, z);
+                    }
+                    elapsed = vox::platform::CurrentTime() - stime;
+                    //8ms
 #ifndef VALGRIND
-                if (elapsed > 8000) {
-                    goto bail;
-                }
+                    if (elapsed > 8000) {
+                        goto bail;
+                    }
 #endif
+                }
             }
         }
     }
+    std::cout << "---------------------" << std::endl;
 bail:
     //XXX:This prevents valgrind from letting me profile the game. Too slow...
     if (!_toBuild.empty()) {

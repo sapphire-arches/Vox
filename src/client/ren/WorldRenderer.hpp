@@ -54,6 +54,8 @@ namespace vox {
                 ToBuildSet _toBuild;
                 std::list<EntityRenderer*> _ents;
                 friend struct ToBuildChunk;
+
+                void DoRenderChunk(int X, int Y, int Z);
             public:
                 float _yaw, _pitch, _roll;
                 WorldRenderer(vox::engine::World& For);
