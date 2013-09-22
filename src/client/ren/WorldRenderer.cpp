@@ -170,7 +170,6 @@ void WorldRenderer::Render() {
                 for (int z = -d; z <= d; ++z) {
                     if (x == d ||  y == d ||  z == d ||
                        -x == d || -y == d || -z == d) {
-                        std::cout << x << " " << y << " " << z << std::endl;
                         this->DoRenderChunk(x, y, z);
                     }
                     elapsed = vox::platform::CurrentTime() - stime;
@@ -184,7 +183,6 @@ void WorldRenderer::Render() {
             }
         }
     }
-    std::cout << "---------------------" << std::endl;
 bail:
     //XXX:This prevents valgrind from letting me profile the game. Too slow...
     if (!_toBuild.empty()) {
