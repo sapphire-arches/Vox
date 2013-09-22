@@ -20,7 +20,7 @@ HUD::HUD(vox::engine::entity::PlayerEntity& Moniter) :
     _mloc = _prog.GetUniformLoc(m);
     _ploc = _prog.GetUniformLoc(p);
 
-    _proj = glm::ortho(0.f, WIDTH, HEIGHT, 0.f, -1.f, 10.f);
+    _proj = glm::ortho(0.f, 800.f, 600.f, 0.f, -1.f, 10.f);
     _mview = glm::mat4(1.f);
 }
 

@@ -18,7 +18,7 @@ bool App::OnInit(State* First) {
         return false;
     }
 
-    if ((_surface = SDL_SetVideoMode(WIDTH, HEIGHT, 32, SDL_HWSURFACE | SDL_OPENGL | SDL_GL_DOUBLEBUFFER)) == NULL) {
+    if ((_surface = SDL_SetVideoMode(WIDTH, HEIGHT, 32, SDL_HWSURFACE | SDL_OPENGL | SDL_GL_DOUBLEBUFFER | SDL_FULLSCREEN)) == NULL) {
         return false;
     }
 
