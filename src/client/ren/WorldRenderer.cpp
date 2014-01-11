@@ -12,7 +12,7 @@
 
 #include <iostream>
 
-#define VIEWDIST 15
+#define VIEWDIST 8
 #define HALFDIST (VIEWDIST / 2)
 
 using namespace std;
@@ -125,7 +125,7 @@ void WorldRenderer::DoRenderChunk(int X, int Y, int Z) {
         temp.LOD = lod;
         temp.Ind = ind;
         temp.Parent = this;
-        _toBuild.insert(temp);
+        _toBuild.push_back(temp);
         curr = NULL;
     } else if (
             curr->GetLOD() != lod ||
@@ -140,7 +140,7 @@ void WorldRenderer::DoRenderChunk(int X, int Y, int Z) {
         temp.LOD = lod;
         temp.Ind = ind;
         temp.Parent = this;
-        _toBuild.insert(temp);
+        _toBuild.push_back(temp);
     }
     if (curr != NULL)
         curr->Render();
@@ -186,14 +186,14 @@ void WorldRenderer::Render() {
 bail:
     //XXX:This prevents valgrind from letting me profile the game. Too slow...
     if (!_toBuild.empty()) {
-        ToBuildSet::iterator it = _toBuild.begin();
+        ToBuildList::iterator it = _toBuild.begin();
         while (
 #ifndef VALGRIND
                 elapsed < 8000 &&
 #endif
                 it != _toBuild.end()) {
             ToBuildChunk c = *it;
-            ToBuildSet::iterator curr = it++;
+            ToBuildList::iterator curr = it++;
             _toBuild.erase(curr);
             delete _chunks[c.Ind];
             _chunks[c.Ind] = NULL;

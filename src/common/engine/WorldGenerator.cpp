@@ -27,15 +27,10 @@ WorldGenerator& WorldGenerator::operator= (const WorldGenerator& Other) {
 
 Block WorldGenerator::GetBlock(int X, int Y, int Z) {
     bool solid = false;
-    if (
-            abs(X) > MAX_WORLD_SIZE ||
-            abs(Y) > MAX_WORLD_SIZE ||
-            abs(Z) > MAX_WORLD_SIZE) {
-        solid = true;
-    }
 
     float fac = 0.;
-    fac += _per.Get(X * 0.05f, Y * 0.05f, Z * 0.05f);
+    fac += _per.Get(X * 0.05f, Y * 0.05f, Z * 0.05f) * 0.5f;
+    fac += _per.Get(X * 0.025f, Y * 0.025f, Z * 0.025f) * 0.5f;
     if (fac > 0.5f) {
         solid = true;
     }

@@ -2,7 +2,7 @@
 #define _REN_WORLD_RENDERER_H_INCLUDED_
 
 #include <stack>
-#include <set>
+#include <list>
 #include <boost/static_assert.hpp>
 #include <glm/glm.hpp>
 
@@ -40,7 +40,7 @@ namespace vox {
             bool operator< (const ToBuildChunk& Other) const;
         };
 
-        typedef std::set<ToBuildChunk> ToBuildSet;
+        typedef std::list<ToBuildChunk> ToBuildList;
 
         class WorldRenderer {
             private:
@@ -51,7 +51,7 @@ namespace vox {
                 int _ploc;
                 vox::ren::RenderChunk** _chunks;
                 glm::vec3 _cameraPos;
-                ToBuildSet _toBuild;
+                ToBuildList _toBuild;
                 std::list<EntityRenderer*> _ents;
                 friend struct ToBuildChunk;
 

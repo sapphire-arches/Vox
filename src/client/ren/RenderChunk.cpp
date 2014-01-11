@@ -76,8 +76,8 @@ static void AddSquare(float X, float Y, float Z, int Size, int ID, Side S, std::
     glm::vec3 norm = glm::cross(b - a, c - a);
 
     int basei = Verts.size();
-    srand(X + Y + Z);
-    float fac = (rand() / float(RAND_MAX)) * 0.5f + 0.5f;
+    //srand(X + Y + Z);
+    float fac = (rand() / float(RAND_MAX)) * 0.25f + 0.75f;
     for (int i = 0; i < 4; ++i) {
         if (ID < NUM_COLORS) {
             v[i].r = Colors[ID][0] * fac;//0.5f;//fabs(v[i].y / 16.0f);
