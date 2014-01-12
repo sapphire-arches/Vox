@@ -63,7 +63,7 @@ void Gamestate::Render(App& TheApp) {
         _rman->EnterGameWorldRender();
         _ren->Render();
         _rman->LeaveGameWorldRender();
-    
+
         _rman->EnterHUDRender();
         _hud->Render(this);
         _rman->LeaveHUDRender();
@@ -82,7 +82,7 @@ void Gamestate::Tick(App& TheApp) {
     } else if (_delta.Current <= 0) {
         _delta.Current = 1;
     }
-    
+
     _world->Tick(_simTime);
     _ren->SetCameraPosition(_cam->GetPosition());
     glm::vec3 dir = _cam->GetDirection();
