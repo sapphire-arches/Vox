@@ -17,6 +17,15 @@ EntityRenderer::EntityRenderer(Entity& Ent) : _ent(Ent){
     verts[6].x = 1; verts[6].y = 1; verts[6].z = 0;
     verts[7].x = 1; verts[7].y = 1; verts[7].z = 1;
 
+    verts[0].nx= -0.5773f; verts[0].ny = -0.5773f; verts[0].nx = -0.5773f;
+    verts[1].nx= -0.5773f; verts[1].ny = -0.5773f; verts[1].nx =  0.5773f;
+    verts[2].nx= -0.5773f; verts[2].ny =  0.5773f; verts[2].nx = -0.5773f;
+    verts[3].nx= -0.5773f; verts[3].ny =  0.5773f; verts[3].nx =  0.5773f;
+    verts[4].nx=  0.5773f; verts[4].ny = -0.5773f; verts[4].nx = -0.5773f;
+    verts[5].nx=  0.5773f; verts[5].ny = -0.5773f; verts[5].nx =  0.5773f;
+    verts[6].nx=  0.5773f; verts[6].ny =  0.5773f; verts[6].nx = -0.5773f;
+    verts[7].nx=  0.5773f; verts[7].ny =  0.5773f; verts[7].nx =  0.5773f;
+
     glm::vec3 size = Ent.GetSize();
 
     for (int i = 0; i < 8; ++i) {

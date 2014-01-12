@@ -161,6 +161,7 @@ void WorldRenderer::Render() {
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
 
     unsigned int stime = vox::platform::CurrentTime(); 
     unsigned int elapsed = 0;
@@ -213,7 +214,7 @@ bail:
     }
 
     _man.PopMatrix();
-    
+
     PrintGLError("Postrender");
     glFlush();
 }
