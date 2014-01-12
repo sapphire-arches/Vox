@@ -26,11 +26,12 @@ bool App::OnInit(State* First) {
         cout << "GLEW init failed." << endl;
         return false;
     }
-    
+
     if (true &&
             GLEW_ARB_shader_objects &&
             GLEW_ARB_vertex_shader &&
             GLEW_ARB_fragment_shader &&
+            GLEW_ARB_framebuffer_object &&
             GLEW_ARB_vertex_buffer_object) {
         cout << "Everything supported!" << endl;
     } else {

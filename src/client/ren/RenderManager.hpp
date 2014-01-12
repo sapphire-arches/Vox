@@ -1,6 +1,8 @@
 #ifndef _REN_RENDERMANAGER_H_
 #define _REN_RENDERMANAGER_H_
 
+#include <GL/glew.h>
+
 namespace vox {
     namespace ren {
         //Sets up FBOs etc. for different render mdoes.
@@ -15,6 +17,9 @@ namespace vox {
                 int ScreenWidth;
                 int ScreenHeight;
 
+                GLuint RenderBufferName;
+                GLuint RenderTexture;
+                GLuint DepthRenderBuffer;
 
                 RenderManager();
                 ~RenderManager();
@@ -24,6 +29,8 @@ namespace vox {
 
                 void EnterHUDRender();
                 void LeaveHUDRender();
+
+                void OnResize(int w, int h);
         };
     }
 }
